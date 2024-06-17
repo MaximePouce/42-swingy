@@ -1,5 +1,7 @@
 package com.mpouce.character;
 
+import com.mpouce.app.Stats;
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
@@ -13,14 +15,16 @@ public class CharacterTest {
 
     @Before
     public void setUp() {
-        attacker = new Character("Attacker", 100, 20, 0);
-        defender = new Character("Defender", 100, 5, 10);
+        Stats attackerStats = new Stats(100, 100, 20, 0);
+        Stats defenderStats = new Stats(100, 100, 5, 10);
+        attacker = new Character("Attacker", attackerStats, 798450);
+        defender = new Character("Defender", defenderStats, 769042);
     }
 
     @Test
     public void testTakeDamage() {
         defender.takeDamage(15);
-        assertEquals(95, defender.getHitPoints());
+        assertEquals(95, defender.getStats().getHitPoints());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -31,7 +35,7 @@ public class CharacterTest {
     @Test
     public void testAttack() {
         attacker.attack(defender);
-        assertEquals(90, defender.getHitPoints());
+        assertEquals(90, defender.getStats().getHitPoints());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -42,6 +46,12 @@ public class CharacterTest {
     @Test
     public void testHealthCannotBeNegative() {
         defender.takeDamage(9999);
-        assertEquals(0, defender.getHitPoints());
+        assertEquals(0, defender.getStats().getHitPoints());
+    }
+
+    @Test
+    public void testGetLevel() {
+        assertEquals(42, attacker.getLevel());
+        assertEquals(41, defender.getLevel());
     }
 }
