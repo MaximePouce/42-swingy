@@ -25,4 +25,11 @@ public class Stats {
     public void setAttack(int attack) {
         this.attack = attack;
     }
+
+    public void addStats(Stats stats) {
+        this.maxHitPoints += stats.getMaxHitPoints();
+        this.hitPoints += stats.getMaxHitPoints();
+        this.attack += stats.getAttack();
+        this.defense += stats.getDefense();
+    }
 }
