@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  postgres-db:
+    image: postgres
+    container_name: postgres-db
+    ports:
+      - 5432:5432
+    volumes:
+      - /mnt/d/Prog/Projects/42/42-swingy/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USR}
+      POSTGRES_PASSWORD: ${DB_PWD}
