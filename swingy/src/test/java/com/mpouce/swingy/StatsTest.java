@@ -1,4 +1,4 @@
-package com.mpouce.app;
+package com.mpouce.swingy;
 
 import static org.junit.Assert.assertEquals;
 

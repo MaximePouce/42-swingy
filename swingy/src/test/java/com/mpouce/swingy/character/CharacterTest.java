@@ -1,6 +1,6 @@
 package com.mpouce.character;
 
-import com.mpouce.app.Stats;
+import com.mpouce.swingy.Stats;
 
 import static org.junit.Assert.assertEquals;
 

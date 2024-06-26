@@ -1,4 +1,4 @@
-package com.mpouce.app;
+package com.mpouce.swingy;
 
 public class Stats {
     private int maxHitPoints;
