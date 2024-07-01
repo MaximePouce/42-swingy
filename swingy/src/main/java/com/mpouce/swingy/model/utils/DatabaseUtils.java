@@ -1,4 +1,4 @@
-package com.mpouce.swingy.utils;
+package com.mpouce.swingy.model.utils;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

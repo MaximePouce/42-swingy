@@ -1,6 +1,6 @@
 package com.mpouce.swingy.model.character;
 
-import com.mpouce.swingy.utils.DatabaseUtils;
+import com.mpouce.swingy.model.utils.DatabaseUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
