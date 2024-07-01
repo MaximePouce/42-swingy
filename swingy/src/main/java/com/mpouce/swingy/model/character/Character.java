@@ -6,6 +6,11 @@ public class Character {
     protected String name;
     protected Stats stats;
     protected int experience;
+    protected int currentHitPoints;
+
+    protected int maxHitPoints;
+    protected int attack;
+    protected int defense;
 
     public Character(String name, Stats stats, int experience) {
         this.name = name;
