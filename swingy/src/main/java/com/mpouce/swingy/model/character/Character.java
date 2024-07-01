@@ -4,9 +4,7 @@ import com.mpouce.swingy.Stats;
 
 public class Character {
     protected String name;
-
     protected Stats stats;
-
     protected int experience;
 
     public Character(String name, Stats stats, int experience) {
