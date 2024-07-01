@@ -1,4 +1,4 @@
-package com.mpouce.character;
+package com.mpouce.swingy.model.character;
 
 import com.mpouce.swingy.Stats;
 
