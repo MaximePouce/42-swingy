@@ -77,12 +77,24 @@ public class DatabaseUtils {
                     System.out.print(rs.getMetaData().getColumnName(i) + ":" + rs.getMetaData().getColumnTypeName(i) + " ");
                 }
                 System.out.println("");
-                while (rs.next()) {
-                    for (int i = 1; i < rs.getMetaData().getColumnCount() + 1; i++) {
-                        System.out.print(" " + rs.getMetaData().getColumnName(i) + "=" + rs.getObject(i));
+                printResultSet(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public static void printResultSet(ResultSet rs) {
+        try {
+            while (rs.next()) {
+                for (int i = 1; i < rs.getMetaData().getColumnCount() + 1; i++) {
+                    System.out.print(rs.getMetaData().getColumnName(i) + ": " + rs.getObject(i));
+                    if (i < rs.getMetaData().getColumnCount()) {
+                        System.out.print("; ");
                     }
-                    System.out.println("");
                 }
+                System.out.println("");
             }
         } catch (SQLException e) {
             e.printStackTrace();
