@@ -6,6 +6,7 @@ import com.mpouce.swingy.model.utils.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.ArrayList;
@@ -40,5 +41,28 @@ public class CharacterRepository {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public int createCharacter(String name, int classId) {
+        int newId = -1;
+        String prepStatement = "INSERT INTO characters (name, experience, classid) VALUES (?, 0, ?);";
+        try {
+            PreparedStatement st = DatabaseConnection.getInstance().getConnection()
+                                    .prepareStatement(prepStatement, Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, name);
+            st.setInt(2, classId);
+            int affectedRows = st.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creation failed. No rows affected.");
+            }
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+                newId = rs.getInt(1);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
+        return newId;
     }
 }
