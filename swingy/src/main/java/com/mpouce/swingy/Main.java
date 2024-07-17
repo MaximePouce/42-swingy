@@ -13,7 +13,7 @@ public class Main
             Settings.getInstance().setGui(true);
         }
         CharacterController player = new CharacterController();
-        player.getCharacters();
+        player.startMenu();
         // player.newCharacter("Sir Fightinton", 1);
     }
 }

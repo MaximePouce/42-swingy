@@ -2,6 +2,7 @@ package com.mpouce.swingy.view;
 
 import com.mpouce.swingy.Settings;
 import com.mpouce.swingy.model.character.Character;
+import com.mpouce.swingy.controller.CharacterController;
 
 import java.util.List;
 
@@ -27,8 +28,10 @@ import javax.imageio.ImageIO;
 
 public class CharacterView {
 
-    public CharacterView() {
+    private CharacterController controller;
 
+    public CharacterView(CharacterController ctrl) {
+        this.controller = ctrl;
     }
 
     public void showCharacters(List<Character> characters) {
@@ -38,10 +41,9 @@ public class CharacterView {
         else {
             showCharactersConsole(characters);
         }
-        
     }
 
-    public void showCharactersGui(List<Character> characters) {
+    private void showCharactersGui(List<Character> characters) {
         SwingUtilities.invokeLater(() -> {
             JPanel charactersPanel = new JPanel();
             charactersPanel.setLayout(new BoxLayout(charactersPanel, BoxLayout.X_AXIS));
@@ -93,7 +95,6 @@ public class CharacterView {
         characterPanel.setBackground(Color.green);
         characterPanel.setLayout(new BorderLayout());
 
-
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         characterPanel.setBorder(border);
 
@@ -109,7 +110,7 @@ public class CharacterView {
         JButton btnSelect = new JButton("Select");
 
         btnSelect.addActionListener(e -> {
-            System.out.println("Selected character: " + character.getId());
+            this.controller.selectCharacter(character.getId());
         });
 
         JPanel labelPanel = new JPanel(new GridLayout(2, 1));
@@ -141,7 +142,7 @@ public class CharacterView {
         return characterPanel;
     }
 
-    public void showCharactersConsole(List<Character> characters) {
+    private void showCharactersConsole(List<Character> characters) {
         if (characters.isEmpty()) {
             System.out.println("No character found.");
         }
