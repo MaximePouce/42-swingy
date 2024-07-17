@@ -43,10 +43,6 @@ public class CharacterView {
 
     public void showCharactersGui(List<Character> characters) {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Character List");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(new Dimension(1536, 864));
-
             JPanel charactersPanel = new JPanel();
             charactersPanel.setLayout(new BoxLayout(charactersPanel, BoxLayout.X_AXIS));
             charactersPanel.setBackground(Color.blue);
@@ -68,18 +64,14 @@ public class CharacterView {
             titlePane.setPreferredSize(new Dimension(1336, 214));
 
             titlePane.add(lblTitle);
+            Window window = Window.getInstance();
 
             JButton createButton = new JButton("Create new Character");
             createButton.addActionListener(e -> {
                 System.out.println("Create new character button clicked");
             });
 
-            JPanel menuPanel = new JPanel();
-            JLabel lblTest = new JLabel("Test");
-            menuPanel.setBackground(Color.magenta);
-            menuPanel.add(lblTest);
             JPanel mainPanel = new JPanel();
-            GridBagConstraints c = new GridBagConstraints();
 
             mainPanel.setBackground(Color.red);
             mainPanel.setLayout(new BorderLayout());
@@ -87,26 +79,11 @@ public class CharacterView {
             mainPanel.add(scrollPane, BorderLayout.CENTER);
             mainPanel.add(createButton, BorderLayout.SOUTH);
 
-            JPanel view = new JPanel();
-            view.setLayout(new GridBagLayout());
-
-            c.gridx = 0;
-            c.gridy = 0;
-            c.weightx = 0.4;
-            c.weighty = 1.0;
-            c.anchor = GridBagConstraints.LINE_START;
-            c.fill = GridBagConstraints.BOTH;
-            view.add(menuPanel, c);
-            c.gridx = 1;
-            c.gridy = 0;
-            c.weightx = 0.6;
-            c.weighty = 1.0;
-            c.gridwidth = 1;
-            c.anchor = GridBagConstraints.LINE_END;
-            c.fill = GridBagConstraints.BOTH;
-            view.add(mainPanel, c);
-            frame.add(view);
-            frame.setVisible(true);
+            window.resetView();
+            window.addMenu();
+            window.addContent(mainPanel);
+            window.showView();
+            window.displayWindow();
         });
     }
 
