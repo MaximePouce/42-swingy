@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 public class CharacterRepository {
 
@@ -23,9 +24,16 @@ public class CharacterRepository {
         try {
             Statement st = DatabaseConnection.getInstance().getConnection().createStatement();
             ResultSet rs = st.executeQuery(
-                            "SELECT characters.characterid, characters.name, characters.experience, characters.classid "
+                            "SELECT characters.characterid, characters.name, characters.experience, classes.name AS className "
                             + "FROM characters INNER JOIN classes ON characters.classid = classes.classid;");
-            DatabaseUtils.printResultSet(rs);
+            while (rs.next()) {
+                CharacterClass newClass = new CharacterClass(rs.getString("classname"));
+                String newName = rs.getString("name");
+                int newId = rs.getInt("characterid");
+                int newExp = rs.getInt("experience");
+                Character newCharacter = new Character(newName, newExp, newId, newClass);
+                characters.add(newCharacter);
+            }
         } catch (SQLException e) {
             System.out.println("Unable to connect to Database: " + e.getMessage());
         }

@@ -3,14 +3,16 @@ package com.mpouce.swingy.model.character;
 import com.mpouce.swingy.Stats;
 
 public class Character {
-    protected String name;
-    protected Stats stats;
-    protected int experience;
-    protected int currentHitPoints;
+    private int id;
+    private String name;
+    private CharacterClass characterClass = null;
+    private Stats stats;
+    private int experience;
+    private int currentHitPoints;
 
-    protected int maxHitPoints;
-    protected int attack;
-    protected int defense;
+    private int maxHitPoints;
+    private int attack;
+    private int defense;
 
     public Character(String name, Stats stats, int experience) {
         this.name = name;
@@ -18,8 +20,23 @@ public class Character {
         this.experience = experience;
     }
 
+    public Character(String name, int experience, int id, CharacterClass characterClass) {
+        this.id = id;
+        this.name = name;
+        this.experience = experience;
+        this.characterClass = characterClass;
+    }
+
     public String getName() {
         return this.name;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public CharacterClass getCharacterClass() {
+        return this.characterClass;
     }
 
     public Stats getStats() {

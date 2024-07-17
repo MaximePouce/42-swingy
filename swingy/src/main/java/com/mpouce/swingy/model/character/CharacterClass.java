@@ -26,6 +26,17 @@ public class CharacterClass {
         this.defenseGrowth = rs.getInt("defense_growth");
     }
 
+    public CharacterClass(String name) {
+        this.id = -1;
+        this.name = name;
+        this.maxHitPoints = 0;
+        this.attack = 0;
+        this.defense = 0;
+        this.maxHitPointsGrowth = 0;
+        this.attackGrowth = 0;
+        this.defenseGrowth = 0;
+    }
+
     public String getName() { return this.name; }
     public int getId() { return this.id; }
     public int getHitPoints() { return this.maxHitPoints; }
