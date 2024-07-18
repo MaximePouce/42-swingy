@@ -6,7 +6,11 @@ import com.mpouce.swingy.view.utils.BackgroundPanel;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.SwingConstants;
+import javax.swing.BorderFactory;
+import java.awt.Font;
 import java.awt.Desktop;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -63,19 +67,26 @@ public class MenuView {
 
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = 0;
-            c.gridy = 0;
+            c.gridy = 1;
             c.anchor = GridBagConstraints.CENTER;
             c.insets = new Insets(20, 20, 20, 20);
 
             buttonPanel.setOpaque(false);
             buttonPanel.add(btnStart, c);
 
-            backgroundPanel.add(buttonPanel, BorderLayout.CENTER);
             c.gridx = 0;
             c.gridy = 2;
             c.anchor = GridBagConstraints.CENTER;
             c.insets = new Insets(20, 20, 100, 20);
             buttonPanel.add(btnGitHub, c);
+
+            JLabel lblTitle = new JLabel("SWINGY", SwingConstants.CENTER);
+            lblTitle.setFont(new Font("Serif", Font.BOLD, 56));
+            lblTitle.setForeground(Color.cyan);
+            lblTitle.setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20));
+
+            backgroundPanel.add(lblTitle, BorderLayout.PAGE_START);
+            backgroundPanel.add(buttonPanel, BorderLayout.PAGE_END);
 
             Window window = Window.getInstance();
             window.addContent(backgroundPanel);
@@ -86,7 +97,7 @@ public class MenuView {
 
     private void showMenuConsole() {
         System.out.println("Welcome to Swingy !");
-        System.out.println("For your safety, please put your seatbelt.");
+        System.out.println("For your safety, please wear your seatbelt.");
         this.controller.getCharacters();
     }
 }
