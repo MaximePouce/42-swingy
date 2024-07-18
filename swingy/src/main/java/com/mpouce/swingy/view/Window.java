@@ -33,6 +33,10 @@ public class Window {
         return instance;
     }
 
+    public JFrame getFrame() {
+        return this.frame;
+    }
+
     public void displayWindow() {
         SwingUtilities.invokeLater(() -> {
             this.frame.setVisible(true);
