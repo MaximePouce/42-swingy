@@ -7,12 +7,17 @@ import com.mpouce.swingy.view.utils.BackgroundPanel;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.awt.Insets;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.FlowLayout;
 import java.awt.Color;
 import java.awt.BorderLayout;
+import java.io.IOException;
+import java.lang.UnsupportedOperationException;
 
 public class MenuView {
     private CharacterController controller;
@@ -37,6 +42,19 @@ public class MenuView {
                 this.controller.getCharacters();
             });
 
+            JButton btnGitHub = new JButton("SwinGitHub");
+            btnGitHub.addActionListener(e -> {
+                try {
+                    String url = "https://github.com/MaximePouce/42-swingy";
+                    Desktop dt = Desktop.getDesktop();
+                    URI uri = new URI(url);
+                    dt.browse(uri.resolve(uri));
+                } catch (IOException | URISyntaxException | UnsupportedOperationException urlException) {
+                    // TODO: Maybe make this a nice pop-up window ?
+                    System.out.println("An error occured when trying to open your browser.");
+                }
+            });
+
             BackgroundPanel backgroundPanel = new BackgroundPanel("background.jpg");
             backgroundPanel.setLayout(new BorderLayout());
             
@@ -53,6 +71,11 @@ public class MenuView {
             buttonPanel.add(btnStart, c);
 
             backgroundPanel.add(buttonPanel, BorderLayout.CENTER);
+            c.gridx = 0;
+            c.gridy = 2;
+            c.anchor = GridBagConstraints.CENTER;
+            c.insets = new Insets(20, 20, 100, 20);
+            buttonPanel.add(btnGitHub, c);
 
             Window window = Window.getInstance();
             window.addContent(backgroundPanel);
