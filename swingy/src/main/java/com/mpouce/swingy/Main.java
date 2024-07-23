@@ -14,6 +14,5 @@ public class Main
         }
         CharacterController player = new CharacterController();
         player.startMenu();
-        // player.newCharacter("Sir Fightinton", 1);
     }
 }
