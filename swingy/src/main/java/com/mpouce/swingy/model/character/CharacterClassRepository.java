@@ -16,13 +16,17 @@ public class CharacterClassRepository {
 
     }
 
-    public List<CharacterClass> getClasses() throws SQLException {
+    public List<CharacterClass> getClasses() {
         List<CharacterClass> classes = new ArrayList<>();
-        Statement st = DatabaseConnection.getInstance().getConnection().createStatement();
-        ResultSet rs = st.executeQuery("SELECT * FROM classes");
-        while (rs.next()) {
-            CharacterClass newClass = new CharacterClass(rs);
-            classes.add(newClass);
+        try {
+            Statement st = DatabaseConnection.getInstance().getConnection().createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM classes");
+            while (rs.next()) {
+                CharacterClass newClass = new CharacterClass(rs);
+                classes.add(newClass);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return classes;
     }
