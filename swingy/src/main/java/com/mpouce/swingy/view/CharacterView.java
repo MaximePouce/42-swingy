@@ -45,10 +45,12 @@ public class CharacterView {
 
     private void showCharactersGui(List<Character> characters) {
         SwingUtilities.invokeLater(() -> {
-            JPanel charactersPanel = new JPanel();
+            JPanel mainPanel = new JPanel();
+            mainPanel.setOpaque(false);
+            BackgroundPanel charactersPanel = new BackgroundPanel("wood_texture.jpg");
             charactersPanel.setLayout(new BoxLayout(charactersPanel, BoxLayout.X_AXIS));
-            charactersPanel.setBackground(Color.blue);
-            charactersPanel.setMaximumSize(new Dimension(1336, 600));
+            charactersPanel.setOpaque(false);
+            
             if (characters.isEmpty()) {
                 JLabel lblCharacters = new JLabel("No character found. Please create one to continue.", SwingConstants.CENTER);
                 lblCharacters.setFont(new Font("Serif", Font.BOLD, 42));
@@ -59,37 +61,51 @@ public class CharacterView {
                     charactersPanel.add(createCharacterPanel(character));
                 }
             }
+            JScrollPane scrollPanel = new JScrollPane(charactersPanel);
+            scrollPanel.setBackground(Color.red);
+            scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+            scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+            scrollPanel.getHorizontalScrollBar().setUnitIncrement(16);
 
-            JScrollPane scrollPane = new JScrollPane(charactersPanel);
-            scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-            scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
-
-            ImageIcon scaledIcon = new ImageIcon("CharacterSelectBanner.png");
-            JLabel lblTitle = new JLabel(scaledIcon);
+            JLabel lblTitle = new JLabel("Select your character");
+            lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+            lblTitle.setVerticalAlignment(SwingConstants.CENTER);
 
             JPanel titlePane = new JPanel();
-            titlePane.setBackground(Color.cyan);
-            titlePane.setPreferredSize(new Dimension(1336, 214));
+            titlePane.setOpaque(false);
 
             titlePane.add(lblTitle);
             Window window = Window.getInstance();
 
             JButton createButton = new JButton("Create new Character");
             createButton.addActionListener(e -> {
-                System.out.println("Create new character button clicked");
+                this.controller.createCharacter();
             });
 
-            JPanel mainPanel = new JPanel();
+            JButton menuButton = new JButton("Back to Menu");
+            menuButton.addActionListener(e -> {
+                this.controller.startMenu();
+            });
 
-            mainPanel.setBackground(Color.red);
-            mainPanel.setLayout(new BorderLayout());
-            mainPanel.add(titlePane, BorderLayout.NORTH);
-            mainPanel.add(scrollPane, BorderLayout.CENTER);
-            mainPanel.add(createButton, BorderLayout.SOUTH);
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setOpaque(false);
+            // buttonPanel.setLayout(new BorderLayout());
+            buttonPanel.add(menuButton);//, BorderLayout.LINE_START);
+            buttonPanel.add(createButton);//, BorderLayout.LINE_END);
+
+            JPanel contentPanel = new JPanel();
+            // Using a Layout manager to ensure the ScrollPanel takes the entire JPanel
+            contentPanel.setLayout(new BorderLayout());
+            contentPanel.add(scrollPanel, BorderLayout.CENTER);
+
+            mainPanel.setLayout(new GridBagLayout());
+
+            ContentFormatter.setTitle(mainPanel, titlePane);
+            ContentFormatter.setContent(mainPanel, contentPanel);
+            ContentFormatter.setFooter(mainPanel, buttonPanel);
 
             window.resetView();
-            window.addMenu();
+            window.addSideColumns();
             window.addContent(mainPanel);
             window.showView();
             window.displayWindow();
