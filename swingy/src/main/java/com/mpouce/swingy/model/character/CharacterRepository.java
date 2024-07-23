@@ -40,17 +40,6 @@ public class CharacterRepository {
         return characters;
     }
 
-    public void getClasses() {
-        CharacterClassRepository test = new CharacterClassRepository();
-        try {
-            List<CharacterClass> classes = test.getClasses();
-            System.out.println(classes.get(0).getName());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
-    }
-
     public int createCharacter(String name, int classId) {
         int newId = -1;
         String prepStatement = "INSERT INTO characters (name, experience, classid) VALUES (?, 0, ?);";
