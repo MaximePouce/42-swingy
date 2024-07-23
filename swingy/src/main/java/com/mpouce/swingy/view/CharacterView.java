@@ -115,8 +115,8 @@ public class CharacterView {
     private JPanel createCharacterPanel(Character character) {
         JPanel characterPanel = new JPanel();
         characterPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        characterPanel.setBackground(Color.green);
         characterPanel.setLayout(new BorderLayout());
+        characterPanel.setOpaque(false);
 
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         characterPanel.setBorder(border);
@@ -143,23 +143,16 @@ public class CharacterView {
         ImageIcon imageIcon = new ImageIcon("fighter.jpg");
         Image image = imageIcon.getImage();
 
-        int newWidth = 380;
-        int newHeight = (int)(image.getHeight(null) * ((double) newWidth / image.getWidth(null)));
-        Image scaledImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        Image scaledImage = image.getScaledInstance(380, 380, Image.SCALE_SMOOTH);
 
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         JPanel imagePanel = new JPanel();
         JLabel lblImage = new JLabel(scaledIcon);
+        lblImage.setOpaque(false);
         imagePanel.add(lblImage);
-        imagePanel.setBackground(Color.cyan);
-        characterPanel.add(imagePanel, BorderLayout.CENTER);
-
-        imagePanel.setBackground(Color.cyan);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(btnSelect);
+        imagePanel.setOpaque(false);
+        characterPanel.add(lblImage, BorderLayout.CENTER);
         characterPanel.add(labelPanel, BorderLayout.NORTH);
-        
         characterPanel.add(btnSelect, BorderLayout.SOUTH);
 
         return characterPanel;
