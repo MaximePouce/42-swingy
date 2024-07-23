@@ -1,5 +1,7 @@
 package com.mpouce.swingy.view;
 
+import com.mpouce.swingy.view.utils.BackgroundPanel;
+
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -21,7 +23,7 @@ public class Window {
             this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.frame.setSize(new Dimension(1536, 864));
 
-            this.view = new JPanel();
+            this.view = new BackgroundPanel("background2.jpg");
             view.setLayout(new GridBagLayout());
         });
     }
