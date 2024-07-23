@@ -1,6 +1,7 @@
 package com.mpouce.swingy.controller;
 
 import com.mpouce.swingy.model.character.Character;
+import com.mpouce.swingy.model.character.CharacterClass;
 import com.mpouce.swingy.model.character.CharacterRepository;
 import com.mpouce.swingy.model.character.CharacterClassRepository;
 import com.mpouce.swingy.view.CharacterView;
@@ -14,9 +15,11 @@ public class CharacterController {
     private CharacterView characterView;
     private MenuView menuView;
     private CharacterRepository characterModel;
+    private CharacterClassRepository characterClassModel;
 
     public CharacterController() {
         characterModel = new CharacterRepository();
+        characterClassModel = new CharacterClassRepository();
         characterView = new CharacterView(this);
         menuView = new MenuView(this);
     }
@@ -37,6 +40,11 @@ public class CharacterController {
 
     public void selectCharacter(int characterId) {
         System.out.println("Selected character #" + characterId);
+    }
+
+    public void createCharacter() {
+        List<CharacterClass> characterClasses = characterClassModel.getClasses();
+        characterView.createCharacter(characterClasses);
     }
 
     public void startMenu() {
