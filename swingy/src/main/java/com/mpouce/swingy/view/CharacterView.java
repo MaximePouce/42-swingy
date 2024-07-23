@@ -49,8 +49,15 @@ public class CharacterView {
             charactersPanel.setLayout(new BoxLayout(charactersPanel, BoxLayout.X_AXIS));
             charactersPanel.setBackground(Color.blue);
             charactersPanel.setMaximumSize(new Dimension(1336, 600));
-            for (Character character : characters) {
-                charactersPanel.add(createCharacterPanel(character));
+            if (characters.isEmpty()) {
+                JLabel lblCharacters = new JLabel("No character found. Please create one to continue.", SwingConstants.CENTER);
+                lblCharacters.setFont(new Font("Serif", Font.BOLD, 42));
+                lblCharacters.setForeground(Color.cyan);
+                charactersPanel.add(lblCharacters, BorderLayout.CENTER);
+            } else {
+                for (Character character : characters) {
+                    charactersPanel.add(createCharacterPanel(character));
+                }
             }
 
             JScrollPane scrollPane = new JScrollPane(charactersPanel);
