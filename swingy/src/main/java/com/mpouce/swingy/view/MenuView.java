@@ -59,8 +59,9 @@ public class MenuView {
                 }
             });
 
-            BackgroundPanel backgroundPanel = new BackgroundPanel("background.jpg");
-            backgroundPanel.setLayout(new BorderLayout());
+            JPanel menuPanel = new JPanel();
+            menuPanel.setLayout(new BorderLayout());
+            menuPanel.setOpaque(false);
             
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new GridBagLayout());
@@ -85,11 +86,12 @@ public class MenuView {
             lblTitle.setForeground(Color.cyan);
             lblTitle.setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20));
 
-            backgroundPanel.add(lblTitle, BorderLayout.PAGE_START);
-            backgroundPanel.add(buttonPanel, BorderLayout.PAGE_END);
+            menuPanel.add(lblTitle, BorderLayout.PAGE_START);
+            menuPanel.add(buttonPanel, BorderLayout.PAGE_END);
 
             Window window = Window.getInstance();
-            window.addContent(backgroundPanel);
+            window.resetView();
+            window.addContent(menuPanel);
             window.showView();
             window.displayWindow();
         });
