@@ -6,6 +6,7 @@ import com.mpouce.swingy.model.character.CharacterClass;
 import com.mpouce.swingy.controller.CharacterController;
 import com.mpouce.swingy.view.utils.BackgroundPanel;
 import com.mpouce.swingy.view.utils.ContentFormatter;
+import com.mpouce.swingy.view.utils.ImageUtil;
 
 import java.util.List;
 
@@ -59,8 +60,7 @@ public class CharacterView {
             mainPanel.setOpaque(false);
             BackgroundPanel charactersPanel = new BackgroundPanel("wood_texture.jpg");
             charactersPanel.setLayout(new BoxLayout(charactersPanel, BoxLayout.X_AXIS));
-            charactersPanel.setOpaque(false);
-            
+
             if (characters.isEmpty()) {
                 JLabel lblCharacters = new JLabel("No character found. Please create one to continue.", SwingConstants.CENTER);
                 lblCharacters.setFont(new Font("Serif", Font.BOLD, 42));
@@ -72,8 +72,7 @@ public class CharacterView {
                 }
             }
             JScrollPane scrollPanel = new JScrollPane(charactersPanel);
-            scrollPanel.setBackground(Color.red);
-            scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+            scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
             scrollPanel.getHorizontalScrollBar().setUnitIncrement(16);
 
@@ -81,10 +80,12 @@ public class CharacterView {
             lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
             lblTitle.setVerticalAlignment(SwingConstants.CENTER);
 
-            JPanel titlePane = new JPanel();
-            titlePane.setOpaque(false);
+            JPanel titlePanel = new JPanel();
+            titlePanel.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            titlePanel.setOpaque(false);
+            titlePanel.add(lblTitle, gbc);
 
-            titlePane.add(lblTitle);
             Window window = Window.getInstance();
 
             JButton createButton = new JButton("Create new Character");
@@ -100,10 +101,15 @@ public class CharacterView {
             });
 
             JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new GridBagLayout());
             buttonPanel.setOpaque(false);
-            // buttonPanel.setLayout(new BorderLayout());
-            buttonPanel.add(menuButton);//, BorderLayout.LINE_START);
-            buttonPanel.add(createButton);//, BorderLayout.LINE_END);
+
+            gbc.weightx = 0.5;
+            buttonPanel.add(menuButton, gbc);
+
+            gbc.gridx = 1;
+            gbc.weightx = 0.5;
+            buttonPanel.add(createButton, gbc);
 
             JPanel contentPanel = new JPanel();
             // Using a Layout manager to ensure the ScrollPanel takes the entire JPanel
@@ -112,7 +118,7 @@ public class CharacterView {
 
             mainPanel.setLayout(new GridBagLayout());
 
-            ContentFormatter.setTitle(mainPanel, titlePane);
+            ContentFormatter.setTitle(mainPanel, titlePanel);
             ContentFormatter.setContent(mainPanel, contentPanel);
             ContentFormatter.setFooter(mainPanel, buttonPanel);
 
@@ -152,12 +158,10 @@ public class CharacterView {
         labelPanel.add(lblName);
         labelPanel.add(lblClass);
 
-        ImageIcon imageIcon = new ImageIcon("fighter.jpg");
-        Image image = imageIcon.getImage();
-
-        Image scaledImage = image.getScaledInstance(380, 380, Image.SCALE_SMOOTH);
-
+        String imageName = character.getCharacterClass().getName().toLowerCase() + ".jpg";
+        Image scaledImage = ImageUtil.getImage(imageName, 380, 380);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
         JPanel imagePanel = new JPanel();
         JLabel lblImage = new JLabel(scaledIcon);
         lblImage.setOpaque(false);
@@ -200,62 +204,87 @@ public class CharacterView {
             JPanel mainPanel = new JPanel();
 
             JPanel namePanel = new JPanel();
-            JLabel lblName = new JLabel("Enter a name");
+            JLabel lblName = new JLabel("Name: ");
             final JTextField textName = new JTextField("Unknown Adventurer");
             textName.setBounds(50, 100, 200, 30);
-            namePanel.add(lblName);
-            namePanel.add(textName);
+            namePanel.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            namePanel.add(lblName, gbc);
+            namePanel.add(textName, gbc);
+            namePanel.setOpaque(false);
 
-            JPanel classesPanel = new JPanel();
+            BackgroundPanel classesPanel = new BackgroundPanel("wood_texture.jpg");
             classesPanel.setLayout(new BoxLayout(classesPanel, BoxLayout.X_AXIS));
-            classesPanel.setBackground(Color.blue);
-            ButtonGroup bg = new ButtonGroup();
+            ButtonGroup buttonGroup = new ButtonGroup();
 
+            JPanel buttonPanel = new JPanel();
             JButton createButton = new JButton("Create Character");
             createButton.setEnabled(false);
-            for (CharacterClass charClass : characterClasses) {
-                classesPanel.add(createClassPanel(charClass, bg, createButton));
-            }
-            JScrollPane scrollPanel = new JScrollPane(classesPanel);
-            scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-            scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-            scrollPanel.getHorizontalScrollBar().setUnitIncrement(16);
-
+            createButton.setPreferredSize(new Dimension(200, 20));
             createButton.addActionListener(e -> {
-                int classId = Integer.parseInt(bg.getSelection().getActionCommand());
+                int classId = Integer.parseInt(buttonGroup.getSelection().getActionCommand());
                 String charName = textName.getText().trim();
                 System.out.println("Selected class ID :" + classId);
                 System.out.println("Name : " + charName);
                 this.controller.newCharacter(charName, classId);
             });
 
-            mainPanel.setBackground(Color.red);
-            mainPanel.setLayout(new BorderLayout());
-            mainPanel.add(namePanel, BorderLayout.NORTH);
-            mainPanel.add(scrollPanel, BorderLayout.CENTER);
-            mainPanel.add(createButton, BorderLayout.SOUTH);
+            JButton backButton = new JButton("Back");
+            backButton.setPreferredSize(new Dimension(200, 20));
+            backButton.addActionListener(e -> {
+                this.controller.getCharacters();
+            });
+
+            buttonPanel.setLayout(new GridBagLayout());
+            buttonPanel.setOpaque(false);
+
+            gbc.weightx = 0.5;
+            buttonPanel.add(backButton, gbc);
+
+            gbc.gridx = 1;
+            gbc.weightx = 0.5;
+            buttonPanel.add(createButton, gbc);
+
+            for (CharacterClass charClass : characterClasses) {
+                classesPanel.add(createClassPanel(charClass, buttonGroup, createButton));
+            }
+
+            JScrollPane scrollPanel = new JScrollPane(classesPanel);
+            scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+            scrollPanel.getHorizontalScrollBar().setUnitIncrement(16);
+
+            JPanel contentPanel = new JPanel();
+            contentPanel.setLayout(new BorderLayout());
+            contentPanel.add(scrollPanel, BorderLayout.CENTER);
+            
+            mainPanel.setOpaque(false);
+            mainPanel.setLayout(new GridBagLayout());
+            ContentFormatter.setTitle(mainPanel, namePanel);
+            ContentFormatter.setContent(mainPanel, contentPanel);
+            ContentFormatter.setFooter(mainPanel, buttonPanel);
 
             Window window = Window.getInstance();
             window.resetView();
-            window.addMenu();
+            window.addSideColumns();
             window.addContent(mainPanel);
             window.showView();
             window.displayWindow();
         });
     }
 
-    private JPanel createClassPanel(CharacterClass charClass, ButtonGroup bg, JButton button) {
+    private JPanel createClassPanel(CharacterClass charClass, ButtonGroup buttonGroup, JButton button) {
         JPanel classPanel = new JPanel();
         classPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        classPanel.setBackground(Color.green);
-        classPanel.setLayout(new BorderLayout());
+        classPanel.setLayout(new GridBagLayout());
+        classPanel.setOpaque(false);
 
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         classPanel.setBorder(border);
 
         JLabel lblName = new JLabel("<html>" + charClass.getName() + "</html>");
-        JLabel lblStats = new JLabel("<html>Level 0: " + charClass.getHitPoints() + "HP " + charClass.getAttack() + "ATK " + charClass.getDefense() + "DEF</html>");
-        JLabel lblGrowth = new JLabel("<html>Level 0: " + charClass.getHitPointsGrowth() + "HP " + charClass.getAttackGrowth() + "ATK " + charClass.getDefenseGrowth() + "DEF</html>");
+        JLabel lblStats = new JLabel("<html>Stats : " + charClass.getHitPoints() + " HP " + charClass.getAttack() + " / ATK " + charClass.getDefense() + " / DEF</html>");
+        JLabel lblGrowth = new JLabel("<html>Growth: " + charClass.getHitPointsGrowth() + " HP " + charClass.getAttackGrowth() + " / ATK " + charClass.getDefenseGrowth() + " / DEF</html>");
 
         lblName.setHorizontalAlignment(SwingConstants.CENTER);
         lblName.setVerticalAlignment(SwingConstants.CENTER);
@@ -265,11 +294,17 @@ public class CharacterView {
 
         lblGrowth.setHorizontalAlignment(SwingConstants.CENTER);
         lblGrowth.setVerticalAlignment(SwingConstants.CENTER);
-    
+
         JPanel labelPanel = new JPanel(new GridLayout(3, 1));
         labelPanel.add(lblName);
         labelPanel.add(lblStats);
         labelPanel.add(lblGrowth);
+
+        String imageName = charClass.getName().toLowerCase() + ".jpg";
+        Image scaledImage = ImageUtil.getImage(imageName, 380, 380);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        JLabel lblImage = new JLabel(scaledIcon);
 
         JRadioButton radio = new JRadioButton("Select");
         radio.setActionCommand(String.valueOf(charClass.getId()));
@@ -278,10 +313,24 @@ public class CharacterView {
                 button.setEnabled(true);
             }
         });
-        bg.add(radio);
+        buttonGroup.add(radio);
 
-        classPanel.add(labelPanel, BorderLayout.CENTER);
-        classPanel.add(radio, BorderLayout.SOUTH);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.weighty = 0.2;
+        gbc.weightx = 1;
+        gbc.anchor = GridBagConstraints.PAGE_START;
+        gbc.fill = GridBagConstraints.BOTH;
+        classPanel.add(labelPanel, gbc);
+
+        gbc.weighty = 0.7;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        classPanel.add(lblImage, gbc);
+
+        gbc.weighty = 0.1;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        classPanel.add(radio, gbc);
 
         return classPanel;
     }
