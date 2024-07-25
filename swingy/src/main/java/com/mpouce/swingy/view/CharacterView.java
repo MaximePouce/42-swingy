@@ -315,11 +315,17 @@ public class CharacterView {
         });
         buttonGroup.add(radio);
 
+        JPanel radioPanel = new JPanel();
+        radioPanel.setLayout(new GridBagLayout());
+        
         GridBagConstraints gbc = new GridBagConstraints();
+
+        radioPanel.add(radio, gbc);
+
         gbc.weighty = 0.2;
         gbc.weightx = 1;
         gbc.anchor = GridBagConstraints.PAGE_START;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         classPanel.add(labelPanel, gbc);
 
         gbc.weighty = 0.7;
@@ -330,7 +336,7 @@ public class CharacterView {
         gbc.weighty = 0.1;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.PAGE_END;
-        classPanel.add(radio, gbc);
+        classPanel.add(radioPanel, gbc);
 
         return classPanel;
     }
