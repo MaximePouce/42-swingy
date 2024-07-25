@@ -62,4 +62,15 @@ public class CharacterRepository {
         }
         return newId;
     }
+
+    public void deleteCharacter(int characterId) {
+        String prepStatement = "DELETE FROM characters WHERE characterId=?";
+        try {
+            PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
+            st.setInt(1, characterId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
+    }
 }

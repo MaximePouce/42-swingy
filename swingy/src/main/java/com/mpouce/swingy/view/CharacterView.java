@@ -159,7 +159,7 @@ public class CharacterView {
 
         JButton btnDelete = new JButton("Delete");
         btnDelete.addActionListener(e -> {
-            System.out.println("Deleting character");
+            this.controller.deleteCharacter(character.getId());
         });
 
         gbc.weightx = 0.5;

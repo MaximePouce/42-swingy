@@ -53,4 +53,9 @@ public class CharacterController {
     public void startMenu() {
         menuView.showMenu();
     }
+
+    public void deleteCharacter(int characterId) {
+        characterModel.deleteCharacter(characterId);
+        this.getCharacters();
+    }
 }
