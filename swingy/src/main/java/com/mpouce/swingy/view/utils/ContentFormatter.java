@@ -12,7 +12,7 @@ public class ContentFormatter {
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1.0;
-        c.weighty = 0.2;
+        c.weighty = 0.1;
         c.anchor = GridBagConstraints.LINE_START;
         c.fill = GridBagConstraints.BOTH;
 
@@ -25,7 +25,7 @@ public class ContentFormatter {
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1.0;
-        c.weighty = 0.75;
+        c.weighty = 0.85;
         c.anchor = GridBagConstraints.CENTER;
         c.fill = GridBagConstraints.BOTH;
 
