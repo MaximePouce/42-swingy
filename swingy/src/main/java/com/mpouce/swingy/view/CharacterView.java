@@ -133,7 +133,6 @@ public class CharacterView {
     private JPanel createCharacterPanel(Character character) {
         JPanel characterPanel = new JPanel();
         characterPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        characterPanel.setLayout(new BorderLayout());
         characterPanel.setOpaque(false);
 
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
@@ -147,12 +146,28 @@ public class CharacterView {
 
         lblClass.setHorizontalAlignment(SwingConstants.CENTER);
         lblClass.setVerticalAlignment(SwingConstants.CENTER);
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
+        buttonPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
 
         JButton btnSelect = new JButton("Select");
-
         btnSelect.addActionListener(e -> {
             this.controller.selectCharacter(character.getId());
         });
+
+        JButton btnDelete = new JButton("Delete");
+        btnDelete.addActionListener(e -> {
+            System.out.println("Deleting character");
+        });
+
+        gbc.weightx = 0.5;
+        buttonPanel.add(btnDelete, gbc);
+
+        gbc.weightx = 0.5;
+        gbc.gridx = 1;
+        buttonPanel.add(btnSelect, gbc);
 
         JPanel labelPanel = new JPanel(new GridLayout(2, 1));
         labelPanel.add(lblName);
@@ -167,9 +182,24 @@ public class CharacterView {
         lblImage.setOpaque(false);
         imagePanel.add(lblImage);
         imagePanel.setOpaque(false);
-        characterPanel.add(lblImage, BorderLayout.CENTER);
-        characterPanel.add(labelPanel, BorderLayout.NORTH);
-        characterPanel.add(btnSelect, BorderLayout.SOUTH);
+
+        characterPanel.setLayout(new GridBagLayout());
+
+        gbc.weighty = 0.2;
+        gbc.weightx = 1;
+        gbc.anchor = GridBagConstraints.PAGE_START;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        characterPanel.add(labelPanel, gbc);
+
+        gbc.weighty = 0.7;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        characterPanel.add(lblImage, gbc);
+
+        gbc.weighty = 0.1;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        characterPanel.add(buttonPanel, gbc);
 
         return characterPanel;
     }
