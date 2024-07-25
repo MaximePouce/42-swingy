@@ -30,6 +30,9 @@ public class CharacterController {
     }
 
     public void newCharacter(String name, int classId) {
+        if (name.isEmpty()) {
+            name = "Unknown Adventurer";
+        }
         int charId = characterModel.createCharacter(name, classId);
         if (charId == -1) {
             System.out.println("An error occured during the character creation.");
