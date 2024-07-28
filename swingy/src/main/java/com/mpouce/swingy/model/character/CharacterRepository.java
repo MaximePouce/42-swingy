@@ -19,7 +19,7 @@ public class CharacterRepository {
 
     }
 
-    public List<Character> getCharacters(List<CharacterClass> characterClasses) {
+    public List<Character> getCharacters(HashMap<Integer, CharacterClass> characterClasses) {
         List<Character> characters = new ArrayList<>();
         try {
             Statement st = DatabaseConnection.getInstance().getConnection().createStatement();
@@ -27,17 +27,12 @@ public class CharacterRepository {
                             "SELECT characters.characterid, characters.name, characters.experience, characters.classid "
                             + "FROM characters WHERE classid IS NOT NULL;");
             while (rs.next()) {
-                for (CharacterClass characterClass : characterClasses) {
-                    int id = rs.getInt("classid");
-                    if (characterClass.getId() == id) {
-                        CharacterClass newClass = characterClass;
-                        String newName = rs.getString("name");
-                        int newId = rs.getInt("characterid");
-                        int newExp = rs.getInt("experience");
-                        Character newCharacter = new Character(newName, newExp, newId, newClass);
-                        characters.add(newCharacter);
-                    }
-                }
+                CharacterClass newClass = characterClasses.get(rs.getInt("classid"));
+                String newName = rs.getString("name");
+                int newId = rs.getInt("characterid");
+                int newExp = rs.getInt("experience");
+                Character newCharacter = new Character(newName, newExp, newId, newClass);
+                characters.add(newCharacter);
             }
         } catch (SQLException e) {
             System.out.println("Unable to connect to Database: " + e.getMessage());

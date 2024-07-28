@@ -9,6 +9,7 @@ import com.mpouce.swingy.view.MenuView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 public class CharacterController {
     private Character player;
@@ -25,7 +26,7 @@ public class CharacterController {
     }
 
     public void getCharacters() {
-        List<CharacterClass> characterClasses = characterClassModel.getClasses();
+        HashMap<Integer, CharacterClass> characterClasses = characterClassModel.getClasses();
         List<Character> characters = characterModel.getCharacters(characterClasses);
         characterView.showCharacters(characters);
     }
@@ -47,7 +48,7 @@ public class CharacterController {
     }
 
     public void createCharacter() {
-        List<CharacterClass> characterClasses = characterClassModel.getClasses();
+        HashMap<Integer, CharacterClass> characterClasses = characterClassModel.getClasses();
         characterView.createCharacter(characterClasses);
     }
 

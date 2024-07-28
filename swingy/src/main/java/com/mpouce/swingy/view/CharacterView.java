@@ -9,6 +9,7 @@ import com.mpouce.swingy.view.utils.ContentFormatter;
 import com.mpouce.swingy.view.utils.ImageUtil;
 
 import java.util.List;
+import java.util.HashMap;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -229,7 +230,7 @@ public class CharacterView {
         System.out.println("Create New Character");
     }
 
-    public void createCharacter(List<CharacterClass> characterClasses) {
+    public void createCharacter(HashMap<Integer, CharacterClass> characterClasses) {
         if (Settings.getInstance().getUseGui()) {
             createCharacterGui(characterClasses);
         }
@@ -238,7 +239,7 @@ public class CharacterView {
         }
     }
 
-    private void createCharacterGui(List<CharacterClass> characterClasses) {
+    private void createCharacterGui(HashMap<Integer, CharacterClass> characterClasses) {
         SwingUtilities.invokeLater(() -> {
             JPanel mainPanel = new JPanel();
 
@@ -284,7 +285,7 @@ public class CharacterView {
             gbc.weightx = 0.5;
             buttonPanel.add(createButton, gbc);
 
-            for (CharacterClass charClass : characterClasses) {
+            for (CharacterClass charClass : characterClasses.values()) {
                 classesPanel.add(createClassPanel(charClass, buttonGroup, createButton));
             }
 
@@ -322,8 +323,8 @@ public class CharacterView {
         classPanel.setBorder(border);
 
         JLabel lblName = new JLabel("<html>" + charClass.getName() + "</html>");
-        JLabel lblStats = new JLabel("<html>Stats : " + charClass.getHitPoints() + " HP " + charClass.getAttack() + " / ATK " + charClass.getDefense() + " / DEF</html>");
-        JLabel lblGrowth = new JLabel("<html>Growth: " + charClass.getHitPointsGrowth() + " HP " + charClass.getAttackGrowth() + " / ATK " + charClass.getDefenseGrowth() + " / DEF</html>");
+        JLabel lblStats = new JLabel("<html>Stats : " + charClass.getHitPoints() + " HP / " + charClass.getAttack() + " ATK / " + charClass.getDefense() + " DEF</html>");
+        JLabel lblGrowth = new JLabel("<html>Growth: " + charClass.getHitPointsGrowth() + " HP / " + charClass.getAttackGrowth() + " ATK / " + charClass.getDefenseGrowth() + " DEF</html>");
 
         lblName.setHorizontalAlignment(SwingConstants.CENTER);
         lblName.setVerticalAlignment(SwingConstants.CENTER);
@@ -380,9 +381,9 @@ public class CharacterView {
         return classPanel;
     }
 
-    private void createCharacterConsole(List<CharacterClass> characterClasses) {
+    private void createCharacterConsole(HashMap<Integer, CharacterClass> characterClasses) {
         System.out.println("Select a class from the list below:");
-        for (CharacterClass charClass : characterClasses) {
+        for (CharacterClass charClass : characterClasses.values()) {
             System.out.println("class #" + charClass.getId() + ": " + charClass.getName());
             System.out.print("starting stats: ");
             System.out.print(charClass.getHitPoints() + " HP ");

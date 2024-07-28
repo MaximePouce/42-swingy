@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 
 public class CharacterClassRepository {
 
@@ -16,14 +17,14 @@ public class CharacterClassRepository {
 
     }
 
-    public List<CharacterClass> getClasses() {
-        List<CharacterClass> classes = new ArrayList<>();
+    public HashMap<Integer, CharacterClass> getClasses() {
+        HashMap<Integer, CharacterClass> classes = new HashMap<Integer, CharacterClass>();
         try {
             Statement st = DatabaseConnection.getInstance().getConnection().createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM classes");
             while (rs.next()) {
                 CharacterClass newClass = new CharacterClass(rs);
-                classes.add(newClass);
+                classes.put(newClass.getId(), newClass);
             }
         } catch (SQLException e) {
             e.printStackTrace();
