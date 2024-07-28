@@ -138,15 +138,23 @@ public class CharacterView {
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         characterPanel.setBorder(border);
 
-        JLabel lblName = new JLabel("<html>" + character.getName() + "</html>");
-        JLabel lblClass = new JLabel("<html>Level " + character.getLevel() + " " + character.getCharacterClass().getName() + "</html>");
-
-        lblName.setHorizontalAlignment(SwingConstants.CENTER);
-        lblName.setVerticalAlignment(SwingConstants.CENTER);
-
-        lblClass.setHorizontalAlignment(SwingConstants.CENTER);
-        lblClass.setVerticalAlignment(SwingConstants.CENTER);
+        JLabel lblName = newCenteredLabel("<html>" + character.getName() + "</html>");
+        JLabel lblClass = newCenteredLabel("<html>Level " + character.getLevel() + " " + character.getCharacterClass().getName() + "</html>");
+        JLabel lblExp = newCenteredLabel("<html>" + character.getExperience() + " XP</html>");
         
+        JPanel labelPanel = new JPanel(new GridLayout(3, 1));
+        labelPanel.add(lblName);
+        labelPanel.add(lblClass);
+        labelPanel.add(lblExp);
+
+        JPanel statsPanel = new JPanel(new GridLayout(3, 1));
+        JLabel lblAtk = newCenteredLabel("<html>" + character.getAttack() + " ATK</html>");
+        JLabel lblHP = newCenteredLabel("<html>" + character.getHitPoints() + " / " + character.getMaxHitPoints() + " HP</html>");
+        JLabel lblDef = newCenteredLabel("<html>" + character.getDefense() + " DEF</html>");
+        statsPanel.add(lblHP);
+        statsPanel.add(lblAtk);
+        statsPanel.add(lblDef);
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new GridBagLayout());
@@ -169,9 +177,6 @@ public class CharacterView {
         gbc.gridx = 1;
         buttonPanel.add(btnSelect, gbc);
 
-        JPanel labelPanel = new JPanel(new GridLayout(2, 1));
-        labelPanel.add(lblName);
-        labelPanel.add(lblClass);
 
         String imageName = character.getCharacterClass().getName().toLowerCase() + ".jpg";
         Image scaledImage = ImageUtil.getImage(imageName, 380, 380);
@@ -191,13 +196,17 @@ public class CharacterView {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         characterPanel.add(labelPanel, gbc);
 
-        gbc.weighty = 0.7;
+        gbc.weighty = 0.5;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         characterPanel.add(lblImage, gbc);
 
-        gbc.weighty = 0.1;
+        gbc.weighty = 0.2;
         gbc.gridy = 2;
+        characterPanel.add(statsPanel, gbc);
+
+        gbc.weighty = 0.1;
+        gbc.gridy = 3;
         gbc.anchor = GridBagConstraints.PAGE_END;
         characterPanel.add(buttonPanel, gbc);
 
@@ -387,5 +396,14 @@ public class CharacterView {
         // classId = Read input to select class
         // name = Read input
         // this.controller.newCharacter(name, classId);
+    }
+
+    private JLabel newCenteredLabel(String text) {
+        JLabel newLabel = new JLabel(text);
+
+        newLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        newLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+        return newLabel;
     }
 }

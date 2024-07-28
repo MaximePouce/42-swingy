@@ -25,7 +25,8 @@ public class CharacterController {
     }
 
     public void getCharacters() {
-        List<Character> characters = characterModel.getCharacters();
+        List<CharacterClass> characterClasses = characterClassModel.getClasses();
+        List<Character> characters = characterModel.getCharacters(characterClasses);
         characterView.showCharacters(characters);
     }
 
