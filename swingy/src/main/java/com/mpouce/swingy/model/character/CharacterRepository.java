@@ -19,20 +19,25 @@ public class CharacterRepository {
 
     }
 
-    public List<Character> getCharacters() {
+    public List<Character> getCharacters(List<CharacterClass> characterClasses) {
         List<Character> characters = new ArrayList<>();
         try {
             Statement st = DatabaseConnection.getInstance().getConnection().createStatement();
             ResultSet rs = st.executeQuery(
-                            "SELECT characters.characterid, characters.name, characters.experience, classes.name AS className "
-                            + "FROM characters INNER JOIN classes ON characters.classid = classes.classid;");
+                            "SELECT characters.characterid, characters.name, characters.experience, characters.classid "
+                            + "FROM characters WHERE classid IS NOT NULL;");
             while (rs.next()) {
-                CharacterClass newClass = new CharacterClass(rs.getString("classname"));
-                String newName = rs.getString("name");
-                int newId = rs.getInt("characterid");
-                int newExp = rs.getInt("experience");
-                Character newCharacter = new Character(newName, newExp, newId, newClass);
-                characters.add(newCharacter);
+                for (CharacterClass characterClass : characterClasses) {
+                    int id = rs.getInt("classid");
+                    if (characterClass.getId() == id) {
+                        CharacterClass newClass = characterClass;
+                        String newName = rs.getString("name");
+                        int newId = rs.getInt("characterid");
+                        int newExp = rs.getInt("experience");
+                        Character newCharacter = new Character(newName, newExp, newId, newClass);
+                        characters.add(newCharacter);
+                    }
+                }
             }
         } catch (SQLException e) {
             System.out.println("Unable to connect to Database: " + e.getMessage());
