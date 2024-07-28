@@ -8,8 +8,8 @@ public class Character {
     private CharacterClass characterClass = null;
     private Stats stats;
     private int experience;
-    private int currentHitPoints;
 
+    private int currentHitPoints;
     private int maxHitPoints;
     private int attack;
     private int defense;
@@ -25,6 +25,11 @@ public class Character {
         this.name = name;
         this.experience = experience;
         this.characterClass = characterClass;
+        int hitPoints = characterClass.getHitPoints();
+        this.currentHitPoints = hitPoints;
+        this.maxHitPoints = hitPoints;
+        this.attack = characterClass.getAttack();
+        this.defense = characterClass.getDefense();
     }
 
     public String getName() {
@@ -41,6 +46,26 @@ public class Character {
 
     public Stats getStats() {
         return this.stats;
+    }
+
+    public int getMaxHitPoints() {
+        return this.maxHitPoints;
+    }
+
+    public int getHitPoints() {
+        return this.currentHitPoints;
+    }
+
+    public int getExperience() {
+        return this.experience;
+    }
+
+    public int getAttack() {
+        return this.attack;
+    }
+
+    public int getDefense() {
+        return this.defense;
     }
 
     public int getLevel() {
