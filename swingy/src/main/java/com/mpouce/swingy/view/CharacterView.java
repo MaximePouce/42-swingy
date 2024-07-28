@@ -322,18 +322,9 @@ public class CharacterView {
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         classPanel.setBorder(border);
 
-        JLabel lblName = new JLabel("<html>" + charClass.getName() + "</html>");
-        JLabel lblStats = new JLabel("<html>Stats : " + charClass.getHitPoints() + " HP / " + charClass.getAttack() + " ATK / " + charClass.getDefense() + " DEF</html>");
-        JLabel lblGrowth = new JLabel("<html>Growth: " + charClass.getHitPointsGrowth() + " HP / " + charClass.getAttackGrowth() + " ATK / " + charClass.getDefenseGrowth() + " DEF</html>");
-
-        lblName.setHorizontalAlignment(SwingConstants.CENTER);
-        lblName.setVerticalAlignment(SwingConstants.CENTER);
-
-        lblStats.setHorizontalAlignment(SwingConstants.CENTER);
-        lblStats.setVerticalAlignment(SwingConstants.CENTER);
-
-        lblGrowth.setHorizontalAlignment(SwingConstants.CENTER);
-        lblGrowth.setVerticalAlignment(SwingConstants.CENTER);
+        JLabel lblName = newCenteredLabel("<html>" + charClass.getName() + "</html>");
+        JLabel lblStats = newCenteredLabel("<html>Stats : " + charClass.getHitPoints() + " HP / " + charClass.getAttack() + " ATK / " + charClass.getDefense() + " DEF</html>");
+        JLabel lblGrowth = newCenteredLabel("<html>Growth: " + charClass.getHitPointsGrowth() + " HP / " + charClass.getAttackGrowth() + " ATK / " + charClass.getDefenseGrowth() + " DEF</html>");
 
         JPanel labelPanel = new JPanel(new GridLayout(3, 1));
         labelPanel.add(lblName);
