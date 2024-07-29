@@ -56,63 +56,58 @@ public class Window {
             JPanel rightPanel = new JPanel();
             rightPanel.setOpaque(false);
 
-            GridBagConstraints c = new GridBagConstraints();
+            GridBagConstraints gbc = new GridBagConstraints();
 
-            c.gridx = 0;
-            c.gridy = 0;
-            c.weightx = 0.1;
-            c.weighty = 1.0;
-            c.anchor = GridBagConstraints.LINE_START;
-            c.fill = GridBagConstraints.BOTH;
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.weightx = 0.1;
+            gbc.weighty = 1.0;
+            gbc.anchor = GridBagConstraints.LINE_START;
+            gbc.fill = GridBagConstraints.BOTH;
 
-            this.view.add(rightPanel, c);
+            this.view.add(rightPanel, gbc);
 
             JPanel leftPanel = new JPanel();
             leftPanel.setOpaque(false);
 
-            c.gridx = 2;
-            c.gridy = 0;
-            c.weightx = 0.1;
-            c.weighty = 1.0;
-            c.anchor = GridBagConstraints.LINE_END;
-            c.fill = GridBagConstraints.BOTH;
+            gbc.gridx = 2;
+            gbc.gridy = 0;
+            gbc.weightx = 0.1;
+            gbc.weighty = 1.0;
+            gbc.anchor = GridBagConstraints.LINE_END;
+            gbc.fill = GridBagConstraints.BOTH;
 
-            this.view.add(leftPanel, c);
+            this.view.add(leftPanel, gbc);
         });
     }
 
-    public void addMenu() {
+    public void addMenu(JPanel menuPanel) {
         SwingUtilities.invokeLater(() -> {
-            JPanel menuPanel = new JPanel();
-            JLabel lblTest = new JLabel("Test");
-            menuPanel.setOpaque(false);
-            menuPanel.add(lblTest);
+            GridBagConstraints gbc = new GridBagConstraints();
 
-            GridBagConstraints c = new GridBagConstraints();
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.weightx = 0.1;
+            gbc.weighty = 1.0;
+            gbc.anchor = GridBagConstraints.LINE_START;
+            gbc.fill = GridBagConstraints.BOTH;
 
-            c.gridx = 0;
-            c.gridy = 0;
-            c.weightx = 0.1;
-            c.weighty = 1.0;
-            c.anchor = GridBagConstraints.LINE_START;
-            c.fill = GridBagConstraints.BOTH;
-
-            this.view.add(menuPanel, c);
+            this.view.add(menuPanel, gbc);
         });
     }
 
     public void addContent(JPanel contentPanel) {
         SwingUtilities.invokeLater(() -> {
-            GridBagConstraints c = new GridBagConstraints();
+            GridBagConstraints gbc = new GridBagConstraints();
 
-            c.gridx = 1;
-            c.gridy = 0;
-            c.weightx = 0.8;
-            c.weighty = 1;
-            c.anchor = GridBagConstraints.CENTER;
-            c.fill = GridBagConstraints.BOTH;
+            gbc.gridx = 1;
+            gbc.gridy = 0;
+            gbc.weightx = 0.8;
+            gbc.weighty = 1;
+            gbc.anchor = GridBagConstraints.CENTER;
+            gbc.fill = GridBagConstraints.BOTH;
 
-            this.view.add(contentPanel, c);
+            this.view.add(contentPanel, gbc);
         });
     }
 
