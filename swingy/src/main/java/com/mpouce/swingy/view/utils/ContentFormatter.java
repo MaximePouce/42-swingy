@@ -1,47 +1,59 @@
 package com.mpouce.swingy.view.utils;
 
 import java.awt.GridBagConstraints;
+
+import javax.swing.SwingConstants;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 public class ContentFormatter {
     private ContentFormatter() {}
 
     public static void setTitle(JPanel mainPanel, JPanel titlePanel) {
-        GridBagConstraints c = new GridBagConstraints();
+        GridBagConstraints gbc = new GridBagConstraints();
 
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1.0;
-        c.weighty = 0.1;
-        c.anchor = GridBagConstraints.LINE_START;
-        c.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.fill = GridBagConstraints.BOTH;
 
-        mainPanel.add(titlePanel, c);
+        mainPanel.add(titlePanel, gbc);
     }
 
     public static void setContent(JPanel mainPanel, JPanel contentPanel) {
-        GridBagConstraints c = new GridBagConstraints();
+        GridBagConstraints gbc = new GridBagConstraints();
 
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1.0;
-        c.weighty = 0.85;
-        c.anchor = GridBagConstraints.CENTER;
-        c.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.8;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.BOTH;
 
-        mainPanel.add(contentPanel, c);
+        mainPanel.add(contentPanel, gbc);
     }
 
     public static void setFooter(JPanel mainPanel, JPanel footPanel) {
-        GridBagConstraints c = new GridBagConstraints();
+        GridBagConstraints gbc = new GridBagConstraints();
 
-        c.gridx = 0;
-        c.gridy = 2;
-        c.weightx = 1.0;
-        c.weighty = 0.05;
-        c.anchor = GridBagConstraints.LINE_END;
-        c.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.1;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.fill = GridBagConstraints.BOTH;
 
-        mainPanel.add(footPanel, c);
+        mainPanel.add(footPanel, gbc);
+    }
+
+    public static JLabel newCenteredLabel(String text) {
+        JLabel newLabel = new JLabel(text);
+
+        newLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        newLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+        return newLabel;
     }
 }
