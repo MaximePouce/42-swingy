@@ -139,9 +139,9 @@ public class CharacterView {
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         characterPanel.setBorder(border);
 
-        JLabel lblName = newCenteredLabel("<html>" + character.getName() + "</html>");
-        JLabel lblClass = newCenteredLabel("<html>Level " + character.getLevel() + " " + character.getCharacterClass().getName() + "</html>");
-        JLabel lblExp = newCenteredLabel("<html>" + character.getExperience() + " XP</html>");
+        JLabel lblName = ContentFormatter.newCenteredLabel("<html>" + character.getName() + "</html>");
+        JLabel lblClass = ContentFormatter.newCenteredLabel("<html>Level " + character.getLevel() + " " + character.getCharacterClass().getName() + "</html>");
+        JLabel lblExp = ContentFormatter.newCenteredLabel("<html>" + character.getExperience() + " XP</html>");
         
         JPanel labelPanel = new JPanel(new GridLayout(3, 1));
         labelPanel.add(lblName);
@@ -149,9 +149,9 @@ public class CharacterView {
         labelPanel.add(lblExp);
 
         JPanel statsPanel = new JPanel(new GridLayout(3, 1));
-        JLabel lblAtk = newCenteredLabel("<html>" + character.getAttack() + " ATK</html>");
-        JLabel lblHP = newCenteredLabel("<html>" + character.getHitPoints() + " / " + character.getMaxHitPoints() + " HP</html>");
-        JLabel lblDef = newCenteredLabel("<html>" + character.getDefense() + " DEF</html>");
+        JLabel lblAtk = ContentFormatter.newCenteredLabel("<html>" + character.getAttack() + " ATK</html>");
+        JLabel lblHP = ContentFormatter.newCenteredLabel("<html>" + character.getHitPoints() + " / " + character.getMaxHitPoints() + " HP</html>");
+        JLabel lblDef = ContentFormatter.newCenteredLabel("<html>" + character.getDefense() + " DEF</html>");
         statsPanel.add(lblHP);
         statsPanel.add(lblAtk);
         statsPanel.add(lblDef);
@@ -163,7 +163,7 @@ public class CharacterView {
 
         JButton btnSelect = new JButton("Select");
         btnSelect.addActionListener(e -> {
-            this.controller.selectCharacter(character.getId());
+            this.controller.selectCharacter(character);
         });
 
         JButton btnDelete = new JButton("Delete");
@@ -322,9 +322,9 @@ public class CharacterView {
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
         classPanel.setBorder(border);
 
-        JLabel lblName = newCenteredLabel("<html>" + charClass.getName() + "</html>");
-        JLabel lblStats = newCenteredLabel("<html>Stats : " + charClass.getHitPoints() + " HP / " + charClass.getAttack() + " ATK / " + charClass.getDefense() + " DEF</html>");
-        JLabel lblGrowth = newCenteredLabel("<html>Growth: " + charClass.getHitPointsGrowth() + " HP / " + charClass.getAttackGrowth() + " ATK / " + charClass.getDefenseGrowth() + " DEF</html>");
+        JLabel lblName = ContentFormatter.newCenteredLabel("<html>" + charClass.getName() + "</html>");
+        JLabel lblStats = ContentFormatter.newCenteredLabel("<html>Stats : " + charClass.getHitPoints() + " HP / " + charClass.getAttack() + " ATK / " + charClass.getDefense() + " DEF</html>");
+        JLabel lblGrowth = ContentFormatter.newCenteredLabel("<html>Growth: " + charClass.getHitPointsGrowth() + " HP / " + charClass.getAttackGrowth() + " ATK / " + charClass.getDefenseGrowth() + " DEF</html>");
 
         JPanel labelPanel = new JPanel(new GridLayout(3, 1));
         labelPanel.add(lblName);
@@ -388,14 +388,5 @@ public class CharacterView {
         // classId = Read input to select class
         // name = Read input
         // this.controller.newCharacter(name, classId);
-    }
-
-    private JLabel newCenteredLabel(String text) {
-        JLabel newLabel = new JLabel(text);
-
-        newLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        newLabel.setVerticalAlignment(SwingConstants.CENTER);
-
-        return newLabel;
     }
 }
