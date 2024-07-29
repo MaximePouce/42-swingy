@@ -40,11 +40,12 @@ public class CharacterController {
             System.out.println("An error occured during the character creation.");
             return;
         }
-        selectCharacter(charId);
+        // selectCharacter(charId);
     }
 
-    public void selectCharacter(int characterId) {
-        System.out.println("Selected character #" + characterId);
+    public void selectCharacter(Character character) {
+        System.out.println("Selected character #" + character.getId());
+        GameController.getInstance().startGame(character);
     }
 
     public void createCharacter() {
