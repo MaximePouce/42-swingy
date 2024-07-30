@@ -162,7 +162,8 @@ public class GameView {
         if (clickable) {
             locationPanel.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println("clicked.");
+                    System.out.println("Moving to " + location.getX() + ":" + location.getY());
+                    GameController.getInstance().playerMoveTo(location);
                 }
             });
         }
