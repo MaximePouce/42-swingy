@@ -5,6 +5,7 @@ import com.mpouce.swingy.model.Location;
 import com.mpouce.swingy.controller.GameController;
 import com.mpouce.swingy.view.utils.ImageUtil;
 import com.mpouce.swingy.view.utils.ContentFormatter;
+import com.mpouce.swingy.view.utils.BackgroundPanel;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -124,45 +125,48 @@ public class GameView {
 
         int playerX = player.getLocation().getX();
         int playerY = player.getLocation().getY();
+        int mapSize = map.length;
 
         for (int i = 1; i > -2; i--) {
             for (int j = 1; j > -2; j--) {
                 boolean clickable = (i == 0) ^ (j == 0);
-                JLabel locationLabel = createLocationPanel(map[i + playerX][j + playerY], player, clickable);
-                contentPanel.add(locationLabel);
+                JPanel locationPanel = createLocationPanel(map[i + playerX][j + playerY], player, mapSize, clickable);
+                contentPanel.add(locationPanel);
             }
         }
 
         ContentFormatter.setContent(mainPanel, contentPanel);
 
-        
-        
         // window.addMenu(menuPanel);
         window.addContent(mainPanel);
         window.showView();
         window.displayWindow();
     }
 
-    private JLabel createLocationPanel(Location location, Character player, boolean clickable) {
-        String imageName;
+    private JPanel createLocationPanel(Location location, Character player, int mapSize, boolean clickable) {
+        JPanel locationPanel = new BackgroundPanel("green_tile.jpg");
+        String imageName = "";
 
         if (location.getX() == player.getLocation().getX() && location.getY() == player.getLocation().getY()) {
             imageName = player.getCharacterClass().getName().toLowerCase() + ".jpg";
         } else {
-            imageName = location.getImageName();
+            imageName = location.getImageName(mapSize);
         }
-        Image scaledImage = ImageUtil.getImage(imageName, 250, 250);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        JLabel locationLabel = new JLabel(scaledIcon);
+        if (!imageName.isEmpty()) {
+            Image scaledImage = ImageUtil.getImage(imageName, 200, 200);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            JLabel locationLabel = new JLabel(scaledIcon);
+            locationPanel.add(locationLabel);
+        }
 
         if (clickable) {
-            locationLabel.addMouseListener(new MouseAdapter() {
+            locationPanel.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     System.out.println("clicked.");
                 }
             });
         }
 
-        return locationLabel;
+        return locationPanel;
     }
 }

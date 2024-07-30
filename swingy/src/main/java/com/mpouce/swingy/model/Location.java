@@ -27,7 +27,17 @@ public class Location {
         return this.y;
     }
 
-    public String getImageName() {
-        return "test.jpg";
+    public String getImageName(int mapSize) {
+        if (isFinish(mapSize)) {
+            return "finish.png";
+        }
+        if (this.character != null) {
+            return "enemy.png";
+        }
+        return "";
+    }
+
+    public boolean isFinish(int mapSize) {
+        return (this.x == 0 || this.x == mapSize - 1 || this.y == 0 || this.y == mapSize - 1);
     }
 }
