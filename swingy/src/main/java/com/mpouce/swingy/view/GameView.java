@@ -1,6 +1,7 @@
 package com.mpouce.swingy.view;
 
 import com.mpouce.swingy.model.character.Character;
+import com.mpouce.swingy.model.Location;
 import com.mpouce.swingy.controller.GameController;
 import com.mpouce.swingy.view.utils.ImageUtil;
 import com.mpouce.swingy.view.utils.ContentFormatter;
@@ -89,5 +90,51 @@ public class GameView {
         // Just show player info
     }
 
+    public void showGame(Character player, Location[][] map) {
+        Window window = Window.getInstance();
+        window.resetView();
+        displaySideMenuGui(player);
+
+        JPanel mainPanel = new JPanel(new GridBagLayout());
+        JPanel expPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        int playerLevel = player.getLevel();
+        JProgressBar expBar = new JProgressBar(player.getRequiredExp(playerLevel), player.getRequiredExp(playerLevel + 1));
+        expBar.setValue(player.getExperience());
+
+        gbc.weighty = 0.5;
+        gbc.anchor = GridBagConstraints.CENTER;
+        expPanel.add(expBar, gbc);
+
+        JLabel lblLevel = ContentFormatter.newCenteredLabel("<html>Level " + playerLevel + "</html>");
+
+        gbc.weighty = 0.3;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        expPanel.add(lblLevel, gbc);
+
+        ContentFormatter.setTitle(mainPanel, expPanel);
+
+        JPanel contentPanel = new JPanel(new GridLayout(3, 3));
+
+        int playerX = player.getLocation().getX();
+        int playerY = player.getLocation().getY();
+
+        for (int i = 1; i > -2; i--) {
+            for (int j = 1; j > -2; j--) {
+                JLabel lblTest = new JLabel("i = " + (i + playerX) + " ; j = " + (j + playerY));
+                contentPanel.add(lblTest);
+            }
+        }
+
+        ContentFormatter.setContent(mainPanel, contentPanel);
+
+        
+        
+        // window.addMenu(menuPanel);
+        window.addContent(mainPanel);
+        window.showView();
+        window.displayWindow();
     }
 }

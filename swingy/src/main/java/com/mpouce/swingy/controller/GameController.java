@@ -25,8 +25,9 @@ public class GameController {
         this.playerCharacter = character;
         this.gameModel = new GameModel();
         this.gameView = new GameView(this);
-        map = gameModel.getMap(character.getId(), character.getLevel());
+        map = gameModel.getMap(character);
         System.out.println("Map is ready, starting GAME");
-        gameView.displaySideMenu(this.playerCharacter);
+        gameView.showGame(this.playerCharacter, map);
+        // gameView.displaySideMenu(this.playerCharacter);
     }
 }
