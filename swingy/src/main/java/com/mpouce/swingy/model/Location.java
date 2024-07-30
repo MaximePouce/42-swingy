@@ -26,4 +26,8 @@ public class Location {
     public int getY() {
         return this.y;
     }
+
+    public String getImageName() {
+        return "test.jpg";
+    }
 }

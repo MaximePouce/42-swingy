@@ -11,11 +11,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.ImageIcon;
+
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+
 
 public class GameView {
     private GameController controller;
@@ -123,8 +127,9 @@ public class GameView {
 
         for (int i = 1; i > -2; i--) {
             for (int j = 1; j > -2; j--) {
-                JLabel lblTest = new JLabel("i = " + (i + playerX) + " ; j = " + (j + playerY));
-                contentPanel.add(lblTest);
+                boolean clickable = (i == 0) ^ (j == 0);
+                JLabel locationLabel = createLocationPanel(map[i + playerX][j + playerY], player, clickable);
+                contentPanel.add(locationLabel);
             }
         }
 
@@ -136,5 +141,28 @@ public class GameView {
         window.addContent(mainPanel);
         window.showView();
         window.displayWindow();
+    }
+
+    private JLabel createLocationPanel(Location location, Character player, boolean clickable) {
+        String imageName;
+
+        if (location.getX() == player.getLocation().getX() && location.getY() == player.getLocation().getY()) {
+            imageName = player.getCharacterClass().getName().toLowerCase() + ".jpg";
+        } else {
+            imageName = location.getImageName();
+        }
+        Image scaledImage = ImageUtil.getImage(imageName, 250, 250);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel locationLabel = new JLabel(scaledIcon);
+
+        if (clickable) {
+            locationLabel.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    System.out.println("clicked.");
+                }
+            });
+        }
+
+        return locationLabel;
     }
 }
