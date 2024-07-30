@@ -18,4 +18,12 @@ public class Location {
         this.y = y;
         this.character = character;
     }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
 }

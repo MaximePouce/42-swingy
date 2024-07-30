@@ -1,6 +1,7 @@
 package com.mpouce.swingy.model.character;
 
 import com.mpouce.swingy.Stats;
+import com.mpouce.swingy.model.Location;
 
 public class Character {
     private int id;
@@ -13,6 +14,8 @@ public class Character {
     private int maxHitPoints;
     private int attack;
     private int defense;
+
+    private Location location;
 
     public Character(String name, Stats stats, int experience) {
         this.name = name;
@@ -68,13 +71,21 @@ public class Character {
         return this.defense;
     }
 
+    public Location getLocation() {
+        return this.location;
+    }
+
+    public void setLocation(Location newLocation) {
+        this.location = newLocation;
+    }
+
     public int getLevel() {
         int low = 0;
         int high = 100;
 
         while (low < high - 1) {
             int mid = (low + high) / 2;
-            int requiredExperience = mid * 1000 + (mid - 1) * (mid - 1) * 450;
+            int requiredExperience = getRequiredExp(mid);
 
             if (requiredExperience == experience) {
                 return mid;
@@ -86,6 +97,10 @@ public class Character {
         }
 
         return low;
+    }
+
+    public int getRequiredExp(int level) {
+        return (level * 1000 + (level - 1) * (level - 1) * 450);
     }
 
     public void attack(Character target) {
