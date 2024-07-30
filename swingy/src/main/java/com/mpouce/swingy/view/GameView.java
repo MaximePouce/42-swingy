@@ -33,17 +33,21 @@ public class GameView {
 
         GridBagConstraints gbc = new GridBagConstraints();
         // Display Character Name
-        JLabel lblName = ContentFormatter.newCenteredLabel("<html>" + player.getName() + "<html>");
+        JLabel lblName = ContentFormatter.newCenteredLabel("<html>" + player.getName() + "</html>");
         // Show Character image
         String imageName = player.getCharacterClass().getName().toLowerCase() + ".jpg";
         Image scaledImage = ImageUtil.getImage(imageName, 190, 190);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         JLabel lblImage = new JLabel(scaledIcon);
         // Display HP Bar
+        JPanel healthPanel = new JPanel(new GridLayout(2, 1));
         JProgressBar healthBar = new JProgressBar(0, player.getMaxHitPoints());
         healthBar.setForeground(Color.green);
-        healthBar.setValue(player.getHitPoints());
-        // Displays ATK / DEF
+        healthBar.setValue(50);
+        healthPanel.add(healthBar);
+        JLabel healthLabel = ContentFormatter.newCenteredLabel("<html>" + player.getHitPoints() + "/" + player.getMaxHitPoints() + "</html>");
+        healthPanel.add(healthLabel);
+        // Display ATK / DEF
         JPanel statsPanel = new JPanel(new GridLayout(2, 1));
         JLabel lblAtk = ContentFormatter.newCenteredLabel("<html>" + player.getAttack() + " ATK</html>");
         JLabel lblDef = ContentFormatter.newCenteredLabel("<html>" + player.getDefense() + " DEF</html>");
@@ -52,36 +56,38 @@ public class GameView {
         // Buttons
         JButton btnMenu = new JButton("Back to Menu");
 
-        gbc.weighty = 0.1;
-        gbc.anchor = GridBagConstraints.PAGE_START;
+        gbc.weighty = 0.2;
+        gbc.anchor = GridBagConstraints.PAGE_END;
         menuPanel.add(lblName, gbc);
 
-        gbc.weighty = 0.4;
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weighty = 0.2;
         gbc.gridy = 1;
         menuPanel.add(lblImage, gbc);
 
-        gbc.weighty = 0.1;
+        gbc.weighty = 0.2;
         gbc.gridy = 2;
-        menuPanel.add(healthBar, gbc);
+        gbc.anchor = GridBagConstraints.PAGE_START;
+        menuPanel.add(healthPanel, gbc);
 
-        gbc.weighty = 0.3;
+        gbc.weighty = 0.2;
         gbc.gridy = 3;
         menuPanel.add(statsPanel, gbc);
 
-        gbc.weighty = 0.1;
+        gbc.weighty = 0.2;
         gbc.gridy = 4;
         menuPanel.add(btnMenu, gbc);
 
         Window window = Window.getInstance();
-        window.resetView();
+        // window.resetView();
         window.addMenu(menuPanel);
         // window.addContent();
-        window.showView();
-        window.displayWindow();
+        // window.showView();
+        // window.displayWindow();
     }
 
     public void displaySideMenuConsole(Character player) {
+        // Just show player info
+    }
 
     }
 }
