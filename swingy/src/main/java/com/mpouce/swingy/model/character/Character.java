@@ -79,6 +79,10 @@ public class Character {
         this.location = newLocation;
     }
 
+    public void addExp(int expGained) {
+        this.experience += expGained;
+    }
+
     public int getLevel() {
         int low = 0;
         int high = 100;
