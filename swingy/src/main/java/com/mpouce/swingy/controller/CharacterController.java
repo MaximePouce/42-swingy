@@ -12,17 +12,25 @@ import java.util.List;
 import java.util.HashMap;
 
 public class CharacterController {
+    private static CharacterController instance;
     private Character player;
     private CharacterView characterView;
     private MenuView menuView;
     private CharacterRepository characterModel;
     private CharacterClassRepository characterClassModel;
 
-    public CharacterController() {
+    private CharacterController() {
         characterModel = new CharacterRepository();
         characterClassModel = new CharacterClassRepository();
         characterView = new CharacterView(this);
         menuView = new MenuView(this);
+    }
+
+    public static CharacterController getInstance() {
+        if (instance == null) {
+            instance = new CharacterController();
+        }
+        return instance;
     }
 
     public void getCharacters() {

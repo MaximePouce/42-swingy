@@ -12,7 +12,7 @@ public class Main
             System.out.println("GUI mode enabled.");
             Settings.getInstance().setGui(true);
         }
-        CharacterController player = new CharacterController();
+        CharacterController player = CharacterController.getInstance();
         player.startMenu();
     }
 }
