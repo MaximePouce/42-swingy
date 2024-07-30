@@ -73,4 +73,16 @@ public class CharacterRepository {
             System.out.println("Database error: " + e.getMessage());
         }
     }
+
+    public void updateCharacter(Character character) {
+        String prepStatement = "UPDATE characters SET experience=? WHERE characterid=?";
+        try {
+            PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
+            st.setInt(1, character.getExperience());
+            st.setInt(2, character.getId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
+    }
 }
