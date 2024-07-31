@@ -14,9 +14,11 @@ public class DatabaseUtils {
         return tables.next();
     }
 
-    public static void initializeDatabase(Connection conn) throws SQLException {
+    public static void initializeDatabase(Connection conn) {
         try {
             initializeClasses(conn);
+            initializeMap(conn);
+            initializeLocation(conn);
             initializeCharacters(conn);
         }
         catch (SQLException e) {
@@ -51,18 +53,40 @@ public class DatabaseUtils {
         stmt.execute(insertRogue);
     }
 
+    private static void initializeMap(Connection conn) throws SQLException {
+        Statement stmt = conn.createStatement();
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS maps ("
+                                + "mapId SERIAL PRIMARY KEY, "
+                                + "size INT NOT NULL"
+                                + ");";
+        stmt.execute(createTableSQL);
+    }
+    
+    
+    private static void initializeLocation(Connection conn) throws SQLException {
+        Statement stmt = conn.createStatement();
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS locations ("
+                                + "locationId SERIAL PRIMARY KEY, "
+                                + "x INT NOT NULL, "
+                                + "y INT NOT NULL, "
+                                + "mapId INT REFERENCES maps(mapid) NOT NULL"
+                                + ");";
+        stmt.execute(createTableSQL);
+    }
+    
     private static void initializeCharacters(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         String createTableSQL = "CREATE TABLE IF NOT EXISTS characters ("
-                             + "characterId SERIAL PRIMARY KEY, "
-                             + "name VARCHAR(255) NOT NULL, "
-                             + "experience BIGINT NOT NULL, "
-                             + "classId INT REFERENCES classes(classId)"
-                             + ");";
+                                + "characterId SERIAL PRIMARY KEY, "
+                                + "name VARCHAR(255) NOT NULL, "
+                                + "experience BIGINT NOT NULL, "
+                                + "classId INT REFERENCES classes(classId), "
+                                + "locationId INT REFERENCES locations(locationId)"
+                                + ");";
 
         stmt.execute(createTableSQL);
     }
-
+    
     public static void printAllTableRows(Connection conn, String tableName) {
         try {
             System.out.println("current " + tableName + " is:");
