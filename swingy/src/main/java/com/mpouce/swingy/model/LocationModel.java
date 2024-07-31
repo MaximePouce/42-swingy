@@ -46,7 +46,7 @@ public class LocationModel {
         return newId;
     }
 
-    public Location[][] readMapLocations(int mapId, int mapSize) {
+    public Location[][] readAllMapLocations(int mapId, int mapSize) {
         Location[][] locations = null;
         String prepStatement = "SELECT id, x, y FROM locations WHERE map_id=?";
         try {
@@ -69,7 +69,8 @@ public class LocationModel {
         return locations;
     }
 
-    public void readAllMapCharacters(Map map) {
+    public Location readAllMapCharacters(Map map) {
+        Location playerLocation = null;
         Location[][] locations = map.getLocations();
         String prepStatement = "SELECT locations.x, locations.y, character_location.character_id "
                                 + "FROM locations INNER JOIN character_location "
@@ -80,11 +81,18 @@ public class LocationModel {
             st.setInt(1, map.getId());
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                locations[rs.getInt("x")][rs.getInt("y")].setCharacterById(rs.getInt("character_id"));
+                int characterId = rs.getInt("character_id");
+                int locationX = rs.getInt("x");
+                int locationY = rs.getInt("y");
+                if (characterId == map.getPlayerId()) {
+                    playerLocation = locations[locationX][locationY];
+                }
+                locations[locationX][locationY].setCharacterById(characterId);
             }
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
         }
+        return playerLocation;
     }
 
     public Character readCharacterFromId(int characterId) {

@@ -14,7 +14,7 @@ public class Map {
     private int mapId = -1;
     private Location[][] locations;
     private int size;
-    private int characterId;
+    private int playerId;
 
     private Map() {
 
@@ -28,31 +28,29 @@ public class Map {
     }
 
     public void initialize(Character character) {
-        // String prepStatement = "SELECT location_id FROM character_location WHERE character_id = ?";
         Location playerLocation = null;
-        // try {
-        //     PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
-        //     st.setInt(1, character.getId());
-        //     ResultSet rs = st.executeQuery();
-        //     DatabaseUtils.printResultSet(rs);
-        // } catch (SQLException e) {
-        //     System.out.println("Database error: " + e.getMessage());
-        // }
-        
-        if (playerLocation == null) {
-            this.size = (character.getLevel() - 1) * 5 + 10;
+        this.locations = null;
+        this.playerId = character.getId();
+        this.size = (character.getLevel() - 1) * 5 + 10;
+        readMap(this.playerId);
+        if (this.locations != null) {
+            Location playerFoundLocation = LocationModel.getInstance().readAllMapCharacters(this);
+            if (playerFoundLocation == null) {
+                playerFoundLocation = this.locations[this.size / 2][this.size / 2];
+            }
+            character.setLocation(playerFoundLocation);
+        } else {
             System.out.println("Creating new map with size " + this.size);
             this.createMap();
-            locations = new Location[this.size][this.size];
+            this.locations = new Location[this.size][this.size];
 
-            // Initialize empty map
             for (int x = 0; x < this.size; x++) {
                 for  (int y = 0; y < this.size; y++) {
-                    locations[x][y] = new Location(x, y, this.mapId);
-                    locations[x][y].createLocation();
+                    this.locations[x][y] = new Location(x, y, this.mapId);
+                    this.locations[x][y].createLocation();
                 }
             }
-            GameController.getInstance().createPlayerLocation(locations[this.size / 2][this.size / 2]);
+            GameController.getInstance().createPlayerLocation(this.locations[this.size / 2][this.size / 2]);
         }
     }
 
@@ -60,15 +58,24 @@ public class Map {
         return this.mapId;
     }
 
+    public int getPlayerId() {
+        return this.playerId;
+    }
+
     private void readMap(int characterId) {
         System.out.println("Reading map info");
-        String prepStatement = "SELECT location_id FROM character_location WHERE character_id=?";
+        String prepStatement = "SELECT locations.map_id "
+                                + "FROM character_location "
+                                + "JOIN locations ON character_location.location_id = locations.id "
+                                + "WHERE character_location.character_id=?";
         try {
             PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
             st.setInt(1, characterId);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                int locationId = rs.getInt("location_id");
+                this.mapId = rs.getInt("map_id");
+                System.out.println("map id: " + this.mapId + " with size " + this.size);
+                this.locations = LocationModel.getInstance().readAllMapLocations(this.mapId, this.size);
             }
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());

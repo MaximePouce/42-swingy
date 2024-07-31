@@ -10,11 +10,9 @@ public class GameController {
     private static GameController instance;
     private Character playerCharacter;
     private CharacterRepository characterModel;
-    private Map map;
     private GameView gameView;
 
     private GameController() {
-        this.map = Map.getInstance();
         characterModel = new CharacterRepository();
     }
 
@@ -25,13 +23,15 @@ public class GameController {
         return instance;
     }
 
+    public Character getPlayerCharacter() {
+        return this.playerCharacter;
+    }
+
     public void startGame(Character character) {
         this.playerCharacter = character;
         this.gameView = new GameView(this);
-        map.initialize(this.playerCharacter);
-        System.out.println("Map is ready, starting GAME");
-        gameView.showGame(this.playerCharacter, map.getLocations());
-        // gameView.displaySideMenu(this.playerCharacter);
+        Map.getInstance().initialize(this.playerCharacter);
+        gameView.showGame(this.playerCharacter, Map.getInstance().getLocations());
     }
 
     public void createPlayerLocation(Location newLocation) {
@@ -41,6 +41,7 @@ public class GameController {
 
     public void playerMoveTo(Location newLocation) {
         this.playerCharacter.setLocation(newLocation);
+        Map map = Map.getInstance();
         int mapSize = map.getSize();
         if (newLocation.isFinish(mapSize)) {
             System.out.println("Congrats on winning this round !");
