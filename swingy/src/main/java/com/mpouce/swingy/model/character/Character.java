@@ -3,6 +3,15 @@ package com.mpouce.swingy.model.character;
 import com.mpouce.swingy.Stats;
 import com.mpouce.swingy.model.Location;
 
+import com.mpouce.swingy.model.utils.DatabaseUtils;
+import com.mpouce.swingy.model.utils.DatabaseConnection;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 public class Character {
     private int id;
     private String name;
@@ -17,9 +26,12 @@ public class Character {
 
     private Location location;
 
-    public Character(String name, Stats stats, int experience) {
+    public Character(String name, int experience, int hitPoints, int attack, int defense) {
         this.name = name;
-        this.stats = stats;
+        this.maxHitPoints = hitPoints;
+        this.currentHitPoints = hitPoints;
+        this.attack = attack;
+        this.defense = defense;
         this.experience = experience;
     }
 
@@ -49,6 +61,13 @@ public class Character {
 
     public Stats getStats() {
         return this.stats;
+    }
+
+    public void setStats(int maxHitPoints, int currentHitPoints, int attack, int defense) {
+        this.maxHitPoints = maxHitPoints;
+        this.currentHitPoints = currentHitPoints;
+        this.attack = attack;
+        this.defense = defense;
     }
 
     public int getMaxHitPoints() {

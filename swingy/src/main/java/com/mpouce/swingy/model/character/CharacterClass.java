@@ -16,7 +16,7 @@ public class CharacterClass {
     private int defenseGrowth;
 
     public CharacterClass(ResultSet rs) throws SQLException {
-        this.id = rs.getInt("classid");
+        this.id = rs.getInt("id");
         this.name = rs.getString("name");
         this.maxHitPoints = rs.getInt("health");
         this.attack = rs.getInt("attack");

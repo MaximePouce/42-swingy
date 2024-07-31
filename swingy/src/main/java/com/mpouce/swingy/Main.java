@@ -1,6 +1,8 @@
 package com.mpouce.swingy;
 
 import com.mpouce.swingy.controller.CharacterController;
+import com.mpouce.swingy.model.utils.DatabaseConnection;
+import com.mpouce.swingy.model.utils.DatabaseUtils;
 
 import java.util.Objects;
 
@@ -12,6 +14,8 @@ public class Main
             System.out.println("GUI mode enabled.");
             Settings.getInstance().setGui(true);
         }
+
+        DatabaseUtils.initializeDatabase(DatabaseConnection.getInstance().getConnection());
         CharacterController player = CharacterController.getInstance();
         player.startMenu();
     }

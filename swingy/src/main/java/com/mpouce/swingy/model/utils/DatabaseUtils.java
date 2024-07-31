@@ -20,6 +20,7 @@ public class DatabaseUtils {
             initializeMap(conn);
             initializeLocation(conn);
             initializeCharacters(conn);
+            initializeCharacterLocation(conn);
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -29,8 +30,8 @@ public class DatabaseUtils {
     private static void initializeClasses(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         String createTableSQL = "CREATE TABLE IF NOT EXISTS classes ("
-                             + "classId SERIAL PRIMARY KEY, "
-                             + "name VARCHAR(255) NOT NULL, "
+                             + "id SERIAL PRIMARY KEY, "
+                             + "name VARCHAR(255) UNIQUE NOT NULL, "
                              + "health INT NOT NULL, "
                              + "attack INT NOT NULL, "
                              + "defense INT NOT NULL, "
@@ -43,11 +44,13 @@ public class DatabaseUtils {
 
         String insertFighter = "INSERT INTO classes ("
                             + "name, health, attack, defense, health_growth, attack_growth, defense_growth)"
-                            + "VALUES ('Fighter', 100, 10, 10, 20, 5, 5);";
+                            + "VALUES ('Fighter', 100, 10, 10, 20, 5, 5) "
+                            + "ON CONFLICT (name) DO NOTHING;";
 
         String insertRogue = "INSERT INTO classes ("
                             + "name, health, attack, defense, health_growth, attack_growth, defense_growth)"
-                            + "VALUES ('Rogue', 80, 15, 5, 15, 10, 0);";
+                            + "VALUES ('Rogue', 80, 15, 5, 15, 10, 0) "
+                            + "ON CONFLICT (name) DO NOTHING;";
 
         stmt.execute(insertFighter);
         stmt.execute(insertRogue);
@@ -56,37 +59,54 @@ public class DatabaseUtils {
     private static void initializeMap(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         String createTableSQL = "CREATE TABLE IF NOT EXISTS maps ("
-                                + "mapId SERIAL PRIMARY KEY, "
+                                + "id SERIAL PRIMARY KEY, "
                                 + "size INT NOT NULL"
                                 + ");";
         stmt.execute(createTableSQL);
     }
-    
-    
+
     private static void initializeLocation(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         String createTableSQL = "CREATE TABLE IF NOT EXISTS locations ("
-                                + "locationId SERIAL PRIMARY KEY, "
+                                + "id SERIAL PRIMARY KEY, "
                                 + "x INT NOT NULL, "
                                 + "y INT NOT NULL, "
-                                + "mapId INT REFERENCES maps(mapid) NOT NULL"
+                                + "map_id INT NOT NULL, "
+                                + "FOREIGN KEY (map_id) REFERENCES maps(id) ON DELETE CASCADE"
                                 + ");";
         stmt.execute(createTableSQL);
     }
-    
+
     private static void initializeCharacters(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         String createTableSQL = "CREATE TABLE IF NOT EXISTS characters ("
-                                + "characterId SERIAL PRIMARY KEY, "
+                                + "id SERIAL PRIMARY KEY, "
                                 + "name VARCHAR(255) NOT NULL, "
                                 + "experience BIGINT NOT NULL, "
-                                + "classId INT REFERENCES classes(classId), "
-                                + "locationId INT REFERENCES locations(locationId)"
+                                + "current_hitpoints INT NOT NULL, "
+                                + "max_hitpoints INT NOT NULL, "
+                                + "attack INT NOT NULL, "
+                                + "defense INT NOT NULL, "
+                                + "class_id INT, "
+                                + "FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE"
                                 + ");";
 
         stmt.execute(createTableSQL);
     }
-    
+
+    private static void initializeCharacterLocation(Connection conn) throws SQLException {
+        Statement stmt = conn.createStatement();
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS character_location ("
+                                + "id SERIAL PRIMARY KEY, "
+                                + "character_id INT NOT NULL, "
+                                + "location_id BIGINT NOT NULL, "
+                                + "FOREIGN KEY (character_id) REFERENCES characters(id) ON DELETE CASCADE, "
+                                + "FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE"
+                                + ");";
+
+        stmt.execute(createTableSQL);
+    }
+
     public static void printAllTableRows(Connection conn, String tableName) {
         try {
             System.out.println("current " + tableName + " is:");

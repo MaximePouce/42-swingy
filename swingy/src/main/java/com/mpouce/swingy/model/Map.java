@@ -1,5 +1,6 @@
 package com.mpouce.swingy.model;
 
+import com.mpouce.swingy.controller.GameController;
 import com.mpouce.swingy.model.character.Character;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
 import com.mpouce.swingy.model.utils.DatabaseUtils;
@@ -27,16 +28,16 @@ public class Map {
     }
 
     public void initialize(Character character) {
-        String prepStatement = "SELECT locationId FROM characters WHERE characterid = ?";
+        // String prepStatement = "SELECT location_id FROM character_location WHERE character_id = ?";
         Location playerLocation = null;
-        try {
-            PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
-            st.setInt(1, character.getId());
-            ResultSet rs = st.executeQuery();
-            DatabaseUtils.printResultSet(rs);
-        } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
-        }
+        // try {
+        //     PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
+        //     st.setInt(1, character.getId());
+        //     ResultSet rs = st.executeQuery();
+        //     DatabaseUtils.printResultSet(rs);
+        // } catch (SQLException e) {
+        //     System.out.println("Database error: " + e.getMessage());
+        // }
         
         if (playerLocation == null) {
             this.size = (character.getLevel() - 1) * 5 + 10;
@@ -51,12 +52,27 @@ public class Map {
                     locations[x][y].createLocation();
                 }
             }
-            character.setLocation(locations[this.size / 2][this.size / 2]);
+            GameController.getInstance().createPlayerLocation(locations[this.size / 2][this.size / 2]);
         }
     }
 
     public int getId() {
         return this.mapId;
+    }
+
+    private void readMap(int characterId) {
+        System.out.println("Reading map info");
+        String prepStatement = "SELECT location_id FROM character_location WHERE character_id=?";
+        try {
+            PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
+            st.setInt(1, characterId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                int locationId = rs.getInt("location_id");
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
     }
 
     private void createMap() {
@@ -78,6 +94,18 @@ public class Map {
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void deleteMap() {
+        System.out.println("Deleting map");
+        String prepStatement = "DELETE FROM maps WHERE id=?";
+        try {
+            PreparedStatement st = DatabaseConnection.getInstance().getConnection(). prepareStatement(prepStatement);
+            st.setInt(1, this.mapId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
         }
     }
 
