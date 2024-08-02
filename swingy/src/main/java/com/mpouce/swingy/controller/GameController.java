@@ -50,7 +50,9 @@ public class GameController {
             map.deleteMap();
             CharacterController.getInstance().startMenu();
         } else {
+            newLocation.resolve(this.playerCharacter);
             characterModel.updateCharacterLocation(this.playerCharacter);
+            characterModel.updateCharacter(this.playerCharacter);
             gameView.showGame(this.playerCharacter, map.getLocations());
         }
     }

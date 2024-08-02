@@ -46,7 +46,7 @@ public class LocationModel {
         return newId;
     }
 
-    public Location[][] readAllMapLocations(int mapId, int mapSize) {
+    public Location[][] readAllMapLocations(int mapId, int mapSize, int playerId) {
         Location[][] locations = null;
         String prepStatement = "SELECT id, x, y FROM locations WHERE map_id=?";
         try {
@@ -58,9 +58,9 @@ public class LocationModel {
                 do {
                     int locationX = rs.getInt("x");
                     int locationY = rs.getInt("y");
-                    locations[locationX][locationY] = new Location(locationX, locationY, mapId, mapSize);
-                    locations[locationX][locationY].setCharacter(readLocationCharacter(rs.getInt("id")));
+                    locations[locationX][locationY] = new Location(locationX, locationY, mapId);
                     locations[locationX][locationY].setId(rs.getInt("id"));
+                    locations[locationX][locationY].setCharacter(readLocationCharacter(rs.getInt("id"), playerId));
                 } while (rs.next());
             }
         } catch (SQLException e) {
@@ -70,16 +70,19 @@ public class LocationModel {
         return locations;
     }
 
-    public Character readLocationCharacter(int locationId) {
+    public Character readLocationCharacter(int locationId, int playerId) {
         Character newCharacter = null;
         String prepStatement = "SELECT * FROM characters INNER JOIN character_location "
                                 + "ON character_location.location_id=? "
-                                + "WHERE characters.id=character_location.character_id";
+                                + "WHERE characters.id=character_location.character_id;";
         try {
             PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
             st.setInt(1, locationId);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
+                if (rs.getInt("id") == playerId) {
+                    return newCharacter;
+                }
                 newCharacter = new Character(
                     rs.getString("name"),
                     rs.getInt("experience"),
@@ -87,10 +90,11 @@ public class LocationModel {
                     rs.getInt("attack"),
                     rs.getInt("defense")
                     );
-                }
-            } catch (SQLException e) {
-                System.out.println("Database error: " + e.getMessage());
+                newCharacter.setId(rs.getInt("id"));
             }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
         return newCharacter;
     }
 
@@ -137,6 +141,7 @@ public class LocationModel {
                     rs.getInt("attack"),
                     rs.getInt("defense")
                 );
+                character.setId(characterId);
             }
         } catch (SQLException e) {
             character = null;

@@ -1,6 +1,5 @@
 package com.mpouce.swingy.model.character;
 
-import com.mpouce.swingy.Stats;
 import com.mpouce.swingy.model.Location;
 
 import com.mpouce.swingy.model.utils.DatabaseUtils;
@@ -16,7 +15,6 @@ public class Character {
     private int id;
     private String name;
     private CharacterClass characterClass = null;
-    private Stats stats;
     private int level;
     private int experience;
     private int nextLevelExp;
@@ -66,10 +64,6 @@ public class Character {
 
     public CharacterClass getCharacterClass() {
         return this.characterClass;
-    }
-
-    public Stats getStats() {
-        return this.stats;
     }
 
     public void setStats(int maxHitPoints, int currentHitPoints, int attack, int defense) {
@@ -150,18 +144,29 @@ public class Character {
         return (level * 1000 + (level - 1) * (level - 1) * 450);
     }
 
+    public void battle(Character target) {
+        System.out.println(this.name + " is fighting enemy " + target.getName());
+        while(this.currentHitPoints > 0 && target.getHitPoints() > 0) {
+            attack(target);
+            target.attack(this);
+        }
+        if (this.currentHitPoints > 0) {
+            this.addExp(target.getExperience() / 5);
+        }
+    }
+
     public void attack(Character target) {
         if (target == null) {
             throw new IllegalArgumentException("No target provided.");
         }
-        target.takeDamage(this.stats.getAttack());
+        target.takeDamage(this.attack);
     }
 
     public void takeDamage(int damage) {
         if (damage < 0) {
             throw new IllegalArgumentException("Damage cannot be negative.");
         }
-        int damageTaken = Math.max(0, damage - this.stats.getDefense());
-        this.stats.addHitPoints(-1 * damageTaken);
+        int damageTaken = Math.max(0, damage - this.defense);
+        this.currentHitPoints = Math.max(0, this.currentHitPoints - damageTaken);
     }
 }

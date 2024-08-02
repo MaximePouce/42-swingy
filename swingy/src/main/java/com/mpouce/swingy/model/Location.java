@@ -18,14 +18,14 @@ public class Location {
     private Character character;
     private int mapId;
 
-    public Location(int x, int y, int mapId, int size) {
+    public Location(int x, int y, int mapId) {
         this.x = x;
         this.y = y;
         this.mapId = mapId;
         this.character = null;
     }
 
-    private void generateRandomEncounter(int mapSize) {
+    public void generateRandomEncounter(int mapSize) {
         if (this.x == 0 || this.x == mapSize - 1) {
             return ;
         }
@@ -75,6 +75,17 @@ public class Location {
 
     public Character getCharacter() {
         return this.character;
+    }
+
+    public void resolve(Character playerCharacter) {
+        if (this.character == null) {
+            return;
+        }
+        playerCharacter.battle(this.character);
+        if(this.character.getHitPoints() == 0) {
+            CharacterRepository.getInstance().deleteCharacter(this.character.getId());
+            this.character = null;
+        }
     }
 
     public void setCharacter(Character newCharacter) {

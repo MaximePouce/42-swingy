@@ -2,6 +2,7 @@ package com.mpouce.swingy.model.character;
 
 import com.mpouce.swingy.model.utils.DatabaseUtils;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
+import com.mpouce.swingy.model.Location;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -87,9 +88,10 @@ public class CharacterRepository {
             PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
             st.setInt(1, characterId);
             st.setInt(2, locationId);
-            st.executeQuery();
+            st.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -136,6 +138,24 @@ public class CharacterRepository {
         }
     }
 
+    public Location readCharacterLocation(Location[][] locations, int characterId) {
+        Location newLocation = null;
+        String prepStatement = "SELECT x, y FROM locations INNER JOIN character_location "
+                                + "ON character_location.character_id=? "
+                                + "WHERE locations.id=character_location.location_id;";
+        try {
+            PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
+            st.setInt(1, characterId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                newLocation = locations[rs.getInt("x")][rs.getInt("y")];
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
+        return newLocation;
+    }
+
     public void updateCharacter(Character character) {
         String prepStatement = "UPDATE characters SET "
                                 + "experience=?, current_hitpoints=?, "
@@ -164,6 +184,7 @@ public class CharacterRepository {
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

@@ -2,6 +2,7 @@ package com.mpouce.swingy.model;
 
 import com.mpouce.swingy.controller.GameController;
 import com.mpouce.swingy.model.character.Character;
+import com.mpouce.swingy.model.character.CharacterRepository;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
 import com.mpouce.swingy.model.utils.DatabaseUtils;
 import java.sql.ResultSet;
@@ -34,7 +35,7 @@ public class Map {
         this.size = (character.getLevel() - 1) * 5 + 10;
         readMap(this.playerId);
         if (this.locations != null) {
-            Location playerFoundLocation = LocationModel.getInstance().readAllMapCharacters(this);
+            Location playerFoundLocation = CharacterRepository.getInstance().readCharacterLocation(this.locations, this.playerId);
             if (playerFoundLocation == null) {
                 playerFoundLocation = this.locations[this.size / 2][this.size / 2];
             }
@@ -46,8 +47,9 @@ public class Map {
 
             for (int x = 0; x < this.size; x++) {
                 for  (int y = 0; y < this.size; y++) {
-                    this.locations[x][y] = new Location(x, y, this.mapId, this.size);
+                    this.locations[x][y] = new Location(x, y, this.mapId);
                     this.locations[x][y].createLocation();
+                    this.locations[x][y].generateRandomEncounter(this.size);
                 }
             }
             GameController.getInstance().createPlayerLocation(this.locations[this.size / 2][this.size / 2]);
@@ -75,7 +77,7 @@ public class Map {
             if (rs.next()) {
                 this.mapId = rs.getInt("map_id");
                 System.out.println("map id: " + this.mapId + " with size " + this.size);
-                this.locations = LocationModel.getInstance().readAllMapLocations(this.mapId, this.size);
+                this.locations = LocationModel.getInstance().readAllMapLocations(this.mapId, this.size, characterId);
             }
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
