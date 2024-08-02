@@ -169,4 +169,11 @@ public class Character {
         int damageTaken = Math.max(0, damage - this.defense);
         this.currentHitPoints = Math.max(0, this.currentHitPoints - damageTaken);
     }
+
+    public void healDamage(int healing) {
+        if (healing < 0) {
+            throw new IllegalArgumentException("Healing cannot be negative.");
+        }
+        this.currentHitPoints = Math.min(this.maxHitPoints, this.currentHitPoints + healing);
+    }
 }

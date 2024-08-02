@@ -46,6 +46,7 @@ public class GameController {
         if (newLocation.isFinish(mapSize)) {
             System.out.println("Congrats on winning this round !");
             this.playerCharacter.addExp(mapSize * 100);
+            this.playerCharacter.healDamage(this.playerCharacter.getMaxHitPoints());
             characterModel.updateCharacter(this.playerCharacter);
             map.deleteMap();
             CharacterController.getInstance().startMenu();
