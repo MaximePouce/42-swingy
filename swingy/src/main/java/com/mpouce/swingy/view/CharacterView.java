@@ -133,7 +133,6 @@ public class CharacterView {
 
     private JPanel createCharacterPanel(Character character) {
         JPanel characterPanel = new JPanel();
-        characterPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         characterPanel.setOpaque(false);
 
         Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
