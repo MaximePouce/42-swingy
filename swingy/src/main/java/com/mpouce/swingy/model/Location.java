@@ -53,7 +53,7 @@ public class Location {
             return "finish.png";
         }
         if (this.character != null) {
-            return "enemy.png";
+            return "battle.png";
         }
         return "";
     }
