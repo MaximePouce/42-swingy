@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.ImageIcon;
+import javax.swing.border.Border;
+import javax.swing.BorderFactory;
 
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -105,7 +107,10 @@ public class GameView {
         GridBagConstraints gbc = new GridBagConstraints();
         
         int playerLevel = player.getLevel();
-        JProgressBar expBar = new JProgressBar(player.getRequiredExp(playerLevel), player.getRequiredExp(playerLevel + 1));
+        JProgressBar expBar = new JProgressBar(
+            player.getRequiredExp(playerLevel),
+            player.getRequiredExp(playerLevel + 1)
+            );
         expBar.setValue(player.getExperience());
 
         gbc.weighty = 0.5;
@@ -121,8 +126,11 @@ public class GameView {
 
         ContentFormatter.setTitle(mainPanel, expPanel);
 
-        JPanel contentPanel = new JPanel(new GridLayout(3, 3));
-
+        JPanel contentPanel = new BackgroundPanel("green_tile.jpg");
+        GridLayout layout = new GridLayout(3, 3);
+        layout.setVgap(10);
+        layout.setHgap(10);
+        contentPanel.setLayout(layout);
         int playerX = player.getLocation().getX();
         int playerY = player.getLocation().getY();
         int mapSize = map.length;
@@ -136,19 +144,21 @@ public class GameView {
         }
 
         ContentFormatter.setContent(mainPanel, contentPanel);
-
-        // window.addMenu(menuPanel);
         window.addContent(mainPanel);
         window.showView();
         window.displayWindow();
     }
 
     private JPanel createLocationPanel(Location location, Character player, int mapSize, boolean clickable) {
-        JPanel locationPanel = new BackgroundPanel("green_tile.jpg");
+        JPanel locationPanel = new JPanel();
+        locationPanel.setLayout(new GridBagLayout());
+        locationPanel.setOpaque(false);
         String imageName = "";
 
         if (location.getX() == player.getLocation().getX() && location.getY() == player.getLocation().getY()) {
             imageName = player.getCharacterClass().getName().toLowerCase() + ".jpg";
+            Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
+            locationPanel.setBorder(border);
         } else {
             imageName = location.getImageName(mapSize);
         }
@@ -156,10 +166,12 @@ public class GameView {
             Image scaledImage = ImageUtil.getImage(imageName, 200, 200);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
             JLabel locationLabel = new JLabel(scaledIcon);
-            locationPanel.add(locationLabel);
+            locationPanel.add(locationLabel, new GridBagConstraints());
         }
 
         if (clickable) {
+            Border border = BorderFactory.createLineBorder(Color.GREEN, 2);
+            locationPanel.setBorder(border);
             locationPanel.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     System.out.println("Moving to " + location.getX() + ":" + location.getY());
