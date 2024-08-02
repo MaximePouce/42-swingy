@@ -50,6 +50,49 @@ public class CharacterRepository {
         return characters;
     }
 
+    public void createEnemy(Character enemy, int locationId) {
+        int newId = -1;
+        String prepStatement = "INSERT INTO characters "
+                                + "(name, experience, current_hitpoints, max_hitpoints, attack, defense) "
+                                + "VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement, Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, enemy.getName());
+            st.setInt(2, enemy.getExperience());
+            st.setInt(3, enemy.getHitPoints());
+            st.setInt(4, enemy.getMaxHitPoints());
+            st.setInt(5, enemy.getAttack());
+            st.setInt(6, enemy.getDefense());
+            int affectedRows = st.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Create operation failed");
+            }
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()) {
+                newId = rs.getInt(1);
+            }
+            rs.close();
+            enemy.setId(newId);
+            this.createCharacterLocation(newId, locationId);
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
+    }
+
+    public void createCharacterLocation(int characterId, int locationId) {
+        String prepStatement = "INSERT INTO character_location "
+                            + "(character_id, location_id) "
+                            + "VALUES (?, ?)";
+        try {
+            PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
+            st.setInt(1, characterId);
+            st.setInt(2, locationId);
+            st.executeQuery();
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
+    }
+
     public int createCharacter(String name, int classId) {
         int newId = -1;
         String prepStatement = "INSERT INTO characters (name, experience, current_hitpoints, max_hitpoints, attack, defense, class_id) VALUES (?, 0, ?, ?, ?, ?, ?);";

@@ -58,7 +58,8 @@ public class LocationModel {
                 do {
                     int locationX = rs.getInt("x");
                     int locationY = rs.getInt("y");
-                    locations[locationX][locationY] = new Location(locationX, locationY, mapId);
+                    locations[locationX][locationY] = new Location(locationX, locationY, mapId, mapSize);
+                    locations[locationX][locationY].setCharacter(readLocationCharacter(rs.getInt("id")));
                     locations[locationX][locationY].setId(rs.getInt("id"));
                 } while (rs.next());
             }
@@ -67,6 +68,30 @@ public class LocationModel {
             locations = null;
         }
         return locations;
+    }
+
+    public Character readLocationCharacter(int locationId) {
+        Character newCharacter = null;
+        String prepStatement = "SELECT * FROM characters INNER JOIN character_location "
+                                + "ON character_location.location_id=? "
+                                + "WHERE characters.id=character_location.character_id";
+        try {
+            PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
+            st.setInt(1, locationId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                newCharacter = new Character(
+                    rs.getString("name"),
+                    rs.getInt("experience"),
+                    rs.getInt("max_hitpoints"),
+                    rs.getInt("attack"),
+                    rs.getInt("defense")
+                    );
+                }
+            } catch (SQLException e) {
+                System.out.println("Database error: " + e.getMessage());
+            }
+        return newCharacter;
     }
 
     public Location readAllMapCharacters(Map map) {
