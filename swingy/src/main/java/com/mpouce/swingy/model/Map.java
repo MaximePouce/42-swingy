@@ -46,7 +46,7 @@ public class Map {
 
             for (int x = 0; x < this.size; x++) {
                 for  (int y = 0; y < this.size; y++) {
-                    this.locations[x][y] = new Location(x, y, this.mapId);
+                    this.locations[x][y] = new Location(x, y, this.mapId, this.size);
                     this.locations[x][y].createLocation();
                 }
             }
