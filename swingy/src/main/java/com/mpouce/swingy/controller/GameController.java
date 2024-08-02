@@ -13,7 +13,7 @@ public class GameController {
     private GameView gameView;
 
     private GameController() {
-        characterModel = new CharacterRepository();
+        characterModel = CharacterRepository.getInstance();
     }
 
     public static GameController getInstance() {

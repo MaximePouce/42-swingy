@@ -20,7 +20,7 @@ public class CharacterController {
     private CharacterClassRepository characterClassModel;
 
     private CharacterController() {
-        characterModel = new CharacterRepository();
+        characterModel = CharacterRepository.getInstance();
         characterClassModel = new CharacterClassRepository();
         characterView = new CharacterView(this);
         menuView = new MenuView(this);

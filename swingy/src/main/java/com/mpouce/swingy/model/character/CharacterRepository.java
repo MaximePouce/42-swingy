@@ -14,9 +14,15 @@ import java.util.List;
 import java.util.HashMap;
 
 public class CharacterRepository {
+    private static CharacterRepository instance;
 
-    public CharacterRepository() {
+    private CharacterRepository() {}
 
+    public static CharacterRepository getInstance() {
+        if (instance == null) {
+            instance = new CharacterRepository();
+        }
+        return instance;
     }
 
     public List<Character> getCharacters(HashMap<Integer, CharacterClass> characterClasses) {
