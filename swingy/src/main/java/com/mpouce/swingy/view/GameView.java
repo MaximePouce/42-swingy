@@ -49,7 +49,7 @@ public class GameView {
         JPanel healthPanel = new JPanel(new GridLayout(2, 1));
         JProgressBar healthBar = new JProgressBar(0, player.getMaxHitPoints());
         healthBar.setForeground(Color.green);
-        healthBar.setValue(50);
+        healthBar.setValue(player.getHitPoints());
         healthPanel.add(healthBar);
         JLabel healthLabel = ContentFormatter.newCenteredLabel("<html>" + player.getHitPoints() + "/" + player.getMaxHitPoints() + "</html>");
         healthPanel.add(healthLabel);
