@@ -88,11 +88,18 @@ public class CharacterRepository {
     }
 
     public void updateCharacter(Character character) {
-        String prepStatement = "UPDATE characters SET experience=? WHERE id=?";
+        String prepStatement = "UPDATE characters SET "
+                                + "experience=?, current_hitpoints=?, "
+                                + "max_hitpoints=?, attack=?, defense=? "
+                                + "WHERE id=?";
         try {
             PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
             st.setInt(1, character.getExperience());
-            st.setInt(2, character.getId());
+            st.setInt(2, character.getHitPoints());
+            st.setInt(3, character.getMaxHitPoints());
+            st.setInt(4, character.getAttack());
+            st.setInt(5, character.getDefense());
+            st.setInt(6, character.getId());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
