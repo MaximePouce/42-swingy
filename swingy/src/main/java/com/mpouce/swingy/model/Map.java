@@ -48,10 +48,11 @@ public class Map {
             for (int x = 0; x < this.size; x++) {
                 for  (int y = 0; y < this.size; y++) {
                     this.locations[x][y] = new Location(x, y, this.mapId);
-                    this.locations[x][y].createLocation();
                     this.locations[x][y].generateRandomEncounter(this.size);
                 }
             }
+            LocationModel.getInstance().createAllLocations(this.locations);
+            CharacterRepository.getInstance().createAllEnemies(this.locations);
             GameController.getInstance().createPlayerLocation(this.locations[this.size / 2][this.size / 2]);
         }
     }

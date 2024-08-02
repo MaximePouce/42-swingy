@@ -43,7 +43,6 @@ public class Location {
         );
         if ((randomValue) % 3 == 0) {
             this.character = new Character("Bandit", experience, 20, 10, 10);
-            CharacterRepository.getInstance().createEnemy(this.character, this.locationId);
         }
     }
 

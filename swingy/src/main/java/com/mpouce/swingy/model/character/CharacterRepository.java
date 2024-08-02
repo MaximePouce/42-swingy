@@ -51,6 +51,49 @@ public class CharacterRepository {
         return characters;
     }
 
+    public void createAllEnemies(Location[][] locations) {
+        String prepStatement = "INSERT INTO characters "
+                                + "(name, experience, current_hitpoints, max_hitpoints, attack, defense) "
+                                + "VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            Connection conn = DatabaseConnection.getInstance().getConnection();
+            conn.setAutoCommit(false);
+            PreparedStatement st = conn.prepareStatement(prepStatement, Statement.RETURN_GENERATED_KEYS);
+
+            for (int x = 0; x < locations.length; x++) {
+                for (int y = 0; y < locations.length; y++) {
+                    Character character = locations[x][y].getCharacter();
+                    if (character != null) {
+                        st.setString(1, character.getName());
+                        st.setInt(2, character.getExperience());
+                        st.setInt(3, character.getHitPoints());
+                        st.setInt(4, character.getMaxHitPoints());
+                        st.setInt(5, character.getAttack());
+                        st.setInt(6, character.getDefense());
+                        st.addBatch();
+
+                    }
+                }
+            }
+            st.executeBatch();
+            conn.commit();
+
+            ResultSet rs = st.getGeneratedKeys();
+            for (int x = 0; x < locations.length; x++) {
+                for (int y = 0; y < locations.length; y++) {
+                    Character character = locations[x][y].getCharacter();
+                    if (character != null) {
+                        if (rs.next()) {
+                            character.setId(rs.getInt(1));
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void createEnemy(Character enemy, int locationId) {
         int newId = -1;
         String prepStatement = "INSERT INTO characters "

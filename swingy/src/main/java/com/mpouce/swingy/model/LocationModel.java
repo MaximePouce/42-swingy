@@ -4,6 +4,7 @@ import com.mpouce.swingy.controller.GameController;
 import com.mpouce.swingy.model.character.Character;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
 import com.mpouce.swingy.model.utils.DatabaseUtils;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
@@ -20,6 +21,39 @@ public class LocationModel {
             instance = new LocationModel();
         }
         return instance;
+    }
+
+    public void createAllLocations(Location[][] locations) {
+        String prepStatement = "INSERT INTO locations (x, y, map_id) VALUES (?, ?, ?)";
+        try {
+            Connection conn = DatabaseConnection.getInstance().getConnection();
+            conn.setAutoCommit(false);
+            PreparedStatement st = conn.prepareStatement(prepStatement, Statement.RETURN_GENERATED_KEYS);
+
+            for (int x = 0; x < locations.length; x++) {
+                for (int y = 0; y < locations.length; y++) {
+                    Location loc = locations[x][y];
+                    st.setInt(1, loc.getX());
+                    st.setInt(2, loc.getY());
+                    st.setInt(3, loc.getMapId());
+                    st.addBatch();
+                }
+            }
+            st.executeBatch();
+            conn.commit();
+
+            ResultSet rs = st.getGeneratedKeys();
+            for (int x = 0; x < locations.length; x++) {
+                for (int y = 0; y < locations.length; y++) {
+                    Location loc = locations[x][y];
+                    if (rs.next()) {
+                        loc.setId(rs.getInt(1));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int createLocation(Location newLocation) {
