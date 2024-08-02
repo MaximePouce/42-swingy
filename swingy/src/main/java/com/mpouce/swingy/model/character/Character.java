@@ -60,6 +60,10 @@ public class Character {
         return this.id;
     }
 
+    public void setId(int newId) {
+        this.id = newId;
+    }
+
     public CharacterClass getCharacterClass() {
         return this.characterClass;
     }
