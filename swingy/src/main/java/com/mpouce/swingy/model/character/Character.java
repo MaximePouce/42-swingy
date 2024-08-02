@@ -17,7 +17,9 @@ public class Character {
     private String name;
     private CharacterClass characterClass = null;
     private Stats stats;
+    private int level;
     private int experience;
+    private int nextLevelExp;
 
     private int currentHitPoints;
     private int maxHitPoints;
@@ -40,6 +42,9 @@ public class Character {
         this.name = name;
         this.experience = experience;
         this.characterClass = characterClass;
+        this.level = getLevel();
+        this.nextLevelExp = getRequiredExp(this.level + 1);
+
         int hitPoints = characterClass.getHitPoints();
         this.currentHitPoints = hitPoints;
         this.maxHitPoints = hitPoints;
@@ -100,6 +105,18 @@ public class Character {
 
     public void addExp(int expGained) {
         this.experience += expGained;
+        if (this.experience >= this.nextLevelExp) {
+            levelUp();
+        }
+    }
+
+    public void levelUp() {
+        this.maxHitPoints += this.characterClass.getHitPointsGrowth();
+        this.currentHitPoints += this.characterClass.getHitPointsGrowth();
+        this.attack += this.characterClass.getAttackGrowth();
+        this.defense += this.characterClass.getDefenseGrowth();
+        this.level++;
+        this.nextLevelExp = getRequiredExp(this.level + 1);
     }
 
     public int getLevel() {
@@ -123,6 +140,9 @@ public class Character {
     }
 
     public int getRequiredExp(int level) {
+        if (level == 0) {
+            return 0;
+        }
         return (level * 1000 + (level - 1) * (level - 1) * 450);
     }
 
