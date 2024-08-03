@@ -154,6 +154,7 @@ public class GameView {
         locationPanel.setLayout(new GridBagLayout());
         locationPanel.setOpaque(false);
         String imageName = "";
+        GridBagConstraints gbc = new GridBagConstraints();
 
         if (location.getX() == player.getLocation().getX() && location.getY() == player.getLocation().getY()) {
             imageName = player.getCharacterClass().getName().toLowerCase() + ".jpg";
@@ -161,12 +162,21 @@ public class GameView {
             locationPanel.setBorder(border);
         } else {
             imageName = location.getImageName(mapSize);
+            if (location.getCharacter() != null) {
+                JLabel enemyLabel = ContentFormatter.newCenteredLabel("<html>" + location.getCharacter().getName() + ", Level " + location.getCharacter().getLevel() + "</html>");
+                gbc.gridy = 0;
+                gbc.weighty = 0.3;
+                gbc.anchor = GridBagConstraints.PAGE_START;
+                locationPanel.add(enemyLabel, gbc);
+            }
         }
         if (!imageName.isEmpty()) {
             Image scaledImage = ImageUtil.getImage(imageName, 200, 200);
             ImageIcon scaledIcon = new ImageIcon(scaledImage);
             JLabel locationLabel = new JLabel(scaledIcon);
-            locationPanel.add(locationLabel, new GridBagConstraints());
+            gbc.gridy = 1;
+            gbc.weighty = 0.7;
+            locationPanel.add(locationLabel, gbc);
         }
 
         if (clickable) {
