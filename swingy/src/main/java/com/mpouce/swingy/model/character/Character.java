@@ -109,6 +109,10 @@ public class Character {
     }
 
     public void levelUp() {
+        if (this.characterClass == null) {
+            return ;
+        }
+
         this.maxHitPoints += this.characterClass.getHitPointsGrowth();
         this.currentHitPoints += this.characterClass.getHitPointsGrowth();
         this.attack += this.characterClass.getAttackGrowth();
@@ -159,7 +163,9 @@ public class Character {
         if (target == null) {
             throw new IllegalArgumentException("No target provided.");
         }
-        target.takeDamage(this.attack);
+        if (this.currentHitPoints > 0) {
+            target.takeDamage(this.attack);
+        }
     }
 
     public void takeDamage(int damage) {
