@@ -1,13 +1,18 @@
 package com.mpouce.swingy.model.character;
 
+import com.mpouce.swingy.controller.GameController;
+
 import com.mpouce.swingy.model.Location;
 import com.mpouce.swingy.model.artifact.Artifact;
+import com.mpouce.swingy.model.artifact.ArtifactModel;
 import com.mpouce.swingy.model.artifact.Armor;
 import com.mpouce.swingy.model.artifact.Helmet;
 import com.mpouce.swingy.model.artifact.Weapon;
 
 import com.mpouce.swingy.model.utils.DatabaseUtils;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
+
+import java.util.Random;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -93,7 +98,6 @@ public class Character {
     }
 
     public int getMaxHitPoints() {
-        return this.maxHitPoints;
         int totalMaxHitPoints = this.maxHitPoints;
         if (this.helmet != null) {
             totalMaxHitPoints += this.helmet.getBonus();
@@ -102,7 +106,6 @@ public class Character {
     }
 
     public int getHitPoints() {
-        return this.currentHitPoints;
         int totalHitPoints = this.currentHitPoints;
         if (this.helmet != null) {
             totalHitPoints += this.helmet.getBonus();
@@ -115,7 +118,6 @@ public class Character {
     }
 
     public int getAttack() {
-        return this.attack;
         int totalAttack = this.attack;
         if (this.weapon != null) {
             totalAttack += this.weapon.getBonus();
@@ -124,7 +126,6 @@ public class Character {
     }
 
     public int getDefense() {
-        return this.defense;
         int totalDefense = this.defense;
         if (this.armor != null) {
             totalDefense += this.armor.getBonus();
@@ -176,7 +177,6 @@ public class Character {
                 low = mid;
             }
         }
-
         return low;
     }
 
@@ -189,12 +189,29 @@ public class Character {
 
     public void battle(Character target) {
         System.out.println(this.name + " is fighting enemy " + target.getName());
+        int turn = 0;
         while(this.currentHitPoints > 0 && target.getHitPoints() > 0) {
+            turn++;
             attack(target);
             target.attack(this);
+            if (turn > 15) {
+                this.currentHitPoints = 0;
+            }
         }
         if (this.currentHitPoints > 0) {
             this.addExp(target.getExperience() / 5);
+            target.getLoot();
+        }
+    }
+
+    public void getLoot() {
+        Random rand = new Random();
+        int randomValue = rand.nextInt(42);
+        // Temporary value to test Artifact looting
+        if (randomValue % 1 == 0) {
+            System.out.println("generating random loot");
+            Artifact lootedArtifact = ArtifactModel.getInstance().getRandomArtifact(this.level);
+            GameController.getInstance().lootArtifact(lootedArtifact);
         }
     }
 
