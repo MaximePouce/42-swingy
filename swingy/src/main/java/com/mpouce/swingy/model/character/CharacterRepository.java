@@ -71,7 +71,6 @@ public class CharacterRepository {
                         st.setInt(5, character.getAttack());
                         st.setInt(6, character.getDefense());
                         st.addBatch();
-
                     }
                 }
             }
@@ -79,12 +78,14 @@ public class CharacterRepository {
             conn.commit();
 
             ResultSet rs = st.getGeneratedKeys();
+            conn.setAutoCommit(true);
             for (int x = 0; x < locations.length; x++) {
                 for (int y = 0; y < locations.length; y++) {
                     Character character = locations[x][y].getCharacter();
                     if (character != null) {
                         if (rs.next()) {
                             character.setId(rs.getInt(1));
+                            this.createCharacterLocation(rs.getInt(1), locations[x][y].getId());
                         }
                     }
                 }
