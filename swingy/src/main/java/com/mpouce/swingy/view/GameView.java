@@ -1,5 +1,6 @@
 package com.mpouce.swingy.view;
 
+import com.mpouce.swingy.model.artifact.Artifact;
 import com.mpouce.swingy.model.character.Character;
 import com.mpouce.swingy.model.Location;
 import com.mpouce.swingy.controller.GameController;
@@ -10,6 +11,7 @@ import com.mpouce.swingy.view.utils.BackgroundPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.ImageIcon;
 import javax.swing.border.Border;
@@ -184,12 +186,44 @@ public class GameView {
             locationPanel.setBorder(border);
             locationPanel.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
-                    System.out.println("Moving to " + location.getX() + ":" + location.getY());
-                    GameController.getInstance().playerMoveTo(location);
+                    int dialogResult = -1;
+                    boolean battle = location.getCharacter() != null;
+                    if (battle) {
+                        Image image = ImageUtil.getImage("battle.png", 100, 100);
+                        ImageIcon icon = new ImageIcon(image);
+                        dialogResult = JOptionPane.showConfirmDialog(Window.getInstance().getFrame(),
+                        "Engage battle against enemy ?",
+                        "Fighting the good fight",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, icon);
+                    }
+                    if (!battle || dialogResult == JOptionPane.YES_OPTION) {
+                        System.out.println("Moving to " + location.getX() + ":" + location.getY());
+                        GameController.getInstance().playerMoveTo(location);
+                    }
                 }
             });
         }
 
         return locationPanel;
+    }
+
+    public void showArtifactDialog(Character playerCharacter, Artifact lootedArtifact) {
+        Image image = ImageUtil.getImage("notfound.jpg", 100, 100);
+        ImageIcon icon = new ImageIcon(image);
+        String message = "Would you like to equip the artifact " 
+                        + lootedArtifact.getName() + ", level "
+                        + lootedArtifact.getLevel() + " "
+                        + lootedArtifact.getType() + " ?";
+
+        System.out.println(message);
+        int dialogResult = JOptionPane.showConfirmDialog(
+                                        Window.getInstance().getFrame(),
+                                        message,
+                                        "Artifact equipment", JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.QUESTION_MESSAGE, icon);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            GameController.getInstance().equipArtifact(lootedArtifact);
+        }
     }
 }
