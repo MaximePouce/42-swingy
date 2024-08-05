@@ -43,6 +43,7 @@ public class LocationModel {
             conn.commit();
 
             ResultSet rs = st.getGeneratedKeys();
+            conn.setAutoCommit(true);
             for (int x = 0; x < locations.length; x++) {
                 for (int y = 0; y < locations.length; y++) {
                     Location loc = locations[x][y];
