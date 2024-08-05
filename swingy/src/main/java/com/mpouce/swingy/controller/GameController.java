@@ -1,5 +1,6 @@
 package com.mpouce.swingy.controller;
 
+import com.mpouce.swingy.model.artifact.Artifact;
 import com.mpouce.swingy.model.character.Character;
 import com.mpouce.swingy.model.character.CharacterRepository;
 import com.mpouce.swingy.model.Location;
@@ -56,6 +57,24 @@ public class GameController {
             characterModel.updateCharacter(this.playerCharacter);
             gameView.showGame(this.playerCharacter, map.getLocations());
         }
+    }
+
+    public void lootArtifact(Artifact lootedArtifact) {
+        if (lootedArtifact == null) {
+            System.out.println("Artifact is null, returning.");
+            return ;
+        }
+        System.out.println("looting artifact " + lootedArtifact.getName());
+        gameView.showArtifactDialog(this.playerCharacter, lootedArtifact);
+    }
+
+    public void equipArtifact(Artifact lootedArtifact) {
+        if (lootedArtifact == null) {
+            System.out.println("Artifact is null, returning.");
+            return ;
+        }
+        System.out.println("equiping artifact " + lootedArtifact.getName());
+        this.playerCharacter.equipArtifact(lootedArtifact);
     }
 
     public int getPlayerId() {

@@ -1,6 +1,10 @@
 package com.mpouce.swingy.model.character;
 
 import com.mpouce.swingy.model.Location;
+import com.mpouce.swingy.model.artifact.Artifact;
+import com.mpouce.swingy.model.artifact.Armor;
+import com.mpouce.swingy.model.artifact.Helmet;
+import com.mpouce.swingy.model.artifact.Weapon;
 
 import com.mpouce.swingy.model.utils.DatabaseUtils;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
@@ -25,6 +29,9 @@ public class Character {
     private int defense;
 
     private Location location;
+    private Armor armor;
+    private Helmet helmet;
+    private Weapon weapon;
 
     public Character(String name, int experience, int hitPoints, int attack, int defense) {
         this.name = name;
@@ -73,12 +80,34 @@ public class Character {
         this.defense = defense;
     }
 
+    public void equipArtifact(Artifact artifact) {
+        if (artifact instanceof Armor) {
+            this.armor = (Armor) artifact;
+        } else if (artifact instanceof Helmet) {
+            this.helmet = (Helmet) artifact;
+        } else if (artifact instanceof Weapon) {
+            this.weapon = (Weapon) artifact;
+        } else {
+            throw new IllegalArgumentException("Unknown artifact type: " + artifact.getClass().getSimpleName());
+        }
+    }
+
     public int getMaxHitPoints() {
         return this.maxHitPoints;
+        int totalMaxHitPoints = this.maxHitPoints;
+        if (this.helmet != null) {
+            totalMaxHitPoints += this.helmet.getBonus();
+        }
+        return totalMaxHitPoints;
     }
 
     public int getHitPoints() {
         return this.currentHitPoints;
+        int totalHitPoints = this.currentHitPoints;
+        if (this.helmet != null) {
+            totalHitPoints += this.helmet.getBonus();
+        }
+        return totalHitPoints;
     }
 
     public int getExperience() {
@@ -87,10 +116,20 @@ public class Character {
 
     public int getAttack() {
         return this.attack;
+        int totalAttack = this.attack;
+        if (this.weapon != null) {
+            totalAttack += this.weapon.getBonus();
+        }
+        return totalAttack;
     }
 
     public int getDefense() {
         return this.defense;
+        int totalDefense = this.defense;
+        if (this.armor != null) {
+            totalDefense += this.armor.getBonus();
+        }
+        return totalDefense;
     }
 
     public Location getLocation() {
