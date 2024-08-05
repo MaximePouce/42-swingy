@@ -21,6 +21,8 @@ public class DatabaseUtils {
             initializeLocation(conn);
             initializeCharacters(conn);
             initializeCharacterLocation(conn);
+            initializeArtifacts(conn);
+            initializeCharacterArtifacts(conn);
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -105,6 +107,59 @@ public class DatabaseUtils {
                                 + ");";
 
         stmt.execute(createTableSQL);
+    }
+
+    private static void initializeArtifacts(Connection conn) throws SQLException {
+        Statement stmt = conn.createStatement();
+        String createTypeSQL = "DO $$ "
+                                + "BEGIN "
+                                + "    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'artifact_type') THEN "
+                                + "        CREATE TYPE artifact_type AS ENUM ('helmet', 'armor', 'weapon'); "
+                                + "    END IF; "
+                                + "END $$;";
+        stmt.execute(createTypeSQL);
+
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS artifacts ("
+                                + "id SERIAL PRIMARY KEY, "
+                                + "name VARCHAR(255) UNIQUE NOT NULL, "
+                                + "level INT NOT NULL, "
+                                + "type artifact_type NOT NULL, "
+                                + "bonus INT NOT NULL"
+                                + ");";
+        stmt.execute(createTableSQL);
+
+        insertArtifact(conn, "Leather Armor", 1, "armor");
+        insertArtifact(conn, "Hide Armor", 2, "armor");
+        insertArtifact(conn, "Half Plate Armor", 3, "armor");
+        insertArtifact(conn, "Helm of the watcher", 1, "helmet");
+        insertArtifact(conn, "Helm of Dread", 2, "helmet");
+        insertArtifact(conn, "Helm of the Gods", 3, "helmet");
+        insertArtifact(conn, "Longsword of Vengeance", 1, "weapon");
+        insertArtifact(conn, "Hellfire Battleaxe", 2, "weapon");
+        insertArtifact(conn, "Moonblade", 3, "weapon");
+    }
+
+    private static void initializeCharacterArtifacts(Connection conn) throws SQLException {
+        Statement stmt = conn.createStatement();
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS character_artifacts ("
+                                + "character_id INT REFERENCES characters(id) ON DELETE CASCADE, "
+                                + "artifact_id INT REFERENCES artifacts(id) ON DELETE CASCADE, "
+                                + "PRIMARY KEY (character_id, artifact_id)"
+                                + ");";
+        stmt.execute(createTableSQL);
+    }
+
+    private static void insertArtifact(Connection conn, String name, int level, String type) throws SQLException {
+        String insertArtifact = "INSERT INTO artifacts ("
+                                + "name, level, type, bonus) "
+                                + "VALUES (?, ?, ?::artifact_type, ?) "
+                                + "ON CONFLICT (name) DO NOTHING;";
+        PreparedStatement stmt = conn.prepareStatement(insertArtifact);
+        stmt.setString(1, name);
+        stmt.setInt(2, level);
+        stmt.setString(3, type);
+        stmt.setInt(4, 10 * (int) Math.pow(2, level - 1));
+        stmt.executeUpdate();
     }
 
     public static void printAllTableRows(Connection conn, String tableName) {
