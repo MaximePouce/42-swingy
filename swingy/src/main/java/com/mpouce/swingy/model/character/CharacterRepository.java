@@ -32,7 +32,7 @@ public class CharacterRepository {
         List<Character> characters = new ArrayList<>();
         try {
             Statement st = DatabaseConnection.getInstance().getConnection().createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM characters WHERE class_id IS NOT NULL;");
+            ResultSet rs = st.executeQuery("SELECT * FROM characters WHERE class_id IS NOT NULL ORDER BY id;");
             while (rs.next()) {
                 CharacterClass newClass = characterClasses.get(rs.getInt("class_id"));
                 String newName = rs.getString("name");
