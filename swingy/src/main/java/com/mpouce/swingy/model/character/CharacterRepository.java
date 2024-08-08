@@ -1,5 +1,7 @@
 package com.mpouce.swingy.model.character;
 
+import com.mpouce.swingy.model.artifact.Artifact;
+import com.mpouce.swingy.model.artifact.ArtifactFactory;
 import com.mpouce.swingy.model.utils.DatabaseUtils;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
 import com.mpouce.swingy.model.Location;
@@ -43,6 +45,7 @@ public class CharacterRepository {
                     rs.getInt("attack"),
                     rs.getInt("defense")
                     );
+                readCharacterArtifacts(newCharacter);
                 characters.add(newCharacter);
             }
         } catch (SQLException e) {
@@ -241,6 +244,28 @@ public class CharacterRepository {
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
+        }
+    }
+
+    public void readCharacterArtifacts(Character character) {
+        String query = "SELECT id, name, level, type, bonus FROM artifacts INNER JOIN character_artifacts "
+                        + "ON character_artifacts.character_id=? "
+                        + "WHERE artifacts.id = character_artifacts.artifact_id";
+        try {
+            PreparedStatement stmt = DatabaseConnection.getInstance().getConnection().prepareStatement(query);
+            stmt.setInt(1, character.getId());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String type = rs.getString("type");
+                String name = rs.getString("name");
+                int level = rs.getInt("level");
+                int bonus = rs.getInt("bonus");
+                Artifact newArtifact = ArtifactFactory.createArtifact(id, type, name, level, bonus);
+                character.equipArtifact(newArtifact);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
