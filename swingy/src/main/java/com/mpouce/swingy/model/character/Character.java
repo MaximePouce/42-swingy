@@ -130,12 +130,20 @@ public class Character {
         return totalMaxHitPoints;
     }
 
+    public int getBaseMaxHitPoints() {
+        return this.maxHitPoints;
+    }
+
     public int getHitPoints() {
         int totalHitPoints = this.currentHitPoints;
         if (this.helmet != null) {
             totalHitPoints += this.helmet.getBonus();
         }
         return totalHitPoints;
+    }
+
+    public int getBaseHitPoints() {
+        return this.current_hitpoints;
     }
 
     public int getExperience() {
@@ -150,12 +158,20 @@ public class Character {
         return totalAttack;
     }
 
+    public int getBaseAttack() {
+        return this.attack;
+    }
+
     public int getDefense() {
         int totalDefense = this.defense;
         if (this.armor != null) {
             totalDefense += this.armor.getBonus();
         }
         return totalDefense;
+    }
+
+    public int getBaseDefense() {
+        return this.defense;
     }
 
     public Location getLocation() {

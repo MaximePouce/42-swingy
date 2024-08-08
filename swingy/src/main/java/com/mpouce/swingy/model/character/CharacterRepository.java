@@ -235,10 +235,10 @@ public class CharacterRepository {
         try {
             PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
             st.setInt(1, character.getExperience());
-            st.setInt(2, character.getHitPoints());
-            st.setInt(3, character.getMaxHitPoints());
-            st.setInt(4, character.getAttack());
-            st.setInt(5, character.getDefense());
+            st.setInt(2, character.getBaseHitPoints());
+            st.setInt(3, character.getBaseMaxHitPoints());
+            st.setInt(4, character.getBaseAttack());
+            st.setInt(5, character.getBaseDefense());
             st.setInt(6, character.getId());
             st.executeUpdate();
         } catch (SQLException e) {
