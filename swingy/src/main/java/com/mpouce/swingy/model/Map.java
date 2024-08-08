@@ -32,7 +32,6 @@ public class Map {
         Location playerLocation = null;
         this.locations = null;
         this.playerId = character.getId();
-        this.size = (character.getLevel() - 1) * 5 + 10;
         readMap(this.playerId);
         if (this.locations != null) {
             Location playerFoundLocation = CharacterRepository.getInstance().readCharacterLocation(this.locations, this.playerId);
@@ -41,6 +40,7 @@ public class Map {
             }
             character.setLocation(playerFoundLocation);
         } else {
+            this.size = (character.getLevel() - 1) * 5 + 10;
             System.out.println("Creating new map with size " + this.size);
             this.createMap();
             this.locations = new Location[this.size][this.size];
@@ -67,16 +67,17 @@ public class Map {
 
     private void readMap(int characterId) {
         System.out.println("Reading map info");
-        String prepStatement = "SELECT locations.map_id "
-                                + "FROM character_location "
-                                + "JOIN locations ON character_location.location_id = locations.id "
-                                + "WHERE character_location.character_id=?";
+        String prepStatement = "SELECT maps.id, size FROM maps "
+                                + "INNER JOIN locations loc ON loc.map_id=maps.id "
+                                + "INNER JOIN character_location cl ON cl.location_id=loc.id "
+                                + "WHERE cl.character_id=?";
         try {
             PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
             st.setInt(1, characterId);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                this.mapId = rs.getInt("map_id");
+                this.mapId = rs.getInt("id");
+                this.size = rs.getInt("size");
                 System.out.println("map id: " + this.mapId + " with size " + this.size);
                 this.locations = LocationModel.getInstance().readAllMapLocations(this.mapId, this.size, characterId);
             }
