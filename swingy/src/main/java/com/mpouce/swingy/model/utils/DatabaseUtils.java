@@ -94,6 +94,10 @@ public class DatabaseUtils {
                                 + ");";
 
         stmt.execute(createTableSQL);
+        String[] enemies = {"Scavenger", "Bandit", "Outlaw", "Marauder", "Raider", "Brigand", "Thief", "Enforcer", "Warlord", "Dark Knight"};
+        for (int i = 0; i < enemies.length; i++) {
+            insertCharacter(conn, enemies[i], i);
+        }
     }
 
     private static void initializeCharacterLocation(Connection conn) throws SQLException {
@@ -159,6 +163,28 @@ public class DatabaseUtils {
         stmt.setInt(2, level);
         stmt.setString(3, type);
         stmt.setInt(4, 10 * (int) Math.pow(2, level - 1));
+        stmt.executeUpdate();
+    }
+
+    private static void insertCharacter(Connection conn, String name, int level) throws SQLException {
+        String insertCharacter = "INSERT INTO characters ( "
+                                + "name, experience, current_hitpoints, max_hitpoints, attack, defense) "
+                                + "SELECT ?, ?, ?, ?, ?, ? "
+                                + "WHERE NOT EXISTS ( "
+                                + "SELECT 1 FROM characters WHERE name=? AND experience=?);";
+        int experience = (level * 1000 + (level - 1) * (level - 1) * 450);
+        int hitPoints = 20 + 10 * level;
+        int attack = 10 + 5 * level;
+        int defense = 5 * level;
+        PreparedStatement stmt = conn.prepareStatement(insertCharacter);
+        stmt.setString(1, name);
+        stmt.setString(7, name);
+        stmt.setInt(2, experience);
+        stmt.setInt(8, experience);
+        stmt.setInt(3, hitPoints);
+        stmt.setInt(4, hitPoints);
+        stmt.setInt(5, attack);
+        stmt.setInt(6, defense);
         stmt.executeUpdate();
     }
 

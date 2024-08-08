@@ -5,6 +5,9 @@ import com.mpouce.swingy.model.character.Character;
 import com.mpouce.swingy.model.character.CharacterRepository;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
 import com.mpouce.swingy.model.utils.DatabaseUtils;
+
+import java.util.HashMap;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
@@ -44,15 +47,16 @@ public class Map {
             System.out.println("Creating new map with size " + this.size);
             this.createMap();
             this.locations = new Location[this.size][this.size];
+            HashMap<Integer, Character> enemies = CharacterRepository.getInstance().readAllEnemies();
 
             for (int x = 0; x < this.size; x++) {
                 for  (int y = 0; y < this.size; y++) {
                     this.locations[x][y] = new Location(x, y, this.mapId);
-                    this.locations[x][y].generateRandomEncounter(this.size);
+                    this.locations[x][y].generateRandomEncounter(this.size, enemies);
                 }
             }
             LocationModel.getInstance().createAllLocations(this.locations);
-            CharacterRepository.getInstance().createAllEnemies(this.locations);
+            CharacterRepository.getInstance().createAllCharacterLocations(this.locations);
             GameController.getInstance().createPlayerLocation(this.locations[this.size / 2][this.size / 2]);
         }
     }

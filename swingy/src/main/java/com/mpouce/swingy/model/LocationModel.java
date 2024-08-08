@@ -195,4 +195,15 @@ public class LocationModel {
             System.out.println("Database error: " + e.getMessage());
         }
     }
+
+    public static void deleteCharacterLocation(int locationId) {
+        String query = "DELETE FROM character_location WHERE location_id=" + locationId;
+        try {
+            Statement stmt = DatabaseConnection.getInstance().getConnection().createStatement();
+            stmt.execute(query);
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

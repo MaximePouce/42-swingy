@@ -54,6 +54,30 @@ public class CharacterRepository {
         return characters;
     }
 
+    public HashMap<Integer, Character> readAllEnemies() {
+        String query = "SELECT * FROM characters WHERE class_id IS NULL";
+        HashMap<Integer, Character> enemies = new HashMap<Integer, Character>();
+        try {
+            Statement stmt = DatabaseConnection.getInstance().getConnection().createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Character newCharacter = new Character(
+                    rs.getString("name"),
+                    rs.getInt("experience"),
+                    rs.getInt("max_hitpoints"),
+                    rs.getInt("attack"),
+                    rs.getInt("defense")
+                );
+                newCharacter.setId(rs.getInt("id"));
+                enemies.put(newCharacter.getLevel(), newCharacter);
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return enemies;
+    }
+
     public void createAllEnemies(Location[][] locations) {
         String prepStatement = "INSERT INTO characters "
                                 + "(name, experience, current_hitpoints, max_hitpoints, attack, defense) "
@@ -229,6 +253,34 @@ public class CharacterRepository {
             st.setInt(1, character.getId());
             st.setInt(2, character.getLocation().getId());
             st.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void createAllCharacterLocations(Location[][] locations) {
+        String prepStatement = "INSERT INTO character_location (character_id, location_id) VALUES (?, ?)";
+        try {
+            Connection conn = DatabaseConnection.getInstance().getConnection();
+            conn.setAutoCommit(false);
+            PreparedStatement st = conn.prepareStatement(prepStatement);
+
+            for (int x = 0; x < locations.length; x++) {
+                for (int y = 0; y < locations.length; y++) {
+                    Character character = locations[x][y].getCharacter();
+                    if (character != null) {
+                        st.setInt(1, character.getId());
+                        st.setInt(2, locations[x][y].getId());
+                        st.addBatch();
+                    }
+                }
+            }
+            st.executeBatch();
+            conn.commit();
+
+            ResultSet rs = st.getGeneratedKeys();
+            conn.setAutoCommit(true);
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
             e.printStackTrace();

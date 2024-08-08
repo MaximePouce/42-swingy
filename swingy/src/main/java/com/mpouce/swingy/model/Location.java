@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 import java.util.Random;
+import java.util.HashMap;
 
 public class Location {
     private int locationId;
@@ -25,7 +26,7 @@ public class Location {
         this.character = null;
     }
 
-    public void generateRandomEncounter(int mapSize) {
+    public void generateRandomEncounter(int mapSize, HashMap<Integer, Character> enemies) {
         if (this.x == 0 || this.x == mapSize - 1) {
             return ;
         }
@@ -42,7 +43,11 @@ public class Location {
             (int) (Math.pow(this.y - mapSize / 2, 2) * 100)
         );
         if ((randomValue) % 3 == 0) {
-            this.character = new Character("Bandit", experience, 20, 10, 10);
+            int level = Character.getLevel(experience);
+            while (enemies.get(level) == null) {
+                level--;
+            }
+            this.character = new Character(enemies.get(level));
         }
     }
 
@@ -82,7 +87,7 @@ public class Location {
         }
         playerCharacter.battle(this.character);
         if(this.character.getHitPoints() == 0) {
-            CharacterRepository.getInstance().deleteCharacter(this.character.getId());
+            LocationModel.getInstance().deleteCharacterLocation(this.locationId);
             this.character = null;
         }
     }

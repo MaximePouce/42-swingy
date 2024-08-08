@@ -47,6 +47,19 @@ public class Character {
         this.experience = experience;
     }
 
+    public Character(Character npc) {
+        if (npc == null) {
+            throw new IllegalArgumentException("Copying null character");
+        }
+        this.id = npc.id;
+        this.name = npc.name;
+        this.maxHitPoints = npc.maxHitPoints;
+        this.currentHitPoints = npc.currentHitPoints;
+        this.attack = npc.attack;
+        this.defense = npc.defense;
+        this.experience = npc.experience;
+    }
+
     public Character(String name, int experience, int id, CharacterClass characterClass) {
         this.id = id;
         this.name = name;
@@ -162,6 +175,10 @@ public class Character {
     }
 
     public int getLevel() {
+        return getLevel(this.experience);
+    }
+
+    public static int getLevel(int experience) {
         int low = 0;
         int high = 100;
 
@@ -180,7 +197,7 @@ public class Character {
         return low;
     }
 
-    public int getRequiredExp(int level) {
+    public static int getRequiredExp(int level) {
         if (level == 0) {
             return 0;
         }
