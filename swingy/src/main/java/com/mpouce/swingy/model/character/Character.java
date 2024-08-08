@@ -143,7 +143,7 @@ public class Character {
     }
 
     public int getBaseHitPoints() {
-        return this.current_hitpoints;
+        return this.currentHitPoints;
     }
 
     public int getExperience() {
