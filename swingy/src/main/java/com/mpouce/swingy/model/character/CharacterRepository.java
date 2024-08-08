@@ -320,4 +320,29 @@ public class CharacterRepository {
             e.printStackTrace();
         }
     }
+
+    public void createCharacterArtifact(int characterId, int artifactId) {
+        String query = "INSERT INTO character_artifacts (character_id, artifact_id) VALUES (?, ?)"
+                        + "ON CONFLICT (character_id, artifact_id) DO NOTHING;";
+        try {
+            PreparedStatement stmt = DatabaseConnection.getInstance().getConnection().prepareStatement(query);
+            stmt.setInt(1, characterId);
+            stmt.setInt(2, artifactId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCharacterArtifact(int characterId, int artifactId) {
+        String query = "DELETE FROM character_artifacts WHERE character_id=? AND artifact_id=?";
+        try {
+            PreparedStatement stmt = DatabaseConnection.getInstance().getConnection().prepareStatement(query);
+            stmt.setInt(1, characterId);
+            stmt.setInt(2, artifactId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
