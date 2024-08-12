@@ -1,10 +1,17 @@
 package com.mpouce.swingy.view.utils;
 
-import java.awt.GridBagConstraints;
+import com.mpouce.swingy.model.artifact.Artifact;
 
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Color;
+
+import javax.swing.border.Border;
+import javax.swing.BorderFactory;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 public class ContentFormatter {
     private ContentFormatter() {}
@@ -55,5 +62,49 @@ public class ContentFormatter {
         newLabel.setVerticalAlignment(SwingConstants.CENTER);
 
         return newLabel;
+    }
+
+    public static JPanel newArtifactPanel(String type, Artifact artifact) {
+        JPanel artifactPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        ImageIcon artifactIcon = new ImageIcon(ImageUtil.getImage(type + ".png", 50, 50));
+        JLabel lblArtifactIcon = new JLabel(artifactIcon);
+
+        String artifactInfo = (artifact == null) ? "No " + type + " equipped." : artifact.getName();
+        JLabel lblArtifactInfo = newCenteredLabel("<html>" + artifactInfo + "</html>");
+
+        int rarity = (artifact == null) ? 0 : artifact.getLevel();
+        Border artifactBorder = BorderFactory.createLineBorder(getRarityColor(rarity), 3);
+        artifactPanel.setBorder(artifactBorder);
+
+        gbc.weightx = 0.3;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        artifactPanel.add(lblArtifactIcon, gbc);
+
+        gbc.weightx = 0.7;
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        artifactPanel.add(lblArtifactInfo, gbc);
+
+        return artifactPanel;
+    }
+
+    public static Color getRarityColor(int rarity) {
+        Color rarityColor;
+        switch (rarity) {
+            case 1:
+                rarityColor = Color.BLUE;
+                break;
+            case 2:
+                rarityColor = Color.MAGENTA;
+                break;
+            case 3:
+                rarityColor = Color.YELLOW;
+                break;
+            default:
+                rarityColor = Color.GRAY;
+            }
+        return rarityColor;
     }
 }

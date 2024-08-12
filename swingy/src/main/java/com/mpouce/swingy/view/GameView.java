@@ -3,6 +3,11 @@ package com.mpouce.swingy.view;
 import com.mpouce.swingy.model.artifact.Artifact;
 import com.mpouce.swingy.model.character.Character;
 import com.mpouce.swingy.model.Location;
+import com.mpouce.swingy.model.artifact.Helmet;
+import com.mpouce.swingy.model.artifact.Armor;
+import com.mpouce.swingy.model.artifact.Weapon;
+import com.mpouce.swingy.model.artifact.Artifact;
+import com.mpouce.swingy.controller.CharacterController;
 import com.mpouce.swingy.controller.GameController;
 import com.mpouce.swingy.view.utils.ImageUtil;
 import com.mpouce.swingy.view.utils.ContentFormatter;
@@ -16,6 +21,8 @@ import javax.swing.JProgressBar;
 import javax.swing.ImageIcon;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
+
+import java.util.Random;
 
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -42,14 +49,14 @@ public class GameView {
         menuPanel.setLayout(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
-        // Display Character Name
+
         JLabel lblName = ContentFormatter.newCenteredLabel("<html>" + player.getName() + "</html>");
-        // Show Character image
+
         String imageName = player.getCharacterClass().getName().toLowerCase() + ".jpg";
         Image scaledImage = ImageUtil.getImage(imageName, 190, 190);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         JLabel lblImage = new JLabel(scaledIcon);
-        // Display HP Bar
+
         JPanel healthPanel = new JPanel(new GridLayout(2, 1));
         JProgressBar healthBar = new JProgressBar(0, player.getMaxHitPoints());
         healthBar.setForeground(Color.green);
@@ -57,34 +64,55 @@ public class GameView {
         healthPanel.add(healthBar);
         JLabel healthLabel = ContentFormatter.newCenteredLabel("<html>" + player.getHitPoints() + "/" + player.getMaxHitPoints() + "</html>");
         healthPanel.add(healthLabel);
-        // Display ATK / DEF
+
         JPanel statsPanel = new JPanel(new GridLayout(2, 1));
         JLabel lblAtk = ContentFormatter.newCenteredLabel("<html>" + player.getAttack() + " ATK</html>");
         JLabel lblDef = ContentFormatter.newCenteredLabel("<html>" + player.getDefense() + " DEF</html>");
         statsPanel.add(lblAtk);
         statsPanel.add(lblDef);
-        // Buttons
-        JButton btnMenu = new JButton("Back to Menu");
 
-        gbc.weighty = 0.2;
+        GridLayout equipLayout = new GridLayout(3, 1);
+        equipLayout.setHgap(10);
+        JPanel equipPanel = new JPanel(equipLayout);
+        JPanel helmetPanel = ContentFormatter.newArtifactPanel("helmet", player.getHelmet());
+        JPanel armorPanel = ContentFormatter.newArtifactPanel("armor", player.getArmor());
+        JPanel weaponPanel = ContentFormatter.newArtifactPanel("weapon", player.getWeapon());
+
+        equipPanel.add(helmetPanel);
+        equipPanel.add(armorPanel);
+        equipPanel.add(weaponPanel);
+
+        JButton btnMenu = new JButton("Back to Menu");
+        btnMenu.addActionListener(e -> {
+            CharacterController.getInstance().startMenu();
+        });
+
+        gbc.weighty = 0.1;
         gbc.anchor = GridBagConstraints.PAGE_END;
         menuPanel.add(lblName, gbc);
 
         gbc.weighty = 0.2;
         gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.PAGE_START;
         menuPanel.add(lblImage, gbc);
 
-        gbc.weighty = 0.2;
+        gbc.weighty = 0.1;
         gbc.gridy = 2;
-        gbc.anchor = GridBagConstraints.PAGE_START;
         menuPanel.add(healthPanel, gbc);
 
-        gbc.weighty = 0.2;
+        gbc.weighty = 0.1;
         gbc.gridy = 3;
         menuPanel.add(statsPanel, gbc);
 
-        gbc.weighty = 0.2;
+        gbc.weighty = 0.3;
         gbc.gridy = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        menuPanel.add(equipPanel, gbc);
+
+        gbc.weighty = 0.2;
+        gbc.gridy = 5;
+        gbc.fill = GridBagConstraints.NONE;
         menuPanel.add(btnMenu, gbc);
 
         Window window = Window.getInstance();
@@ -192,12 +220,15 @@ public class GameView {
                         Image image = ImageUtil.getImage("battle.png", 100, 100);
                         ImageIcon icon = new ImageIcon(image);
                         dialogResult = JOptionPane.showConfirmDialog(Window.getInstance().getFrame(),
-                        "Engage battle against enemy ?",
+                        "Engage battle against " + location.getCharacter().getName() + " ?",
                         "Fighting the good fight",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE, icon);
                     }
-                    if (!battle || dialogResult == JOptionPane.YES_OPTION) {
+                    if (!battle || dialogResult == JOptionPane.YES_OPTION || new Random().nextInt(42) % 2 == 0) {
+                        if (dialogResult == JOptionPane.NO_OPTION) {
+                            System.out.println("You weren't able to flee. Fight for your life!");
+                        }
                         System.out.println("Moving to " + location.getX() + ":" + location.getY());
                         GameController.getInstance().playerMoveTo(location);
                     }
