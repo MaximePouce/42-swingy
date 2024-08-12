@@ -257,4 +257,14 @@ public class GameView {
             GameController.getInstance().equipArtifact(lootedArtifact);
         }
     }
+
+    public void showDeathScreen(Character player) {
+        String message = player.getName() + " died fighting a " + player.getLocation().getCharacter().getName() + ".\n And will be remembered for atleast a day.";
+        JOptionPane.showMessageDialog(
+                    Window.getInstance().getFrame(),
+                    message,
+                    "You died.",
+                    JOptionPane.INFORMATION_MESSAGE);
+        CharacterController.getInstance().startMenu();
+    }
 }

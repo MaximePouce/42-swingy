@@ -53,10 +53,18 @@ public class GameController {
             CharacterController.getInstance().startMenu();
         } else {
             newLocation.resolve(this.playerCharacter);
+            if (this.playerCharacter.isDead()) {
+                playerDeath();
+            }
             characterModel.updateCharacterLocation(this.playerCharacter);
             characterModel.updateCharacter(this.playerCharacter);
             gameView.showGame(this.playerCharacter, map.getLocations());
         }
+    }
+
+    private void playerDeath() {
+        Map.getInstance().deleteMap();
+        gameView.showDeathScreen(this.playerCharacter);
     }
 
     public void lootArtifact(Artifact lootedArtifact) {

@@ -110,6 +110,11 @@ public class Character {
         return this.weapon;
     }
 
+    public boolean isDead() {
+        int min = (this.helmet == null) ? 0 : this.helmet.getBonus() * -1;
+        return (this.currentHitPoints <= min);
+    }
+
     public void equipArtifact(Artifact artifact) {
         if (artifact instanceof Armor) {
             if (this.armor != null) {
