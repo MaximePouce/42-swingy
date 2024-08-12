@@ -98,6 +98,18 @@ public class Character {
         this.defense = defense;
     }
 
+    public Armor getArmor() {
+        return this.armor;
+    }
+
+    public Helmet getHelmet() {
+        return this.helmet;
+    }
+
+    public Weapon getWeapon() {
+        return this.weapon;
+    }
+
     public void equipArtifact(Artifact artifact) {
         if (artifact instanceof Armor) {
             if (this.armor != null) {
