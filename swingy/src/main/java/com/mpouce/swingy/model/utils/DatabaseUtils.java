@@ -135,11 +135,11 @@ public class DatabaseUtils {
         insertArtifact(conn, "Leather Armor", 1, "armor");
         insertArtifact(conn, "Hide Armor", 2, "armor");
         insertArtifact(conn, "Half Plate Armor", 3, "armor");
-        insertArtifact(conn, "Helm of the watcher", 1, "helmet");
+        insertArtifact(conn, "Watcher Helm", 1, "helmet");
         insertArtifact(conn, "Helm of Dread", 2, "helmet");
         insertArtifact(conn, "Helm of the Gods", 3, "helmet");
-        insertArtifact(conn, "Longsword of Vengeance", 1, "weapon");
-        insertArtifact(conn, "Hellfire Battleaxe", 2, "weapon");
+        insertArtifact(conn, "Longsword", 1, "weapon");
+        insertArtifact(conn, "Hellfire Axe", 2, "weapon");
         insertArtifact(conn, "Moonblade", 3, "weapon");
     }
 
@@ -173,9 +173,9 @@ public class DatabaseUtils {
                                 + "WHERE NOT EXISTS ( "
                                 + "SELECT 1 FROM characters WHERE name=? AND experience=?);";
         int experience = (level * 1000 + (level - 1) * (level - 1) * 450);
-        int hitPoints = 20 + 10 * level;
-        int attack = 10 + 5 * level;
-        int defense = 5 * level;
+        int hitPoints = 20 + 20 * level;
+        int attack = 10 + 10 * level;
+        int defense = 10 * level;
         PreparedStatement stmt = conn.prepareStatement(insertCharacter);
         stmt.setString(1, name);
         stmt.setString(7, name);
