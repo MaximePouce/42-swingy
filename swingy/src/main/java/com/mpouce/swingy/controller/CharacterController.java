@@ -53,6 +53,9 @@ public class CharacterController {
 
     public void selectCharacter(Character character) {
         System.out.println("Selected character #" + character.getId());
+        if (character.isDead()) {
+            return ;
+        }
         GameController.getInstance().startGame(character);
     }
 
