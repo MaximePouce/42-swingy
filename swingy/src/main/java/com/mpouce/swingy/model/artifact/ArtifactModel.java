@@ -23,12 +23,12 @@ public class ArtifactModel {
 
     public Artifact getRandomArtifact(int lootLevel) {
         String query = "SELECT * FROM artifacts "
-                        + "WHERE level > ? "
+                        + "WHERE level < ? "
                         + "ORDER BY RANDOM() "
                         + "LIMIT 1;";
         try {
             PreparedStatement stmt = DatabaseConnection.getInstance().getConnection().prepareStatement(query);
-            stmt.setInt(1, 0);
+            stmt.setInt(1, lootLevel);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("id");

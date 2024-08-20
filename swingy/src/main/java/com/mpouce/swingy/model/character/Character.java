@@ -269,10 +269,10 @@ public class Character {
     public void getLoot() {
         Random rand = new Random();
         int randomValue = rand.nextInt(42);
-        // Temporary value to test Artifact looting
-        if (randomValue % 1 == 0) {
+
+        if (randomValue % 5 == 0) {
             System.out.println("generating random loot");
-            Artifact lootedArtifact = ArtifactModel.getInstance().getRandomArtifact(this.level);
+            Artifact lootedArtifact = ArtifactModel.getInstance().getRandomArtifact((this.level + 1) / 2 + 1);
             GameController.getInstance().lootArtifact(lootedArtifact);
         }
     }
