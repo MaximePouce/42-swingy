@@ -63,10 +63,10 @@ public class CharacterView {
             charactersPanel.setLayout(new BoxLayout(charactersPanel, BoxLayout.X_AXIS));
 
             if (characters.isEmpty()) {
-                JLabel lblCharacters = new JLabel("No character found. Please create one to continue.", SwingConstants.CENTER);
+                JLabel lblCharacters = ContentFormatter.newCenteredLabel("<html>No character found. Please create one to continue.</html>");
                 lblCharacters.setFont(new Font("Serif", Font.BOLD, 42));
                 lblCharacters.setForeground(Color.cyan);
-                charactersPanel.add(lblCharacters, BorderLayout.CENTER);
+                charactersPanel.add(lblCharacters);
             } else {
                 for (Character character : characters) {
                     charactersPanel.add(createCharacterPanel(character));
@@ -77,9 +77,8 @@ public class CharacterView {
             scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
             scrollPanel.getHorizontalScrollBar().setUnitIncrement(16);
 
-            JLabel lblTitle = new JLabel("Select your character");
-            lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-            lblTitle.setVerticalAlignment(SwingConstants.CENTER);
+            JLabel lblTitle = ContentFormatter.newCenteredLabel("<html>Select your character</html>");
+            lblTitle.setFont(new Font("Serif", Font.BOLD, 21));
 
             JPanel titlePanel = new JPanel();
             titlePanel.setLayout(new GridBagLayout());
