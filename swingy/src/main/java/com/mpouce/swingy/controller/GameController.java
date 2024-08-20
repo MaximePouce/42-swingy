@@ -65,6 +65,7 @@ public class GameController {
     private void playerDeath() {
         Map.getInstance().deleteMap();
         gameView.showDeathScreen(this.playerCharacter);
+        CharacterController.getInstance().deleteCharacter(this.playerCharacter.getId());
     }
 
     public void lootArtifact(Artifact lootedArtifact) {
