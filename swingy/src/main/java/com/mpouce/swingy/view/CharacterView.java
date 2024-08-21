@@ -250,6 +250,7 @@ public class CharacterView {
                             System.out.println("Invalid character ID provided.");
                         } else {
                             CharacterController.getInstance().selectCharacter(characters.get(number));
+                            break;
                         }
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid input.");
