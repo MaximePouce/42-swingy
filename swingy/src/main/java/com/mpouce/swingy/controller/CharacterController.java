@@ -42,6 +42,8 @@ public class CharacterController {
     public void newCharacter(String name, int classId) {
         if (name.isEmpty()) {
             name = "Unknown Adventurer";
+        } else if (name.length() > 15) {
+            name = name.substring(0, 14);
         }
         int charId = characterModel.createCharacter(name, classId);
         if (charId == -1) {
