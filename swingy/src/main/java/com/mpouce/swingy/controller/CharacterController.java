@@ -72,4 +72,8 @@ public class CharacterController {
         characterModel.deleteCharacter(characterId);
         this.getCharacters();
     }
+
+    public void closeScanner() {
+        this.characterView.closeScanner();
+    }
 }

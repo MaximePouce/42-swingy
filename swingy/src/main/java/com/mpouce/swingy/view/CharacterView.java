@@ -385,5 +385,7 @@ public class CharacterView {
         // classId = Read input to select class
         // name = Read input
         // this.controller.newCharacter(name, classId);
+    public void closeScanner() {
+        this.scanner.close();
     }
 }

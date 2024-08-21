@@ -268,4 +268,8 @@ public class GameView {
                     JOptionPane.INFORMATION_MESSAGE);
         CharacterController.getInstance().startMenu();
     }
+
+    public void closeScanner() {
+        this.scanner.close();
+    }
 }

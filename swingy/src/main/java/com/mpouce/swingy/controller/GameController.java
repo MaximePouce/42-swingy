@@ -89,4 +89,8 @@ public class GameController {
     public int getPlayerId() {
         return this.playerCharacter.getId();
     }
+
+    public void closeScanner() {
+        this.gameView.closeScanner();
+    }
 }
