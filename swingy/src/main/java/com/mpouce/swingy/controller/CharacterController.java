@@ -50,7 +50,7 @@ public class CharacterController {
             System.out.println("An error occured during the character creation.");
             return;
         }
-        // selectCharacter(charId);
+        getCharacters();
     }
 
     public void selectCharacter(Character character) {
