@@ -10,6 +10,7 @@ import com.mpouce.swingy.view.utils.ImageUtil;
 
 import java.util.List;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -39,11 +40,9 @@ import javax.swing.border.EmptyBorder;
 import javax.imageio.ImageIO;
 
 public class CharacterView {
-
-    private CharacterController controller;
-
-    public CharacterView(CharacterController ctrl) {
-        this.controller = ctrl;
+    private Scanner scanner = null;
+    public CharacterView() {
+        scanner = new Scanner(System.in);
     }
 
     public void showCharacters(List<Character> characters) {
@@ -91,13 +90,13 @@ public class CharacterView {
             JButton createButton = new JButton("Create new Character");
             createButton.setPreferredSize(new Dimension(200, 20));
             createButton.addActionListener(e -> {
-                this.controller.createCharacter();
+                CharacterController.getInstance().createCharacter();
             });
 
             JButton menuButton = new JButton("Back to Menu");
             menuButton.setPreferredSize(new Dimension(200, 20));
             menuButton.addActionListener(e -> {
-                this.controller.startMenu();
+                CharacterController.getInstance().startMenu();
             });
 
             JPanel buttonPanel = new JPanel();
@@ -161,12 +160,12 @@ public class CharacterView {
 
         JButton btnSelect = new JButton("Select");
         btnSelect.addActionListener(e -> {
-            this.controller.selectCharacter(character);
+            CharacterController.getInstance().selectCharacter(character);
         });
 
         JButton btnDelete = new JButton("Delete");
         btnDelete.addActionListener(e -> {
-            this.controller.deleteCharacter(character.getId());
+            CharacterController.getInstance().deleteCharacter(character.getId());
         });
 
         gbc.weightx = 0.5;
@@ -264,13 +263,13 @@ public class CharacterView {
                 String charName = textName.getText().trim();
                 System.out.println("Selected class ID :" + classId);
                 System.out.println("Name : " + charName);
-                this.controller.newCharacter(charName, classId);
+                CharacterController.getInstance().newCharacter(charName, classId);
             });
 
             JButton backButton = new JButton("Back");
             backButton.setPreferredSize(new Dimension(200, 20));
             backButton.addActionListener(e -> {
-                this.controller.getCharacters();
+                CharacterController.getInstance().getCharacters();
             });
 
             buttonPanel.setLayout(new GridBagLayout());

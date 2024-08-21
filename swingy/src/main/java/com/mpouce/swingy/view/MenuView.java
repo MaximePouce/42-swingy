@@ -24,10 +24,7 @@ import java.io.IOException;
 import java.lang.UnsupportedOperationException;
 
 public class MenuView {
-    private CharacterController controller;
-
-    public MenuView(CharacterController ctrl) {
-        this.controller = ctrl;
+    public MenuView() {
     }
 
     public void showMenu() {
@@ -43,7 +40,7 @@ public class MenuView {
         SwingUtilities.invokeLater(() -> {
             JButton btnStart = new JButton("Start Game");
             btnStart.addActionListener(e -> {
-                this.controller.getCharacters();
+                CharacterController.getInstance().getCharacters();
             });
 
             JButton btnGitHub = new JButton("SwinGitHub");
@@ -100,6 +97,6 @@ public class MenuView {
     private void showMenuConsole() {
         System.out.println("Welcome to Swingy !");
         System.out.println("For your safety, please wear your seatbelt.");
-        this.controller.getCharacters();
+        CharacterController.getInstance().getCharacters();
     }
 }

@@ -30,7 +30,7 @@ public class GameController {
 
     public void startGame(Character character) {
         this.playerCharacter = character;
-        this.gameView = new GameView(this);
+        this.gameView = new GameView();
         Map.getInstance().initialize(this.playerCharacter);
         gameView.showGame(this.playerCharacter, Map.getInstance().getLocations());
     }

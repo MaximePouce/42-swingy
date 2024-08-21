@@ -23,6 +23,7 @@ import javax.swing.border.Border;
 import javax.swing.BorderFactory;
 
 import java.util.Random;
+import java.util.Scanner;
 
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
@@ -34,10 +35,10 @@ import java.awt.event.MouseAdapter;
 
 
 public class GameView {
-    private GameController controller;
+    private Scanner scanner = null;
 
-    public GameView(GameController gameController) {
-        this.controller = gameController;
+    public GameView() {
+        scanner = new Scanner(System.in);
     }
 
     public void displaySideMenu(Character player) {

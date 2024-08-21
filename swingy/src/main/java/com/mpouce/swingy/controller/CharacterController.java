@@ -22,8 +22,8 @@ public class CharacterController {
     private CharacterController() {
         characterModel = CharacterRepository.getInstance();
         characterClassModel = new CharacterClassRepository();
-        characterView = new CharacterView(this);
-        menuView = new MenuView(this);
+        characterView = new CharacterView();
+        menuView = new MenuView();
     }
 
     public static CharacterController getInstance() {
