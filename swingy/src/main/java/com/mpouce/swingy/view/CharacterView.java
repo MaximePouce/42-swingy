@@ -212,19 +212,54 @@ public class CharacterView {
     }
 
     private void showCharactersConsole(List<Character> characters) {
+        System.out.println("Available options:");
+        System.out.println("GUI: Open the GUI interface");
+        System.out.println("New: create a new Character");
+        System.out.println("You can select a character by entering its id.");
         if (characters.isEmpty()) {
             System.out.println("No character found.");
         }
         else {
             System.out.println("Listing characters.");
-            for (Character character : characters) {
-                System.out.print("character #" + character.getId() + ": ");
+            for (int i = 0; i < characters.size(); i++) {
+                Character character = characters.get(i);
+                System.out.print("character #" + i + ": ");
                 System.out.print(character.getName());
                 System.out.print(", Level " + character.getLevel() + " ");
                 System.out.println(character.getCharacterClass().getName());
             }
         }
-        System.out.println("Create New Character");
+        while (true) {
+            try {
+                System.out.print("Selection: ");
+                String input = scanner.next();
+                if (input.equalsIgnoreCase("gui")) {
+                    System.out.println("switching to GUI");
+                    Settings.getInstance().setGui(true);
+                    showCharactersGui(characters);
+                    break;
+                } else if (input.equalsIgnoreCase("new")) {
+                    CharacterController.getInstance().createCharacter();
+                    break;
+                } else {
+                    try {
+                        int number = Integer.parseInt(input);
+                        if (characters.isEmpty()) {
+                            System.out.println("No character currently created. Type 'new' to create a new one.");
+                        } else if (number < 0 || number >= characters.size()) {
+                            System.out.println("Invalid character ID provided.");
+                        } else {
+                            CharacterController.getInstance().selectCharacter(characters.get(number));
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input.");
+                    }
+                }
+            } catch (java.util.NoSuchElementException e) {
+                System.err.println("Ctrl + D detected");
+                System.exit(1);
+            }
+        }
     }
 
     public void createCharacter(HashMap<Integer, CharacterClass> characterClasses) {
@@ -370,7 +405,12 @@ public class CharacterView {
     }
 
     private void createCharacterConsole(HashMap<Integer, CharacterClass> characterClasses) {
-        System.out.println("Select a class from the list below:");
+        System.out.println("Creating a new Character !");
+        System.out.println("Available options:");
+        System.out.println("GUI: Open the GUI interface");
+        System.out.println("Menu: Go back to character selection");
+        System.out.println("Select a class from the list below by entering its id:");
+        int selectedClassId = -1;
         for (CharacterClass charClass : characterClasses.values()) {
             System.out.println("class #" + charClass.getId() + ": " + charClass.getName());
             System.out.print("starting stats: ");
@@ -382,9 +422,63 @@ public class CharacterView {
             System.out.print(charClass.getAttackGrowth() + " ATK ");
             System.out.println(charClass.getDefenseGrowth() + " DEF");
         }
-        // classId = Read input to select class
-        // name = Read input
-        // this.controller.newCharacter(name, classId);
+        
+        while (true) {
+            try {
+                String input = scanner.next();
+                if (input.equalsIgnoreCase("gui")) {
+                    System.out.println("switching to GUI");
+                    Settings.getInstance().setGui(true);
+                    createCharacterGui(characterClasses);
+                    break;
+                } else if (input.equalsIgnoreCase("menu")) {
+                    CharacterController.getInstance().startMenu();
+                    return;
+                } else {
+                    try {
+                        int number = Integer.parseInt(input);
+                        if (!characterClasses.containsKey(number)) {
+                            System.out.println("Invalid class ID provided.");
+                        } else {
+                            selectedClassId = number;
+                            break;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input.");
+                    }
+                }
+            } catch (java.util.NoSuchElementException e) {
+                System.err.println("Ctrl + D detected");
+                System.exit(1);
+            }
+        }
+        System.out.print(characterClasses.get(selectedClassId).getName() + " selected.");
+        System.out.println("Available options:");
+        System.out.println("GUI: Open the GUI interface");
+        System.out.println("Back: Go back to the class selection");
+        System.out.print("Enter a name. Names longer than 15 characters will be truncated: ");
+        while (true) {
+            try {
+                String input = scanner.next();
+                if (input.equalsIgnoreCase("gui")) {
+                    System.out.println("switching to GUI");
+                    Settings.getInstance().setGui(true);
+                    createCharacterGui(characterClasses);
+                    break;
+                } else if (input.equalsIgnoreCase("back")) {
+                    createCharacterConsole(characterClasses);
+                    break;
+                } else {
+                    CharacterController.getInstance().newCharacter(input, selectedClassId);
+                    break;
+                }
+            } catch (java.util.NoSuchElementException e) {
+                System.err.println("Ctrl + D detected");
+                System.exit(1);
+            }
+        }
+    }
+
     public void closeScanner() {
         this.scanner.close();
     }
