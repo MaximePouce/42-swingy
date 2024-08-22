@@ -51,6 +51,16 @@ public class Window {
         });
     }
 
+    public void closeWindow() {
+        SwingUtilities.invokeLater(() -> {
+            resetView();
+            System.out.println("Making window disappear");
+            this.frame.setVisible(false);
+            // this.frame.dispose();
+            System.out.println("Window has been disposed.");
+        });
+    }
+
     public void addSideColumns() {
         SwingUtilities.invokeLater(() -> {
             JPanel rightPanel = new JPanel();
