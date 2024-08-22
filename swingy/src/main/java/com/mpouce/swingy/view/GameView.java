@@ -149,8 +149,16 @@ public class GameView {
     }
 
     public void displaySideMenuConsole(Character player) {
-        // Just show player info
+        System.out.println("Player information:");
+        System.out.println(player.getName() + ": Level " + player.getLevel() + " " + player.getCharacterClass().getName());
+        System.out.println("XP: " + player.getRequiredExp(player.getLevel()) + "/" + player.getRequiredExp(player.getLevel() + 1));
+        System.out.println("HP: " + player.getHitPoints() + "/" + player.getMaxHitPoints());
+        System.out.println("\nSTATS:");
+        System.out.println("ATK: " + player.getAttack());
+        System.out.println("DEF: " + player.getDefense());
         System.out.println("Helmet: " + player.getHelmetInfo());
+        System.out.println("Armor: " + player.getArmorInfo());
+        System.out.println("Weapon: " + player.getWeaponInfo());
     }
 
 
