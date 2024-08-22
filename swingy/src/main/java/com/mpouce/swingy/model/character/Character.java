@@ -175,6 +175,30 @@ public class Character {
         return totalAttack;
     }
 
+    public String getHelmetInfo() {
+        if (this.helmet == null) {
+            return "No helmet equipped.";
+        }
+        String info = this.helmet.getName() + ", Level " + this.helmet.getLevel();
+        return info;
+    }
+
+    public String getArmorInfo() {
+        if (this.armor == null) {
+            return "No armor equipped.";
+        }
+        String info = this.armor.getName() + ", Level " + this.armor.getLevel();
+        return info;
+    }
+
+    public String getWeaponInfo() {
+        if (this.weapon == null) {
+            return "No weapon equipped.";
+        }
+        String info = this.weapon.getName() + ", Level " + this.weapon.getLevel();
+        return info;
+    }
+
     public int getBaseAttack() {
         return this.attack;
     }
