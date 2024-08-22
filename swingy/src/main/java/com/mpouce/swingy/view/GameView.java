@@ -13,6 +13,8 @@ import com.mpouce.swingy.view.utils.ImageUtil;
 import com.mpouce.swingy.view.utils.ContentFormatter;
 import com.mpouce.swingy.view.utils.BackgroundPanel;
 
+import com.mpouce.swingy.Settings;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,6 +23,7 @@ import javax.swing.JProgressBar;
 import javax.swing.ImageIcon;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
+import javax.swing.SwingUtilities;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -41,11 +44,15 @@ public class GameView {
         scanner = new Scanner(System.in);
     }
 
-    public void displaySideMenu(Character player) {
-        displaySideMenuGui(player);
+    public void displaySideMenu(Character player, Location[][] map) {
+        if (Settings.getInstance().getUseGui()) {
+            displaySideMenuGui(player, map);
+        } else {
+            displaySideMenuConsole(player);
+        }
     }
 
-    public void displaySideMenuGui(Character player) {
+    public void displaySideMenuGui(Character player, Location[][] map) {
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new GridBagLayout());
 
@@ -83,10 +90,27 @@ public class GameView {
         equipPanel.add(armorPanel);
         equipPanel.add(weaponPanel);
 
+        JPanel buttonPanel = new JPanel();
+
+        JButton btnConsole = new JButton("Console View");
+        btnConsole.addActionListener(e -> {
+            System.out.println("Switching to Console view");
+            SwingUtilities.invokeLater(() -> {
+                Window.getInstance().closeWindow();
+                SwingUtilities.invokeLater(() -> {
+                    Settings.getInstance().setGui(false);
+                    showGame(player, map);
+                });
+            });
+        });
+
         JButton btnMenu = new JButton("Back to Menu");
         btnMenu.addActionListener(e -> {
             CharacterController.getInstance().startMenu();
         });
+
+        buttonPanel.add(btnConsole);
+        buttonPanel.add(btnMenu);
 
         gbc.weighty = 0.1;
         gbc.anchor = GridBagConstraints.PAGE_END;
@@ -114,7 +138,7 @@ public class GameView {
         gbc.weighty = 0.2;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.NONE;
-        menuPanel.add(btnMenu, gbc);
+        menuPanel.add(buttonPanel, gbc);
 
         Window window = Window.getInstance();
         // window.resetView();
@@ -131,7 +155,7 @@ public class GameView {
     public void showGame(Character player, Location[][] map) {
         Window window = Window.getInstance();
         window.resetView();
-        displaySideMenuGui(player);
+        displaySideMenuGui(player, map);
 
         JPanel mainPanel = new JPanel(new GridBagLayout());
         JPanel expPanel = new JPanel(new GridBagLayout());
