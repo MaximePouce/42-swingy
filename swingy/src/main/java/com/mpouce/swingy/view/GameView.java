@@ -150,9 +150,19 @@ public class GameView {
 
     public void displaySideMenuConsole(Character player) {
         // Just show player info
+        System.out.println("Helmet: " + player.getHelmetInfo());
     }
 
+
     public void showGame(Character player, Location[][] map) {
+        if (Settings.getInstance().getUseGui()) {
+            showGameGui(player, map);
+        } else {
+            showGameConsole(player, map);
+        }
+    }
+
+    public void showGameGui(Character player, Location[][] map) {
         Window window = Window.getInstance();
         window.resetView();
         displaySideMenuGui(player, map);
@@ -264,6 +274,119 @@ public class GameView {
         return locationPanel;
     }
 
+    private void showMapConsole(Character player, Location[][] map, int playerX, int playerY, int mapSize) {
+        for (int i = 1; i > -2; i--) {
+            for (int j = 1; j > -2; j--) {
+                System.out.print("\t");
+                showLocationConsole(map[i + playerX][j + playerY], player, mapSize);
+                System.out.print("\t");
+            }
+            System.out.println("\n");
+        }
+    }
+
+    public void showGameConsole(Character player, Location[][] map) {
+        System.out.println("Game Map:\n");
+        int playerX = player.getLocation().getX();
+        int playerY = player.getLocation().getY();
+        int mapSize = map.length;
+        Location newLocation;
+        showMapConsole(player, map, playerX, playerY, mapSize);
+        while (true) {
+            System.out.println("Available commands:");
+            System.out.println("Gui\t: Switch to GUI view.");
+            System.out.println("Map\t: Shows the map.");
+            System.out.println("Info\t: Shows your character infos.");
+            System.out.println("Menu\t: Return to main menu.");
+            System.out.println("Exit\t: Quit the game.");
+            System.out.print("Where do you want to go ? (N/S/E/W) :");
+            try {
+                String input = this.scanner.next();
+                if (input.equalsIgnoreCase("gui")) {
+                    System.out.println("switching to GUI");
+                    Settings.getInstance().setGui(true);
+                    showGame(player, map);
+                    break;
+                } else if (input.equalsIgnoreCase("map")) {
+                    showMapConsole(player, map, playerX, playerY, mapSize);
+                } else if (input.equalsIgnoreCase("info")) {
+                    displaySideMenuConsole(player);
+                } else if (input.equalsIgnoreCase("menu")) {
+                    CharacterController.getInstance().startMenu();
+                    break;
+                } else if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("quit")) {
+                    System.exit(0);
+                } else if (input.matches("(?i)^(north|n)$")) {
+                    newLocation = map[playerX + 1][playerY];
+                    if (confirmMoveToConsole(newLocation)) {
+                        GameController.getInstance().playerMoveTo(newLocation);
+                        break;
+                    }
+                } else if (input.matches("(?i)^(south|s)$")) {
+                    newLocation = map[playerX - 1][playerY];
+                    if (confirmMoveToConsole(newLocation)) {
+                        GameController.getInstance().playerMoveTo(newLocation);
+                        break;
+                    }
+                } else if (input.matches("(?i)^(east|e)$")) {
+                    newLocation = map[playerX][playerY - 1];
+                    if (confirmMoveToConsole(newLocation)) {
+                        GameController.getInstance().playerMoveTo(newLocation);
+                        break;
+                    }
+                } else if (input.matches("(?i)^(west|w)$")) {
+                    newLocation = map[playerX][playerY + 1];
+                    if (confirmMoveToConsole(newLocation)) {
+                        GameController.getInstance().playerMoveTo(newLocation);
+                        break;
+                    }
+                } else {
+                    System.err.println("Invalid Input, expected N/S/E/W");
+                }
+            } catch (java.util.NoSuchElementException e) {
+                System.err.println("Ctrl + D detected");
+                System.exit(1);
+            }
+        }
+    }
+
+    private boolean confirmMoveToConsole(Location location) {
+        Character locationEnemy = location.getCharacter();
+        if (locationEnemy == null) {
+            return true;
+        }
+        while (true) {
+            System.out.print("Would you like to try and flee the fight ? (Y/N): ");
+            try {
+                String input = this.scanner.next();
+                if (input.matches("(?i)(no|n)$")) {
+                    return true;
+                } else if (input.matches("(?i)(yes|y)$")) {
+                    if (new Random().nextInt(42) % 2 == 0) {
+                        return false;
+                    }
+                    System.out.println("You were unable to flee. Fight for your life!");
+                    return true;
+                }
+            } catch (java.util.NoSuchElementException e) {
+                System.err.println("Ctrl + D detected");
+                System.exit(1);
+            }
+        }
+    }
+
+    private void showLocationConsole(Location location, Character player, int mapSize) {
+        if (location.isFinish(mapSize)) {
+            System.out.print("\t\tExit\t\t");
+            return ;
+        } else if (location.getX() == player.getLocation().getX() && location.getY() == player.getLocation().getY()) {
+            System.out.print("\t\tYou\t\t");
+            return ;
+        }
+        String locationInfo = location.getCharacter() == null ? "\tNo Enemy\t" : location.getCharacter().getName() + " Level " + location.getCharacter().getLevel();
+        System.out.print(locationInfo);
+    }
+
     public void showArtifactDialog(Character playerCharacter, Artifact lootedArtifact) {
         Image image = ImageUtil.getImage("notfound.jpg", 100, 100);
         ImageIcon icon = new ImageIcon(image);
@@ -272,24 +395,52 @@ public class GameView {
                         + lootedArtifact.getLevel() + " "
                         + lootedArtifact.getType() + " ?";
 
-        System.out.println(message);
-        int dialogResult = JOptionPane.showConfirmDialog(
-                                        Window.getInstance().getFrame(),
-                                        message,
-                                        "Artifact equipment", JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.QUESTION_MESSAGE, icon);
-        if (dialogResult == JOptionPane.YES_OPTION) {
-            GameController.getInstance().equipArtifact(lootedArtifact);
+        if (Settings.getInstance().getUseGui()) {
+            int dialogResult = JOptionPane.showConfirmDialog(
+                Window.getInstance().getFrame(),
+                message,
+                "Artifact equipment", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, icon);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                GameController.getInstance().equipArtifact(lootedArtifact);
+            }
+        } else {
+            System.out.print(message + " (Yes/No): ");
+            while (true) {
+                try {
+                    String input = scanner.next();
+                if (input.equalsIgnoreCase("gui")) {
+                    System.out.println("switching to GUI");
+                    Settings.getInstance().setGui(true);
+                    showArtifactDialog(playerCharacter, lootedArtifact);
+                    break;
+                } else if (input.matches("(?i)^(yes|y)$")) {
+                    GameController.getInstance().equipArtifact(lootedArtifact);
+                    break;
+                } else if (input.matches("(?i)^(no|n)$")) {
+                    break;
+                } else {
+                    System.err.println("Invalid Input, expected Y/N");
+                }
+                } catch (java.util.NoSuchElementException e) {
+                    System.err.println("Ctrl + D detected");
+                    System.exit(1);
+                }
+            }
         }
     }
 
     public void showDeathScreen(Character player) {
         String message = player.getName() + " died fighting a " + player.getLocation().getCharacter().getName() + ".\n And will be remembered for atleast a day.";
-        JOptionPane.showMessageDialog(
-                    Window.getInstance().getFrame(),
-                    message,
-                    "You died.",
-                    JOptionPane.INFORMATION_MESSAGE);
+        if (Settings.getInstance().getUseGui()) {
+            JOptionPane.showMessageDialog(
+                        Window.getInstance().getFrame(),
+                        message,
+                        "You died.",
+                        JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            System.out.println(message);
+        }
         CharacterController.getInstance().startMenu();
     }
 
