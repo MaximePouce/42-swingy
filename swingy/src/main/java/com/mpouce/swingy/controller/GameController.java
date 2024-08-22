@@ -91,6 +91,8 @@ public class GameController {
     }
 
     public void closeScanner() {
-        this.gameView.closeScanner();
+        if (this.gameView != null) {
+            this.gameView.closeScanner();
+        }
     }
 }

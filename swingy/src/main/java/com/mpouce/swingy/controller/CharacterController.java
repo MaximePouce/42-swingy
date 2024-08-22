@@ -76,6 +76,8 @@ public class CharacterController {
     }
 
     public void closeScanner() {
-        this.characterView.closeScanner();
+        if (this.characterView != null) {
+            this.characterView.closeScanner();
+        }
     }
 }
