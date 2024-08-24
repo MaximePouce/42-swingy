@@ -215,6 +215,7 @@ public class CharacterView {
         System.out.println("Available options:");
         System.out.println("GUI: Open the GUI interface");
         System.out.println("New: create a new Character");
+        System.out.println("Exit: Quit the game");
         System.out.println("You can select a character by entering its id.");
         if (characters.isEmpty()) {
             System.out.println("No character found.");
@@ -241,6 +242,8 @@ public class CharacterView {
                 } else if (input.equalsIgnoreCase("new")) {
                     CharacterController.getInstance().createCharacter();
                     break;
+                } else if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("quit")) {
+                    System.exit(0);
                 } else {
                     try {
                         int number = Integer.parseInt(input);
@@ -410,6 +413,7 @@ public class CharacterView {
         System.out.println("Available options:");
         System.out.println("GUI: Open the GUI interface");
         System.out.println("Menu: Go back to character selection");
+        System.out.println("Exit: Quit the game");
         System.out.println("Select a class from the list below by entering its id:");
         int selectedClassId = -1;
         for (CharacterClass charClass : characterClasses.values()) {
@@ -435,6 +439,8 @@ public class CharacterView {
                 } else if (input.equalsIgnoreCase("menu")) {
                     CharacterController.getInstance().startMenu();
                     return;
+                } else if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("quit")) {
+                    System.exit(0);
                 } else {
                     try {
                         int number = Integer.parseInt(input);
@@ -457,6 +463,7 @@ public class CharacterView {
         System.out.println("Available options:");
         System.out.println("GUI: Open the GUI interface");
         System.out.println("Back: Go back to the class selection");
+        System.out.println("Exit: Quit the game");
         System.out.print("Enter a name. Names longer than 15 characters will be truncated: ");
         while (true) {
             try {
@@ -469,6 +476,8 @@ public class CharacterView {
                 } else if (input.equalsIgnoreCase("back")) {
                     createCharacterConsole(characterClasses);
                     break;
+                } else if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("quit")) {
+                    System.exit(0);
                 } else {
                     CharacterController.getInstance().newCharacter(input, selectedClassId);
                     break;
