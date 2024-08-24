@@ -259,8 +259,8 @@ public class CharacterView {
                         System.out.println("Invalid input.");
                     }
                 }
-            } catch (java.util.NoSuchElementException e) {
-                System.err.println("Ctrl + D detected");
+            } catch (java.util.NoSuchElementException | java.lang.IllegalStateException e) {
+                System.err.println("Scanner interrupted, exiting.");
                 System.exit(1);
             }
         }
@@ -416,16 +416,19 @@ public class CharacterView {
         System.out.println("Exit: Quit the game");
         System.out.println("Select a class from the list below by entering its id:");
         int selectedClassId = -1;
+        System.out.println("\t  HP\tATK\tDEF");
+        System.out.println("-----------------------------------------------------------------");
         for (CharacterClass charClass : characterClasses.values()) {
             System.out.println("class #" + charClass.getId() + ": " + charClass.getName());
-            System.out.print("starting stats: ");
-            System.out.print(charClass.getHitPoints() + " HP ");
-            System.out.print(charClass.getAttack() + " ATK ");
-            System.out.println(charClass.getDefense() + " DEF");
-            System.out.print("stat growth: ");
-            System.out.print(charClass.getHitPointsGrowth() + " HP ");
-            System.out.print(charClass.getAttackGrowth() + " ATK ");
-            System.out.println(charClass.getDefenseGrowth() + " DEF");
+            System.out.print("Stats\t: ");
+            System.out.print(charClass.getHitPoints() + "\t");
+            System.out.print(charClass.getAttack() + "\t");
+            System.out.println(charClass.getDefense() + "");
+            System.out.print("Growth\t: ");
+            System.out.print(charClass.getHitPointsGrowth() + "\t");
+            System.out.print(charClass.getAttackGrowth() + "\t");
+            System.out.println(charClass.getDefenseGrowth() + "");
+            System.out.println("-----------------------------------------------------------------");
         }
         
         while (true) {
