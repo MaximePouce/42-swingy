@@ -3,6 +3,7 @@ package com.mpouce.swingy.view;
 import com.mpouce.swingy.Settings;
 import com.mpouce.swingy.controller.CharacterController;
 import com.mpouce.swingy.view.utils.BackgroundPanel;
+import com.mpouce.swingy.view.utils.ContentFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -56,6 +57,18 @@ public class MenuView {
                 }
             });
 
+            JButton btnConsole = new JButton("Console View");
+            btnConsole.addActionListener(e -> {
+                System.out.println("Switching to Console view");
+                SwingUtilities.invokeLater(() -> {
+                    Window.getInstance().closeWindow();
+                    SwingUtilities.invokeLater(() -> {
+                        Settings.getInstance().setGui(false);
+                        showMenuConsole();
+                    });
+                });
+            });
+
             JPanel menuPanel = new JPanel();
             menuPanel.setLayout(new BorderLayout());
             menuPanel.setOpaque(false);
@@ -65,7 +78,7 @@ public class MenuView {
 
             GridBagConstraints c = new GridBagConstraints();
             c.gridx = 0;
-            c.gridy = 1;
+            c.gridy = 0;
             c.anchor = GridBagConstraints.CENTER;
             c.insets = new Insets(20, 20, 20, 20);
 
@@ -73,12 +86,18 @@ public class MenuView {
             buttonPanel.add(btnStart, c);
 
             c.gridx = 0;
+            c.gridy = 1;
+            c.anchor = GridBagConstraints.CENTER;
+            c.insets = new Insets(20, 20, 20, 20);
+            buttonPanel.add(btnGitHub, c);
+
+            c.gridx = 0;
             c.gridy = 2;
             c.anchor = GridBagConstraints.CENTER;
             c.insets = new Insets(20, 20, 100, 20);
-            buttonPanel.add(btnGitHub, c);
+            buttonPanel.add(btnConsole, c);
 
-            JLabel lblTitle = new JLabel("SWINGY", SwingConstants.CENTER);
+            JLabel lblTitle = ContentFormatter.newCenteredLabel("<html>SWINGY</html>");
             lblTitle.setFont(new Font("Serif", Font.BOLD, 56));
             lblTitle.setForeground(Color.cyan);
             lblTitle.setBorder(BorderFactory.createEmptyBorder(200, 20, 20, 20));
