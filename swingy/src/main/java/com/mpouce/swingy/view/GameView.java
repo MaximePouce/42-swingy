@@ -351,8 +351,8 @@ public class GameView {
                 } else {
                     System.err.println("Invalid Input, expected N/S/E/W");
                 }
-            } catch (java.util.NoSuchElementException e) {
-                System.err.println("Ctrl + D detected");
+            } catch (java.util.NoSuchElementException | java.lang.IllegalStateException e) {
+                System.err.println("Scanner interrupted, exiting.");
                 System.exit(1);
             }
         }
@@ -376,8 +376,8 @@ public class GameView {
                     System.out.println("You were unable to flee. Fight for your life!");
                     return true;
                 }
-            } catch (java.util.NoSuchElementException e) {
-                System.err.println("Ctrl + D detected");
+            } catch (java.util.NoSuchElementException | java.lang.IllegalStateException e) {
+                System.err.println("Scanner interrupted, exiting.");
                 System.exit(1);
             }
         }
@@ -430,8 +430,8 @@ public class GameView {
                 } else {
                     System.err.println("Invalid Input, expected Y/N");
                 }
-                } catch (java.util.NoSuchElementException e) {
-                    System.err.println("Ctrl + D detected");
+                } catch (java.util.NoSuchElementException | java.lang.IllegalStateException e) {
+                    System.err.println("Scanner interrupted, exiting.");
                     System.exit(1);
                 }
             }

@@ -457,8 +457,8 @@ public class CharacterView {
                         System.out.println("Invalid input.");
                     }
                 }
-            } catch (java.util.NoSuchElementException e) {
-                System.err.println("Ctrl + D detected");
+            } catch (java.util.NoSuchElementException | java.lang.IllegalStateException e) {
+                System.err.println("Scanner interrupted, exiting.");
                 System.exit(1);
             }
         }
@@ -485,8 +485,8 @@ public class CharacterView {
                     CharacterController.getInstance().newCharacter(input, selectedClassId);
                     break;
                 }
-            } catch (java.util.NoSuchElementException e) {
-                System.err.println("Ctrl + D detected");
+            } catch (java.util.NoSuchElementException | java.lang.IllegalStateException e) {
+                System.err.println("Scanner interrupted, exiting.");
                 System.exit(1);
             }
         }
