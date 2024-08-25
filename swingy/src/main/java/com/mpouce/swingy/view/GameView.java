@@ -260,7 +260,7 @@ public class GameView {
                     int dialogResult = -1;
                     boolean battle = location.getCharacter() != null;
                     if (battle) {
-                        Image image = ImageUtil.getImage("battle.png", 100, 100);
+                        Image image = ImageUtil.getImage("icons/battle.png", 100, 100);
                         ImageIcon icon = new ImageIcon(image);
                         dialogResult = JOptionPane.showConfirmDialog(Window.getInstance().getFrame(),
                         "Engage battle against " + location.getCharacter().getName() + " ?",

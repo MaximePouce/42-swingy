@@ -10,7 +10,7 @@ public class ImageUtil {
         ImageIcon imageIcon;
         Image image;
         try {
-            imageIcon = new ImageIcon(imageName);
+            imageIcon = new ImageIcon("images/" + imageName);
             image = imageIcon.getImage();
 
             if (image.getWidth(null) == -1) {
@@ -18,7 +18,7 @@ public class ImageUtil {
             }
         } catch (Exception e) {
             e.getMessage();
-            imageIcon = new ImageIcon("notfound.jpg");
+            imageIcon = new ImageIcon("images/notfound.jpg");
             image = imageIcon.getImage();
         }
         return image.getScaledInstance(width, height, Image.SCALE_SMOOTH);

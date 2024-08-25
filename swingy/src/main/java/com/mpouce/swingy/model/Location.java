@@ -98,10 +98,10 @@ public class Location {
 
     public String getImageName(int mapSize) {
         if (isFinish(mapSize)) {
-            return "finish.png";
+            return "icons/finish.png";
         }
         if (this.character != null) {
-            return "battle.png";
+            return "icons/battle.png";
         }
         return "";
     }

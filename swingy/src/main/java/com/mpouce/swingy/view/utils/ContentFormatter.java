@@ -68,7 +68,7 @@ public class ContentFormatter {
         JPanel artifactPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        ImageIcon artifactIcon = new ImageIcon(ImageUtil.getImage(type + ".png", 50, 50));
+        ImageIcon artifactIcon = new ImageIcon(ImageUtil.getImage("icons/" + type + ".png", 50, 50));
         JLabel lblArtifactIcon = new JLabel(artifactIcon);
 
         String artifactInfo = (artifact == null) ? "No " + type + " equipped." : artifact.getName();
