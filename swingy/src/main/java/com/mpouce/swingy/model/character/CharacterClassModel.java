@@ -11,13 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-public class CharacterClassRepository {
+public class CharacterClassModel {
 
-    public CharacterClassRepository() {
+    public CharacterClassModel() {}
 
-    }
-
-    public HashMap<Integer, CharacterClass> getClasses() {
+    public static HashMap<Integer, CharacterClass> getClasses() {
         HashMap<Integer, CharacterClass> classes = new HashMap<Integer, CharacterClass>();
         try {
             Statement st = DatabaseConnection.getInstance().getConnection().createStatement();

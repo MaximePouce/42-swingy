@@ -3,7 +3,7 @@ package com.mpouce.swingy.controller;
 import com.mpouce.swingy.model.character.Character;
 import com.mpouce.swingy.model.character.CharacterClass;
 import com.mpouce.swingy.model.character.CharacterRepository;
-import com.mpouce.swingy.model.character.CharacterClassRepository;
+import com.mpouce.swingy.model.character.CharacterClassModel;
 import com.mpouce.swingy.view.CharacterView;
 import com.mpouce.swingy.view.MenuView;
 
@@ -17,11 +17,9 @@ public class CharacterController {
     private CharacterView characterView;
     private MenuView menuView;
     private CharacterRepository characterModel;
-    private CharacterClassRepository characterClassModel;
 
     private CharacterController() {
         characterModel = CharacterRepository.getInstance();
-        characterClassModel = new CharacterClassRepository();
         characterView = new CharacterView();
         menuView = new MenuView();
     }
@@ -34,7 +32,7 @@ public class CharacterController {
     }
 
     public void getCharacters() {
-        HashMap<Integer, CharacterClass> characterClasses = characterClassModel.getClasses();
+        HashMap<Integer, CharacterClass> characterClasses = CharacterClassModel.getClasses();
         List<Character> characters = characterModel.getCharacters(characterClasses);
         characterView.showCharacters(characters);
     }
@@ -62,7 +60,7 @@ public class CharacterController {
     }
 
     public void createCharacter() {
-        HashMap<Integer, CharacterClass> characterClasses = characterClassModel.getClasses();
+        HashMap<Integer, CharacterClass> characterClasses = CharacterClassModel.getClasses();
         characterView.createCharacter(characterClasses);
     }
 
