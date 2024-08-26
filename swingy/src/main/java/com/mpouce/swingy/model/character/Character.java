@@ -296,7 +296,7 @@ public class Character {
 
         if (randomValue % 5 == 0) {
             System.out.println("generating random loot");
-            Artifact lootedArtifact = ArtifactModel.getInstance().getRandomArtifact((this.level + 1) / 2 + 1);
+            Artifact lootedArtifact = ArtifactModel.getRandomArtifact((this.level + 1) / 2 + 1);
             GameController.getInstance().lootArtifact(lootedArtifact);
         }
     }

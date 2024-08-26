@@ -10,18 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class ArtifactModel {
-    private static ArtifactModel instance;
 
     private ArtifactModel() {}
 
-    public static ArtifactModel getInstance() {
-        if (instance == null) {
-            instance = new ArtifactModel();
-        }
-        return instance;
-    }
-
-    public Artifact getRandomArtifact(int lootLevel) {
+    public static Artifact getRandomArtifact(int lootLevel) {
         String query = "SELECT * FROM artifacts "
                         + "WHERE level < ? "
                         + "ORDER BY RANDOM() "
