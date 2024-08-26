@@ -118,22 +118,22 @@ public class Character {
     public void equipArtifact(Artifact artifact) {
         if (artifact instanceof Armor) {
             if (this.armor != null) {
-                CharacterRepository.getInstance().deleteCharacterArtifact(this.id, this.armor.getId());
+                CharacterModel.deleteCharacterArtifact(this.id, this.armor.getId());
             }
             this.armor = (Armor) artifact;
-            CharacterRepository.getInstance().createCharacterArtifact(this.id, this.armor.getId());
+            CharacterModel.createCharacterArtifact(this.id, this.armor.getId());
         } else if (artifact instanceof Helmet) {
             if (this.helmet != null) {
-                CharacterRepository.getInstance().deleteCharacterArtifact(this.id, this.helmet.getId());
+                CharacterModel.deleteCharacterArtifact(this.id, this.helmet.getId());
             }
             this.helmet = (Helmet) artifact;
-            CharacterRepository.getInstance().createCharacterArtifact(this.id, this.helmet.getId());
+            CharacterModel.createCharacterArtifact(this.id, this.helmet.getId());
         } else if (artifact instanceof Weapon) {
             if (this.weapon != null) {
-                CharacterRepository.getInstance().deleteCharacterArtifact(this.id, this.weapon.getId());
+                CharacterModel.deleteCharacterArtifact(this.id, this.weapon.getId());
             }
             this.weapon = (Weapon) artifact;
-            CharacterRepository.getInstance().createCharacterArtifact(this.id, this.weapon.getId());
+            CharacterModel.createCharacterArtifact(this.id, this.weapon.getId());
         } else {
             throw new IllegalArgumentException("Unknown artifact type: " + artifact.getClass().getSimpleName());
         }

@@ -16,19 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 
-public class CharacterRepository {
-    private static CharacterRepository instance;
+public class CharacterModel {
 
-    private CharacterRepository() {}
+    private CharacterModel() {}
 
-    public static CharacterRepository getInstance() {
-        if (instance == null) {
-            instance = new CharacterRepository();
-        }
-        return instance;
-    }
-
-    public List<Character> getCharacters(HashMap<Integer, CharacterClass> characterClasses) {
+    public static List<Character> getCharacters(HashMap<Integer, CharacterClass> characterClasses) {
         List<Character> characters = new ArrayList<>();
         try {
             Statement st = DatabaseConnection.getInstance().getConnection().createStatement();
@@ -54,7 +46,7 @@ public class CharacterRepository {
         return characters;
     }
 
-    public HashMap<Integer, Character> readAllEnemies() {
+    public static HashMap<Integer, Character> readAllEnemies() {
         String query = "SELECT * FROM characters WHERE class_id IS NULL";
         HashMap<Integer, Character> enemies = new HashMap<Integer, Character>();
         try {
@@ -78,7 +70,7 @@ public class CharacterRepository {
         return enemies;
     }
 
-    public void createAllEnemies(Location[][] locations) {
+    public static void createAllEnemies(Location[][] locations) {
         String prepStatement = "INSERT INTO characters "
                                 + "(name, experience, current_hitpoints, max_hitpoints, attack, defense) "
                                 + "VALUES (?, ?, ?, ?, ?, ?)";
@@ -112,7 +104,7 @@ public class CharacterRepository {
                     if (character != null) {
                         if (rs.next()) {
                             character.setId(rs.getInt(1));
-                            this.createCharacterLocation(rs.getInt(1), locations[x][y].getId());
+                            createCharacterLocation(rs.getInt(1), locations[x][y].getId());
                         }
                     }
                 }
@@ -122,7 +114,7 @@ public class CharacterRepository {
         }
     }
 
-    public void createEnemy(Character enemy, int locationId) {
+    public static void createEnemy(Character enemy, int locationId) {
         int newId = -1;
         String prepStatement = "INSERT INTO characters "
                                 + "(name, experience, current_hitpoints, max_hitpoints, attack, defense) "
@@ -145,13 +137,13 @@ public class CharacterRepository {
             }
             rs.close();
             enemy.setId(newId);
-            this.createCharacterLocation(newId, locationId);
+            createCharacterLocation(newId, locationId);
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());
         }
     }
 
-    public void createCharacterLocation(int characterId, int locationId) {
+    public static void createCharacterLocation(int characterId, int locationId) {
         String prepStatement = "INSERT INTO character_location "
                             + "(character_id, location_id) "
                             + "VALUES (?, ?)";
@@ -166,7 +158,7 @@ public class CharacterRepository {
         }
     }
 
-    public int createCharacter(String name, int classId) {
+    public static int createCharacter(String name, int classId) {
         int newId = -1;
         String prepStatement = "INSERT INTO characters (name, experience, current_hitpoints, max_hitpoints, attack, defense, class_id) VALUES (?, 0, ?, ?, ?, ?, ?);";
         try {
@@ -198,7 +190,7 @@ public class CharacterRepository {
         return newId;
     }
 
-    public void deleteCharacter(int characterId) {
+    public static void deleteCharacter(int characterId) {
         String prepStatement = "DELETE FROM characters WHERE id=?";
         try {
             PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
@@ -209,7 +201,7 @@ public class CharacterRepository {
         }
     }
 
-    public Location readCharacterLocation(Location[][] locations, int characterId) {
+    public static Location readCharacterLocation(Location[][] locations, int characterId) {
         Location newLocation = null;
         String prepStatement = "SELECT x, y FROM locations INNER JOIN character_location "
                                 + "ON character_location.character_id=? "
@@ -227,7 +219,7 @@ public class CharacterRepository {
         return newLocation;
     }
 
-    public void updateCharacter(Character character) {
+    public static void updateCharacter(Character character) {
         String prepStatement = "UPDATE characters SET "
                                 + "experience=?, current_hitpoints=?, "
                                 + "max_hitpoints=?, attack=?, defense=? "
@@ -246,7 +238,7 @@ public class CharacterRepository {
         }
     }
 
-    public void createCharacterLocation(Character character) {
+    public static void createCharacterLocation(Character character) {
         String prepStatement = "INSERT INTO character_location(character_id, location_id) VALUES(?, ?)";
         try {
             PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
@@ -259,7 +251,7 @@ public class CharacterRepository {
         }
     }
 
-    public void createAllCharacterLocations(Location[][] locations) {
+    public static void createAllCharacterLocations(Location[][] locations) {
         String prepStatement = "INSERT INTO character_location (character_id, location_id) VALUES (?, ?)";
         try {
             Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -287,7 +279,7 @@ public class CharacterRepository {
         }
     }
 
-    public void updateCharacterLocation(Character character) {
+    public static void updateCharacterLocation(Character character) {
         String prepStatement = "UPDATE character_location SET location_id=? WHERE character_id = ?";
         try {
             PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
@@ -299,7 +291,7 @@ public class CharacterRepository {
         }
     }
 
-    public void readCharacterArtifacts(Character character) {
+    public static void readCharacterArtifacts(Character character) {
         String query = "SELECT id, name, level, type, bonus FROM artifacts INNER JOIN character_artifacts "
                         + "ON character_artifacts.character_id=? "
                         + "WHERE artifacts.id = character_artifacts.artifact_id";
@@ -321,7 +313,7 @@ public class CharacterRepository {
         }
     }
 
-    public void createCharacterArtifact(int characterId, int artifactId) {
+    public static void createCharacterArtifact(int characterId, int artifactId) {
         String query = "INSERT INTO character_artifacts (character_id, artifact_id) VALUES (?, ?)"
                         + "ON CONFLICT (character_id, artifact_id) DO NOTHING;";
         try {
@@ -334,7 +326,7 @@ public class CharacterRepository {
         }
     }
 
-    public void deleteCharacterArtifact(int characterId, int artifactId) {
+    public static void deleteCharacterArtifact(int characterId, int artifactId) {
         String query = "DELETE FROM character_artifacts WHERE character_id=? AND artifact_id=?";
         try {
             PreparedStatement stmt = DatabaseConnection.getInstance().getConnection().prepareStatement(query);

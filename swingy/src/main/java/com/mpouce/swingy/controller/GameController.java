@@ -2,7 +2,7 @@ package com.mpouce.swingy.controller;
 
 import com.mpouce.swingy.model.artifact.Artifact;
 import com.mpouce.swingy.model.character.Character;
-import com.mpouce.swingy.model.character.CharacterRepository;
+import com.mpouce.swingy.model.character.CharacterModel;
 import com.mpouce.swingy.model.Location;
 import com.mpouce.swingy.model.Map;
 import com.mpouce.swingy.view.GameView;
@@ -10,11 +10,9 @@ import com.mpouce.swingy.view.GameView;
 public class GameController {
     private static GameController instance;
     private Character playerCharacter;
-    private CharacterRepository characterModel;
     private GameView gameView;
 
     private GameController() {
-        characterModel = CharacterRepository.getInstance();
     }
 
     public static GameController getInstance() {
@@ -37,7 +35,7 @@ public class GameController {
 
     public void createPlayerLocation(Location newLocation) {
         this.playerCharacter.setLocation(newLocation);
-        characterModel.createCharacterLocation(this.playerCharacter);
+        CharacterModel.createCharacterLocation(this.playerCharacter);
     }
 
     public void playerMoveTo(Location newLocation) {
@@ -48,7 +46,7 @@ public class GameController {
             System.out.println("Congrats on winning this round !");
             this.playerCharacter.addExp(mapSize * 100);
             this.playerCharacter.healDamage(this.playerCharacter.getMaxHitPoints());
-            characterModel.updateCharacter(this.playerCharacter);
+            CharacterModel.updateCharacter(this.playerCharacter);
             map.deleteMap();
             CharacterController.getInstance().startMenu();
         } else {
@@ -56,8 +54,8 @@ public class GameController {
             if (this.playerCharacter.isDead()) {
                 playerDeath();
             }
-            characterModel.updateCharacterLocation(this.playerCharacter);
-            characterModel.updateCharacter(this.playerCharacter);
+            CharacterModel.updateCharacterLocation(this.playerCharacter);
+            CharacterModel.updateCharacter(this.playerCharacter);
             gameView.showGame(this.playerCharacter, map.getLocations());
         }
     }

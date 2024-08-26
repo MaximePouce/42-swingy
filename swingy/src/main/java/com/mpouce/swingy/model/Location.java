@@ -1,7 +1,6 @@
 package com.mpouce.swingy.model;
 
 import com.mpouce.swingy.model.character.Character;
-import com.mpouce.swingy.model.character.CharacterRepository;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
 import com.mpouce.swingy.model.utils.DatabaseUtils;
 import java.sql.ResultSet;

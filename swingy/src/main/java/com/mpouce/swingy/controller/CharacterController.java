@@ -2,7 +2,7 @@ package com.mpouce.swingy.controller;
 
 import com.mpouce.swingy.model.character.Character;
 import com.mpouce.swingy.model.character.CharacterClass;
-import com.mpouce.swingy.model.character.CharacterRepository;
+import com.mpouce.swingy.model.character.CharacterModel;
 import com.mpouce.swingy.model.character.CharacterClassModel;
 import com.mpouce.swingy.view.CharacterView;
 import com.mpouce.swingy.view.MenuView;
@@ -16,10 +16,8 @@ public class CharacterController {
     private Character player;
     private CharacterView characterView;
     private MenuView menuView;
-    private CharacterRepository characterModel;
 
     private CharacterController() {
-        characterModel = CharacterRepository.getInstance();
         characterView = new CharacterView();
         menuView = new MenuView();
     }
@@ -33,7 +31,7 @@ public class CharacterController {
 
     public void getCharacters() {
         HashMap<Integer, CharacterClass> characterClasses = CharacterClassModel.getClasses();
-        List<Character> characters = characterModel.getCharacters(characterClasses);
+        List<Character> characters = CharacterModel.getCharacters(characterClasses);
         characterView.showCharacters(characters);
     }
 
@@ -43,7 +41,7 @@ public class CharacterController {
         } else if (name.length() > 15) {
             name = name.substring(0, 14);
         }
-        int charId = characterModel.createCharacter(name, classId);
+        int charId = CharacterModel.createCharacter(name, classId);
         if (charId == -1) {
             System.out.println("An error occured during the character creation.");
             return;
@@ -69,7 +67,7 @@ public class CharacterController {
     }
 
     public void deleteCharacter(int characterId) {
-        characterModel.deleteCharacter(characterId);
+        CharacterModel.deleteCharacter(characterId);
         this.getCharacters();
     }
 

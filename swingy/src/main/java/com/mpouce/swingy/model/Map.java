@@ -2,7 +2,7 @@ package com.mpouce.swingy.model;
 
 import com.mpouce.swingy.controller.GameController;
 import com.mpouce.swingy.model.character.Character;
-import com.mpouce.swingy.model.character.CharacterRepository;
+import com.mpouce.swingy.model.character.CharacterModel;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
 import com.mpouce.swingy.model.utils.DatabaseUtils;
 
@@ -37,7 +37,7 @@ public class Map {
         this.playerId = character.getId();
         readMap(this.playerId);
         if (this.locations != null) {
-            Location playerFoundLocation = CharacterRepository.getInstance().readCharacterLocation(this.locations, this.playerId);
+            Location playerFoundLocation = CharacterModel.readCharacterLocation(this.locations, this.playerId);
             if (playerFoundLocation == null) {
                 playerFoundLocation = this.locations[this.size / 2][this.size / 2];
             }
@@ -47,7 +47,7 @@ public class Map {
             System.out.println("Creating new map with size " + this.size);
             this.createMap();
             this.locations = new Location[this.size][this.size];
-            HashMap<Integer, Character> enemies = CharacterRepository.getInstance().readAllEnemies();
+            HashMap<Integer, Character> enemies = CharacterModel.readAllEnemies();
 
             for (int x = 0; x < this.size; x++) {
                 for  (int y = 0; y < this.size; y++) {
@@ -56,7 +56,7 @@ public class Map {
                 }
             }
             LocationModel.getInstance().createAllLocations(this.locations);
-            CharacterRepository.getInstance().createAllCharacterLocations(this.locations);
+            CharacterModel.createAllCharacterLocations(this.locations);
             GameController.getInstance().createPlayerLocation(this.locations[this.size / 2][this.size / 2]);
         }
     }
