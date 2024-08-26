@@ -12,18 +12,9 @@ import java.sql.Statement;
 
 public class LocationModel {
 
-    private static LocationModel instance;
-
     private LocationModel() {}
 
-    public static LocationModel getInstance() {
-        if (instance == null) {
-            instance = new LocationModel();
-        }
-        return instance;
-    }
-
-    public void createAllLocations(Location[][] locations) {
+    public static void createAllLocations(Location[][] locations) {
         String prepStatement = "INSERT INTO locations (x, y, map_id) VALUES (?, ?, ?)";
         try {
             Connection conn = DatabaseConnection.getInstance().getConnection();
@@ -57,7 +48,7 @@ public class LocationModel {
         }
     }
 
-    public int createLocation(Location newLocation) {
+    public static int createLocation(Location newLocation) {
         int newId = -1;
         String prepStatement = "INSERT INTO locations (x, y, map_id) VALUES (?, ?, ?)";
         try {
@@ -81,7 +72,7 @@ public class LocationModel {
         return newId;
     }
 
-    public Location[][] readAllMapLocations(int mapId, int mapSize, int playerId) {
+    public static Location[][] readAllMapLocations(int mapId, int mapSize, int playerId) {
         Location[][] locations = null;
         String prepStatement = "SELECT id, x, y FROM locations WHERE map_id=?";
         try {
@@ -105,7 +96,7 @@ public class LocationModel {
         return locations;
     }
 
-    public Character readLocationCharacter(int locationId, int playerId) {
+    public static Character readLocationCharacter(int locationId, int playerId) {
         Character newCharacter = null;
         String prepStatement = "SELECT * FROM characters INNER JOIN character_location "
                                 + "ON character_location.location_id=? "
@@ -133,7 +124,7 @@ public class LocationModel {
         return newCharacter;
     }
 
-    public Location readAllMapCharacters(Map map) {
+    public static Location readAllMapCharacters(Map map) {
         Location playerLocation = null;
         Location[][] locations = map.getLocations();
         String prepStatement = "SELECT locations.x, locations.y, character_location.character_id "
@@ -159,7 +150,7 @@ public class LocationModel {
         return playerLocation;
     }
 
-    public Character readCharacterFromId(int characterId) {
+    public static Character readCharacterFromId(int characterId) {
         Character character = null;
         String prepStatement = "SELECT id, name, experience, max_hitpoints, attack, defense "
                                 + "FROM characters where id=?";
@@ -185,7 +176,7 @@ public class LocationModel {
         return character;
     }
 
-    public void deleteLocation(Location location) {
+    public static void deleteLocation(Location location) {
         String prepStatement = "DELETE FROM locations WHERE id=?";
         try {
             PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);

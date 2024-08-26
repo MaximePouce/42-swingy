@@ -55,7 +55,7 @@ public class Map {
                     this.locations[x][y].generateRandomEncounter(this.size, enemies);
                 }
             }
-            LocationModel.getInstance().createAllLocations(this.locations);
+            LocationModel.createAllLocations(this.locations);
             CharacterModel.createAllCharacterLocations(this.locations);
             GameController.getInstance().createPlayerLocation(this.locations[this.size / 2][this.size / 2]);
         }
@@ -83,7 +83,7 @@ public class Map {
                 this.mapId = rs.getInt("id");
                 this.size = rs.getInt("size");
                 System.out.println("map id: " + this.mapId + " with size " + this.size);
-                this.locations = LocationModel.getInstance().readAllMapLocations(this.mapId, this.size, characterId);
+                this.locations = LocationModel.readAllMapLocations(this.mapId, this.size, characterId);
             }
         } catch (SQLException e) {
             System.out.println("Database error: " + e.getMessage());

@@ -86,7 +86,7 @@ public class Location {
         }
         playerCharacter.battle(this.character);
         if(this.character.getHitPoints() == 0) {
-            LocationModel.getInstance().deleteCharacterLocation(this.locationId);
+            LocationModel.deleteCharacterLocation(this.locationId);
             this.character = null;
         }
     }
@@ -110,10 +110,10 @@ public class Location {
     }
 
     public void createLocation() {
-        this.locationId = LocationModel.getInstance().createLocation(this);
+        this.locationId = LocationModel.createLocation(this);
     }
 
     public void setCharacterById(int characterId) {
-        this.character = LocationModel.getInstance().readCharacterFromId(characterId);
+        this.character = LocationModel.readCharacterFromId(characterId);
     }
 }
