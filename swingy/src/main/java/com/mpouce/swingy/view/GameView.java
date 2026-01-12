@@ -439,7 +439,7 @@ public class GameView {
     }
 
     public void showDeathScreen(Character player) {
-        String message = player.getName() + " died fighting a " + player.getLocation().getCharacter().getName() + ".\n And will be remembered for atleast a day.";
+        String message = player.getName() + " died fighting a " + player.getLocation().getCharacter().getName() + ".\nand will be remembered for atleast a day.";
         if (Settings.getInstance().getUseGui()) {
             JOptionPane.showMessageDialog(
                         Window.getInstance().getFrame(),
