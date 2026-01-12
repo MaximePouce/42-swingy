@@ -11,14 +11,12 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashMap;
 
 public class CharacterController {
     private static CharacterController instance;
-    private Character player;
     private CharacterView characterView;
     private MenuView menuView;
 

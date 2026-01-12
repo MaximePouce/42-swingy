@@ -15,15 +15,10 @@ import java.util.Scanner;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-
-import javax.imageio.ImageIO;
 
 public class CharacterView {
     private Scanner scanner = null;

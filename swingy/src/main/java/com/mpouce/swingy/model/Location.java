@@ -1,12 +1,6 @@
 package com.mpouce.swingy.model;
 
 import com.mpouce.swingy.model.character.Character;
-import com.mpouce.swingy.model.utils.DatabaseConnection;
-import com.mpouce.swingy.model.utils.DatabaseUtils;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import java.util.Random;
 import java.util.HashMap;

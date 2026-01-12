@@ -3,7 +3,6 @@ package com.mpouce.swingy.model;
 import com.mpouce.swingy.controller.GameController;
 import com.mpouce.swingy.model.character.Character;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
-import com.mpouce.swingy.model.utils.DatabaseUtils;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

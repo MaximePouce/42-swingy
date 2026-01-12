@@ -2,7 +2,6 @@ package com.mpouce.swingy.model.character;
 
 import com.mpouce.swingy.model.artifact.Artifact;
 import com.mpouce.swingy.model.artifact.ArtifactFactory;
-import com.mpouce.swingy.model.utils.DatabaseUtils;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
 import com.mpouce.swingy.model.Location;
 

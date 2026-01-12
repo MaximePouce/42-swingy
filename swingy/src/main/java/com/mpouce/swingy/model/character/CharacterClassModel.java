@@ -2,13 +2,10 @@ package com.mpouce.swingy.model.character;
 
 import com.mpouce.swingy.model.utils.DatabaseConnection;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 
 public class CharacterClassModel {

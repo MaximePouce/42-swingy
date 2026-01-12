@@ -1,11 +1,8 @@
 package com.mpouce.swingy.model.artifact;
 
-import com.mpouce.swingy.model.utils.DatabaseUtils;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 

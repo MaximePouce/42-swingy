@@ -9,17 +9,7 @@ import com.mpouce.swingy.model.artifact.Armor;
 import com.mpouce.swingy.model.artifact.Helmet;
 import com.mpouce.swingy.model.artifact.Weapon;
 
-import com.mpouce.swingy.model.utils.DatabaseUtils;
-import com.mpouce.swingy.model.utils.DatabaseConnection;
-
 import java.util.Random;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
 
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Pattern;

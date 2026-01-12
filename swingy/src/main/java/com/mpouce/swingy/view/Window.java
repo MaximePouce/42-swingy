@@ -5,12 +5,10 @@ import com.mpouce.swingy.view.utils.BackgroundPanel;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.Color;
 
 import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JLabel;
 
 public class Window {
     private JFrame frame;

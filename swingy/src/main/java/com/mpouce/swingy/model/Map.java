@@ -4,7 +4,6 @@ import com.mpouce.swingy.controller.GameController;
 import com.mpouce.swingy.model.character.Character;
 import com.mpouce.swingy.model.character.CharacterModel;
 import com.mpouce.swingy.model.utils.DatabaseConnection;
-import com.mpouce.swingy.model.utils.DatabaseUtils;
 
 import java.util.HashMap;
 

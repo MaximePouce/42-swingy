@@ -2,14 +2,12 @@ package com.mpouce.swingy.view;
 
 import com.mpouce.swingy.Settings;
 import com.mpouce.swingy.controller.CharacterController;
-import com.mpouce.swingy.view.utils.BackgroundPanel;
 import com.mpouce.swingy.view.utils.ContentFormatter;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingConstants;
 import javax.swing.BorderFactory;
 import java.awt.Font;
 import java.awt.Desktop;
@@ -18,7 +16,6 @@ import java.net.URISyntaxException;
 import java.awt.Insets;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import java.awt.FlowLayout;
 import java.awt.Color;
 import java.awt.BorderLayout;
 import java.io.IOException;
