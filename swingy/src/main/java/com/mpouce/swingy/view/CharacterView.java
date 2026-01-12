@@ -16,24 +16,10 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.*;
-
-import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JRootPane;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -281,7 +267,7 @@ public class CharacterView {
 
             JPanel namePanel = new JPanel();
             JLabel lblName = new JLabel("Name: ");
-            final JTextField textName = new JTextField("Unknown Adventurer");
+            final JTextField textName = new JTextField("Adventurer");
             textName.setBounds(50, 100, 200, 30);
             namePanel.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
@@ -489,6 +475,19 @@ public class CharacterView {
                 System.err.println("Scanner interrupted, exiting.");
                 System.exit(1);
             }
+        }
+    }
+
+    public void showCreationError(String error) {
+        String message = "Unable to create character:" + error;
+        if (Settings.getInstance().getUseGui()) {
+            JOptionPane.showMessageDialog(
+                        Window.getInstance().getFrame(),
+                        message,
+                        "Unable to create Character.",
+                        JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            System.out.println(message);
         }
     }
 
