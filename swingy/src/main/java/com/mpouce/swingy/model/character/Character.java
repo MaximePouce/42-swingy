@@ -20,8 +20,16 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotBlank;
+
 public class Character {
     private int id;
+    @Size(max = 15, message = "Name maximum length is 15 characters.")
+    @Pattern(regexp = "[a-zA-Z0-9 \u00C0-\u024F\u1E00-\u1EFF]+", message = "Name can only contain letters and numbers")
+    @NotBlank(message = "Having a name is mandatory")
     private String name;
     private CharacterClass characterClass = null;
     private int level;
