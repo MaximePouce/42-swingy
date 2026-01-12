@@ -7,8 +7,13 @@ import com.mpouce.swingy.model.character.CharacterClassModel;
 import com.mpouce.swingy.view.CharacterView;
 import com.mpouce.swingy.view.MenuView;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.ValidatorFactory;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.HashMap;
 
 public class CharacterController {
@@ -36,17 +41,30 @@ public class CharacterController {
     }
 
     public void newCharacter(String name, int classId) {
-        if (name.isEmpty()) {
-            name = "Unknown Adventurer";
-        } else if (name.length() > 15) {
-            name = name.substring(0, 14);
+        // Dummy Character to validate name
+        Character newCharacter = new Character(name, 0, 0, 0, 0);
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        jakarta.validation.Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Character>> violations = validator.validate(newCharacter);
+        if (!violations.isEmpty())
+        {
+            String errorString = "";
+            for (ConstraintViolation<Character> violation : violations)
+            {
+                errorString += violation.getMessage();
+                errorString += "\n";
+            }
+            characterView.showCreationError(errorString);
         }
-        int charId = CharacterModel.createCharacter(name, classId);
-        if (charId == -1) {
-            System.out.println("An error occured during the character creation.");
-            return;
+        else
+        {
+            int charId = CharacterModel.createCharacter(name, classId);
+            if (charId == -1) {
+                System.out.println("An error occured during the character creation.");
+                return;
+            }
+            getCharacters();
         }
-        getCharacters();
     }
 
     public void selectCharacter(Character character) {
