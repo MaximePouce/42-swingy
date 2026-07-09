@@ -11,21 +11,21 @@ public class ArtifactModel {
     private ArtifactModel() {}
 
     public static Artifact getRandomArtifact(int lootLevel) {
-        String query = "SELECT * FROM artifacts "
+        String prepStatement = "SELECT * FROM artifacts "
                         + "WHERE level < ? "
                         + "ORDER BY RANDOM() "
                         + "LIMIT 1;";
         try {
-            PreparedStatement stmt = DatabaseConnection.getInstance().getConnection().prepareStatement(query);
-            stmt.setInt(1, lootLevel);
-            ResultSet rs = stmt.executeQuery();
+            PreparedStatement st = DatabaseConnection.getInstance().getConnection().prepareStatement(prepStatement);
+            st.setInt(1, lootLevel);
+            ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("id");
                 String type = rs.getString("type");
                 String name = rs.getString("name");
                 int level = rs.getInt("level");
                 int bonus = rs.getInt("bonus");
-                System.out.println("Creating artifact " + name + " level " + level + " " + type);
+                // System.out.println("Creating artifact " + name + " level " + level + " " + type);
                 return ArtifactFactory.createArtifact(id, type, name, level, bonus);
             }
         } catch (SQLException e) {

@@ -272,7 +272,7 @@ public class Character {
     }
 
     public void battle(Character target) {
-        System.out.println(this.name + " is fighting enemy " + target.getName());
+        System.out.println(this.getName() + " is fighting enemy " + target.getName());
         int turn = 0;
         while(this.currentHitPoints > 0 && target.getHitPoints() > 0) {
             turn++;
@@ -291,10 +291,8 @@ public class Character {
     public void getLoot() {
         Random rand = new Random();
         int randomValue = rand.nextInt(42);
-
-        if (randomValue % 5 == 0) {
-            System.out.println("generating random loot");
-            Artifact lootedArtifact = ArtifactModel.getRandomArtifact((this.level + 1) / 2 + 1);
+        if (randomValue % 2 == 0) {
+            Artifact lootedArtifact = ArtifactModel.getRandomArtifact(this.getLevel() + 1);
             GameController.getInstance().lootArtifact(lootedArtifact);
         }
     }

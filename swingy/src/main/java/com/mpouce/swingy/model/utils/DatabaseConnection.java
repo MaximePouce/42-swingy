@@ -27,7 +27,7 @@ public class DatabaseConnection {
             conn = DriverManager.getConnection(url, username, password);
             if (conn != null) {
                 System.out.println("Connected to the database!");
-                System.out.println(DatabaseUtils.doesTableExist(conn, "classes"));
+                // System.out.println(DatabaseUtils.doesTableExist(conn, "classes"));
                 if (!DatabaseUtils.doesTableExist(conn, "classes")) {
                     DatabaseUtils.initializeDatabase(conn);
                 }

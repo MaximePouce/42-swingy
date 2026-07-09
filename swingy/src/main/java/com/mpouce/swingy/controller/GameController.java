@@ -68,19 +68,19 @@ public class GameController {
 
     public void lootArtifact(Artifact lootedArtifact) {
         if (lootedArtifact == null) {
-            System.out.println("Artifact is null, returning.");
+            // System.out.println("Artifact is null, returning.");
             return ;
         }
-        System.out.println("looting artifact " + lootedArtifact.getName());
+        // System.out.println("looting artifact " + lootedArtifact.getName());
         gameView.showArtifactDialog(this.playerCharacter, lootedArtifact);
     }
 
     public void equipArtifact(Artifact lootedArtifact) {
         if (lootedArtifact == null) {
-            System.out.println("Artifact is null, returning.");
+            // System.out.println("Artifact is null, returning.");
             return ;
         }
-        System.out.println("equiping artifact " + lootedArtifact.getName());
+        // System.out.println("equiping artifact " + lootedArtifact.getName());
         this.playerCharacter.equipArtifact(lootedArtifact);
     }
 
