@@ -41,19 +41,6 @@ public class MenuView {
                 CharacterController.getInstance().getCharacters();
             });
 
-            JButton btnGitHub = new JButton("SwinGitHub");
-            btnGitHub.addActionListener(e -> {
-                try {
-                    String url = "https://github.com/MaximePouce/42-swingy";
-                    Desktop dt = Desktop.getDesktop();
-                    URI uri = new URI(url);
-                    dt.browse(uri.resolve(uri));
-                } catch (IOException | URISyntaxException | UnsupportedOperationException urlException) {
-                    // TODO: Maybe make this a nice pop-up window ?
-                    System.out.println("An error occured when trying to open your browser.");
-                }
-            });
-
             JButton btnConsole = new JButton("Console View");
             btnConsole.addActionListener(e -> {
                 System.out.println("Switching to Console view");
@@ -81,12 +68,6 @@ public class MenuView {
 
             buttonPanel.setOpaque(false);
             buttonPanel.add(btnStart, c);
-
-            c.gridx = 0;
-            c.gridy = 1;
-            c.anchor = GridBagConstraints.CENTER;
-            c.insets = new Insets(20, 20, 20, 20);
-            buttonPanel.add(btnGitHub, c);
 
             c.gridx = 0;
             c.gridy = 2;
